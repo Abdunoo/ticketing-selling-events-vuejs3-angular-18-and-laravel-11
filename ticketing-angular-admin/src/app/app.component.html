@@ -1,0 +1,51 @@
+<div class="flex h-screen bg-gray-100">
+
+  <aside class="w-64 bg-gray-800 text-white flex flex-col"> 
+    <div class="p-4 text-xl font-bold border-b border-gray-700">
+      App Name
+    </div>
+    <nav class="flex-grow"> 
+      <div class="mt-4"> 
+      <router-link 
+          routerLink="/dashboard" 
+          routerLinkActive="bg-gray-700" 
+          class="block p-4 hover:bg-gray-700" >
+        Dashboard
+      </router-link>
+      <router-link 
+          routerLink="/events" 
+          routerLinkActive="bg-gray-700" 
+          class="block p-4 hover:bg-gray-700" >
+        Events
+      </router-link>
+      <router-link 
+          routerLink="/orders" 
+          routerLinkActive="bg-gray-700" 
+          class="block p-4 hover:bg-gray-700" >
+        Orders
+      </router-link>
+      <router-link 
+          routerLink="/users" 
+          routerLinkActive="bg-gray-700" 
+          class="block p-4 hover:bg-gray-700" >
+        Users
+      </router-link>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="flex-1 flex flex-col"> 
+    <header class="bg-white shadow p-4">
+      <div class="flex justify-between items-center">
+        <h1 class="text-2xl font-bold">{{ pageTitle }}</h1>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Logout
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 p-6 overflow-y-auto"> 
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

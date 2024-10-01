@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+/* src/styles.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../node_modules/ngx-panemu-table/styles/indigo-pink.css';
+@import '../node_modules/ngx-panemu-table/styles/main.css';

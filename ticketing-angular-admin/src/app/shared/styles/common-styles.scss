@@ -1,0 +1,17 @@
+// src/app/shared/styles/common-styles.scss
+
+$button-bg: #1f2937; // Dark color for button background
+$button-hover-bg: #374151; // Slightly lighter for hover
+
+.button {
+  @apply px-4 py-2 rounded text-white;
+  background-color: $button-bg;
+
+  &:hover {
+    background-color: $button-hover-bg;
+  }
+}
+
+.input {
+  @apply border border-gray-300 rounded p-2 w-full;
+}
