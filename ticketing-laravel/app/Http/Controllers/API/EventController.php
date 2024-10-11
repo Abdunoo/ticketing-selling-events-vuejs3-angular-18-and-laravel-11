@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Encoders\WebpEncoder;
 
+use function App\Helpers\prepend_base_url;
+
 class EventController extends Controller
 {
     use ApplicationResponse;
@@ -40,7 +42,7 @@ class EventController extends Controller
         $updateEvent = $events->getCollection()->map(function ($event) {
             $lowestPrice = $event->ticketTypes->first() ? $event->ticketTypes->first()->price : null;
             $event['price'] = $lowestPrice;
-            $event['image_banner'] = env("APP_URL") . $event->image_banner;
+            $event['image_banner'] = prepend_base_url($event->image_banner);
             return $event;
         });
 
@@ -64,7 +66,7 @@ class EventController extends Controller
         $updateEvent = $events->getCollection()->map(function ($event) {
             $lowestPrice = $event->ticketTypes->first() ? $event->ticketTypes->first()->price : null;
             $event['price'] = $lowestPrice;
-            $event['image_banner'] = env("APP_URL") . $event->image_banner;
+            $event['image_banner'] = prepend_base_url($event->image_banner);
             return $event;
         });
 
@@ -147,7 +149,7 @@ class EventController extends Controller
                 "Event not found.",
             );
         }
-        $event['image_banner'] = env("APP_URL") . $event->image_banner;
+        $event['image_banner'] = prepend_base_url($event->image_banner);
         return $this->json(
             Response::HTTP_OK,
             "Success.",
@@ -159,7 +161,7 @@ class EventController extends Controller
     public function show($id): JsonResponse
     {
         $event = Event::with(['ticketTypes'])->findOrFail($id);
-        $event['image_banner'] = env("APP_URL") . $event->image_banner;
+        $event['image_banner'] = prepend_base_url($event->image_banner);
         return $this->json(
             Response::HTTP_OK,
             "Success.",

@@ -100,3 +100,16 @@ class Ticketku
         return $newOrderNo;
     }
 }
+
+if (!function_exists('prepend_base_url')) {
+    function prepend_base_url($image_path)
+    {
+        // Check if the image path already has http or https
+        if (!preg_match('/^https?:\/\//', $image_path)) {
+            return env('APP_URL') . $image_path;
+        }
+
+        return $image_path;
+    }
+}
+

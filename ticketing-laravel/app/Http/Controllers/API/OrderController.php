@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 
+use function App\Helpers\prepend_base_url;
+
 class OrderController extends Controller
 {
     use ApplicationResponse;
@@ -37,10 +39,7 @@ class OrderController extends Controller
                 ->orderByDesc('created_at')->paginate($perPage);
 
             $getImageBanner = $orders->getCollection()->map(function ($order) {
-                // Check if the image_banner is already a full URL
-                if (!str_starts_with($order->events->image_banner, 'http')) {
-                    $order->events->image_banner = env("APP_URL") . $order->events->image_banner;
-                }
+                $order->events->image_banner = prepend_base_url($order->events->image_banner);
                 return $order;
             });
 
@@ -63,7 +62,7 @@ class OrderController extends Controller
         $orders = Order::with(['events', 'user'])->orderByDesc('created_at')->paginate($perPage);
 
         $getImageBanner = $orders->getCollection()->map(function ($order) {
-            $order->events->image_banner = env("APP_URL") . $order->events->image_banner;
+            $order->events->image_banner = prepend_base_url($order->events->image_banner);
             return $order;
         });
 
@@ -137,7 +136,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with('events')->find($id);
-        $order->events['image_banner'] = env("APP_URL") . $order->events->image_banner;
+        $order->events['image_banner'] = prepend_base_url($order->events->image_banner);
 
         if (!$order) {
             return $this->json(
