@@ -33,7 +33,7 @@ export const DATA: Event[] = [
   },
 ];
 
-interface Event {
+export interface Event {
   id: number;
   name: string;
   slug: string;
@@ -50,7 +50,7 @@ interface Event {
   ticket_types: [TicketType];
 }
 
-interface TicketType {
+export interface TicketType {
   id: number;
   event_id: number;
   name: string;
@@ -60,7 +60,7 @@ interface TicketType {
   updated_at: string;
 }
 
-interface Order {
+export interface Order {
   id: number;
   user_id: number;
   discount_amount: string;
@@ -83,7 +83,7 @@ interface Order {
   user: user;
 }
 
-interface user {
+export interface user {
   id: number;
   name: string;
   email: string;

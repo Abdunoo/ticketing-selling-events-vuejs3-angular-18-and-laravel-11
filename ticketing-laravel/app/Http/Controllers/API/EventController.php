@@ -57,25 +57,13 @@ class EventController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $perPage = $request->input('limit', 10);
-        $orderBy = $request->input('order_by', 'id');
-
-        $events = Event::with(['ticketTypes'])
-            ->orderByDesc($orderBy)
-            ->paginate($perPage);
-        $updateEvent = $events->getCollection()->map(function ($event) {
-            $lowestPrice = $event->ticketTypes->first() ? $event->ticketTypes->first()->price : null;
-            $event['price'] = $lowestPrice;
-            $event['image_banner'] = prepend_base_url($event->image_banner);
+        $events = Event::get();
+        $events->map(function ($event) {
+            $event->image_banner = prepend_base_url($event->image_banner);
             return $event;
         });
 
-        $events->setCollection($updateEvent);
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $events
-        );
+        return response()->json($events);
     }
 
     public function store(Request $request): JsonResponse

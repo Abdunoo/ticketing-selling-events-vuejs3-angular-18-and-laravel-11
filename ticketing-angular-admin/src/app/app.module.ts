@@ -10,6 +10,7 @@ import { OrdersComponent } from './orders/orders.component';
 import { UsersComponent } from './users/users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PanemuPaginationComponent, PanemuQueryComponent, PanemuTableComponent } from 'ngx-panemu-table';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -30,5 +31,6 @@ import { PanemuPaginationComponent, PanemuQueryComponent, PanemuTableComponent }
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  providers: [provideHttpClient()]
 })
 export class AppModule {}
