@@ -11,6 +11,7 @@ import { UsersComponent } from './users/users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PanemuPaginationComponent, PanemuQueryComponent, PanemuTableComponent } from 'ngx-panemu-table';
 import { provideHttpClient } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { provideHttpClient } from '@angular/common/http';
     RouterModule.forRoot(routes),
     PanemuTableComponent, 
     PanemuPaginationComponent, 
-    PanemuQueryComponent
+    PanemuQueryComponent,
+    BrowserAnimationsModule
   ],
   declarations: [
     AppComponent, 

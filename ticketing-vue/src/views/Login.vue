@@ -151,7 +151,7 @@ export default {
         google.accounts.oauth2
           .initCodeClient({
             client_id:
-              "795898985220-kjcheju7i647obmguv5vrfelbtfa2k19.apps.googleusercontent.com",
+              "250953076859-h0hqsnbj4mfi3c9pvqm9d5k5nd398a1g.apps.googleusercontent.com",
             scope: "email profile openid",
             callback: response => {
               if (response.code) {
