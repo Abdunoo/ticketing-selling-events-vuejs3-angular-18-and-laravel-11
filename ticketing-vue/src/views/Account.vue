@@ -86,6 +86,7 @@
 <script>
 import Loading from '@/components/Loading.vue';
 import apiClient from '@/helpers/axios';
+import router from '@/router';
 import { onMounted, reactive, toRefs } from 'vue';
 
 export default {
@@ -152,7 +153,7 @@ export default {
 
     const toLogout = () => {
       state.isLoading = true;
-      window.location.href = '/login';
+      router.push('/login');
       localStorage.removeItem('token');
       localStorage.removeItem('_usr');
       localStorage.setItem('isLogin', 'false');

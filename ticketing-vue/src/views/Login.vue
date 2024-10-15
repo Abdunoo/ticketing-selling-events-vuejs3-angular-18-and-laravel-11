@@ -76,7 +76,7 @@
         </a>
 
         <!-- GitHub Login Button -->
-        <a href="#"
+        <a href="" @click="loginWithGithub()"
           class="flex items-center justify-center w-full space-x-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
           <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" class="h-5 w-5">
             <path
@@ -134,10 +134,10 @@ export default {
             localStorage.setItem('_usr', JSON.stringify(response.data.user));
             localStorage.setItem('isLogin', true);
             if (response.data.user.role == 'admin') {
-              window.location.href = API_URL + '/admin/login';
+              router.push('/admin/login');
               return;
             }
-            window.location.href = '/';
+            router.push('/');
           }
         })
         .catch(error => {
@@ -174,10 +174,10 @@ export default {
           localStorage.setItem('_usr', JSON.stringify(response.data.user));
           localStorage.setItem('isLogin', true);
           if (response.data.user.role == 'admin') {
-            window.location.href = API_URL + '/admin/login';
+            router.push('/admin/login');
             return;
           }
-          window.location.href = '/';
+          router.push('/');
         }
       } catch (error) {
         console.error("Failed to send code to backend:", error);
@@ -185,7 +185,8 @@ export default {
     }
 
     const loginWithGithub = () => {
-      window.location.href = '/auth/github'; // Replace with your GitHub login route
+      // router.push('/auth/github'); 
+      window.alert('Login Use Github Still In Progress, Please Use Google')
     }
 
     return {

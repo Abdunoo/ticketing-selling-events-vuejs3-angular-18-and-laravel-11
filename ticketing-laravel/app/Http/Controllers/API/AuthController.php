@@ -261,14 +261,9 @@ class AuthController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 6);
 
-        $users = User::orderByDesc('created_at')->paginate($perPage);
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Success.',
-            'data' => $users,
-        ]);
+        $users = User::all();
+        return response()->json($users);
     }
 
     public function store(Request $request)
@@ -404,10 +399,11 @@ class AuthController extends Controller
 
             $userData = $userResponse->json();
 
+            $userExist=User::where('name', '=', $userData['name'])->first();
+
             $user = User::createOrFirst([
                 'name' => $userData['name'],
                 'email' => $userData['email'],
-                'email_verified' => $userData['email_verified'],
                 'avatar' => $userData['picture']
             ]);
 

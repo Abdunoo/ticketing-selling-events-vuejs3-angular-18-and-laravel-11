@@ -57,22 +57,14 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        $perPage = $request->input('per_page', 6);
+        $orders = Order::with(['events', 'user'])->get();
 
-        $orders = Order::with(['events', 'user'])->orderByDesc('created_at')->paginate($perPage);
-
-        $getImageBanner = $orders->getCollection()->map(function ($order) {
+        $getImageBanner = $orders->map(function ($order) {
             $order->events->image_banner = prepend_base_url($order->events->image_banner);
             return $order;
         });
 
-        $orders->setCollection($getImageBanner);
-
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $orders
-        );
+        return response()->json($orders);
     }
 
     public function store(Request $request)

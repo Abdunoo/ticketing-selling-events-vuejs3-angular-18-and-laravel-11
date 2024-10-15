@@ -1,38 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../environment';
-
-export const DATA: Event[] = [
-  {
-    id: 15,
-    name: 'test',
-    slug: 'test',
-    description: 'etewet',
-    start_datetime: '2024-09-25 22:17:00',
-    end_datetime: '2024-10-11 22:17:00',
-    location: 'test',
-    image_banner:
-      'http://localhost:8000/storage/images/20240925151737_product.webp',
-    organizer_id: 3,
-    is_active: 1 ? true : false,
-    created_at: '2024-09-25T15:17:45.000000Z',
-    updated_at: '2024-09-25T15:17:45.000000Z',
-    price: '1221.00',
-    ticket_types: [
-      {
-        id: 13,
-        event_id: 15,
-        name: 'wetwet',
-        price: '1221.00',
-        available_quantity: 1221,
-        created_at: '2024-09-25T15:17:45.000000Z',
-        updated_at: '2024-09-25T15:17:45.000000Z',
-      },
-    ],
-  },
-];
-
+import { environment } from '../environment.prod';
 export interface Event {
   id: number;
   name: string;
@@ -80,10 +49,10 @@ export interface Order {
   created_at: Date;
   updated_at: Date;
   events: Event;
-  user: user;
+  user: User;
 }
 
-export interface user {
+export interface User {
   id: number;
   name: string;
   email: string;
@@ -149,6 +118,33 @@ export class AppService {
 
   deleteOrder(orderId: number): Observable<void> {
     const url = `${environment.apiUrl}admin/orders/${orderId}`;
+    return this.http.delete<void>(url);
+  }
+
+  // User CRUD Methods
+
+  getListUsers(): Observable<User[]> {
+    const url = environment.apiUrl + 'admin/users';
+    return this.http.get<User[]>(url);
+  }
+
+  getUserById(userId: number): Observable<User> {
+    const url = `${environment.apiUrl}admin/users/${userId}`;
+    return this.http.get<User>(url);
+  }
+
+  createUser(user: User): Observable<User> {
+    const url = environment.apiUrl + 'admin/users';
+    return this.http.post<User>(url, user);
+  }
+
+  updateUser(userId: number, user: User): Observable<User> {
+    const url = `${environment.apiUrl}admin/users/${userId}`;
+    return this.http.put<User>(url, user);
+  }
+
+  deleteUser(userId: number): Observable<void> {
+    const url = `${environment.apiUrl}admin/users/${userId}`;
     return this.http.delete<void>(url);
   }
 }
