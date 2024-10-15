@@ -23,6 +23,12 @@ const routes = [
   { path: "/account", name: "Account", component: Account },
   { path: "/pricing", name: "Pricing", component: Pricing },
   { path: "/events_create", name: "CreateEvent", component: CreateEvent },
+  {
+    path: '/admin',
+    beforeEnter() {
+      window.location.href = 'https://sandbox2.panemu.com/ticketing/admin/index.html';
+    }
+    }
 ];
 
 const router = createRouter({
