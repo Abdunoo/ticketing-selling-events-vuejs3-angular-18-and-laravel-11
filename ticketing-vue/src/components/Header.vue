@@ -2,7 +2,7 @@
   <header
     class="sticky top-0 bg-gray-50 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-10 py-2 shadow-sm">
     <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-      <img src="src/assets/image/logo.png" alt="ticket promotion image" class="object-cover h-10">
+      <img src="/src/assets/image/logo.png" alt="ticket promotion image" class="object-cover h-10">
     </router-link>
     <div class="flex flex-1 justify-end gap-8">
       <div class="flex items-center gap-9">
@@ -13,7 +13,7 @@
         <router-link class="text-textPrimary text-sm font-medium leading-normal" :to="{ name: 'Mytickets' }">My
           Tickets</router-link>
       </div>
-      <a :to="{name: 'Pricing'}"
+      <a href="/pricing"
         class="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Create
         Events</a>
       <div v-if="isLogin == true" class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
