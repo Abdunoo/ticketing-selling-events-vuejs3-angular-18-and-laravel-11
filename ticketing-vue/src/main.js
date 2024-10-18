@@ -30,7 +30,6 @@ app.use(router);
 const gAuthOptions = {
   clientId: '795898985220-kjcheju7i647obmguv5vrfelbtfa2k19.apps.googleusercontent.com',
   scope: 'profile email',
-  prompt: 'consent',
   revokeTokenOnSignout: true,
 };
 app.use(vue3GoogleLogin, gAuthOptions);

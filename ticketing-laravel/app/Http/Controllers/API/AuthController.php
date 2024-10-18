@@ -399,30 +399,48 @@ class AuthController extends Controller
 
             $userData = $userResponse->json();
 
-            $userExist=User::where('name', '=', $userData['name'])->first();
+            $userExist=User::where('email', '=', $userData['email'])->first();
 
-            $user = User::createOrFirst([
-                'name' => $userData['name'],
-                'email' => $userData['email'],
-                'avatar' => $userData['picture']
-            ]);
+            if ($userExist) {
+                $token = $userExist->createToken('authToken')->plainTextToken;
 
-            $token = $user->createToken('authToken')->plainTextToken;
+                // Prepare the data to be returned
+                $data = [
+                    'user' => $userExist,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer'
+                ];
 
-            // Prepare the data to be returned
-            $data = [
-                'user' => $user,
-                'access_token' => $token,
-                'token_type' => 'Bearer'
-            ];
+                // Return success response with user and token data
+                return $this->json(
+                    Response::HTTP_OK,
+                    "OTP sent to your email.",
+                    $data
+                );
+            } else {
+                // Create a new user with the fetched data
+                $user = User::create([
+                    'name' => $userData['name'],
+                    'email' => $userData['email'],
+                    'avatar' => $userData['picture']
+                ]);
 
-            // Return success response with user and token data
-            return $this->json(
-                Response::HTTP_OK,
-                "OTP sent to your email.",
-                $data
-            );
+                $token = $user->createToken('authToken')->plainTextToken;
 
+                // Prepare the data to be returned
+                $data = [
+                    'user' => $user,
+                    'access_token' => $token,
+                    'token_type' => 'Bearer'
+                ];
+
+                // Return success response with user and token data
+                return $this->json(
+                    Response::HTTP_OK,
+                    "OTP sent to your email.",
+                    $data
+                );
+            }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,

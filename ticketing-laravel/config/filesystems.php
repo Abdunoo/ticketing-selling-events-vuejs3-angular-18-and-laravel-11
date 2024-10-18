@@ -32,17 +32,14 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
-            'serve' => true,
-            'throw' => false,
+            'root' => '/home/abdun/storage',
+            'visibility' => 'public',
         ],
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => '/storage',
+            'root' => '/root/abdun/storage-ticketing',
             'visibility' => 'public',
-            'throw' => false,
         ],
 
         's3' => [

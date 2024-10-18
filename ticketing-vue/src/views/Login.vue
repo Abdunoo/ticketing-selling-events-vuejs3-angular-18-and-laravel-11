@@ -156,7 +156,6 @@ export default {
             callback: response => {
               if (response.code) {
                 sendCodeToBackend(response.code);
-                console.log(response)
               }
             }
           })
