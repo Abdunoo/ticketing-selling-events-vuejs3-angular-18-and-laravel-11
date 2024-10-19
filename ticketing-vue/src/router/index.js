@@ -1,30 +1,65 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Dashboard from "../views/Dashboard.vue";
-import EventCategory from "../views/EventCategory.vue";
-import EventDetail from "../views/EventDetail.vue";
-import Checkout from "../views/Checkout.vue";
-import Register from "../views/auth/Register.vue";
-import Login from "../views/auth/Login.vue";
-import Mytickets from "@/views/Mytickets.vue";
-import Account from "@/views/Account.vue";
-import DetailOrder from "@/views/DetailOrder.vue";
-import Pricing from "@/views/Pricing.vue";
-import CreateEvent from "@/views/form/CreateEvent.vue";
-import Otp from "@/views/auth/Otp.vue";
-
 const routes = [
-  { path: "/", name: "Dashboard", component: Dashboard },
-  { path: "/all-for-you", name: "Events", component: EventCategory },
-  { path: "/:event_name", name: "EventDetail", component: EventDetail },
-  { path: "/checkout", name: "Checkout", component: Checkout },
-  { path: "/sign_up", name: "SignUp", component: Register },
-  { path: "/otp", name: "Otp", component: Otp },
-  { path: "/login", name: "Login", component: Login },
-  { path: "/mytickets", name: "Mytickets", component: Mytickets },
-  { path: "/mytickets/:id", name: "MyticketsDetail", component: DetailOrder },
-  { path: "/account", name: "Account", component: Account },
-  { path: "/pricing", name: "Pricing", component: Pricing },
-  { path: "/events_create", name: "CreateEvent", component: CreateEvent },
+  { 
+    path: "/", 
+    name: "Dashboard", 
+    component: () => import('@/views/Dashboard.vue')
+  },
+  { 
+    path: "/all-for-you", 
+    name: "Events", 
+    component: () => import('@/views/EventCategory.vue')
+  },
+  { 
+    path: "/:event_name", 
+    name: "EventDetail", 
+    component: () => import('@/views/EventDetail.vue')
+  },
+  { 
+    path: "/checkout", 
+    name: "Checkout", 
+    component: () => import('@/views/Checkout.vue')
+  },
+  { 
+    path: "/sign_up", 
+    name: "SignUp", 
+    component: () => import('@/views/auth/Register.vue')
+  },
+  { 
+    path: "/otp", 
+    name: "Otp", 
+    component: () => import('@/views/auth/Otp.vue')
+  },
+  { 
+    path: "/login", 
+    name: "Login", 
+    component: () => import('@/views/auth/Login.vue')
+  },
+  { 
+    path: "/mytickets", 
+    name: "Mytickets", 
+    component: () => import('@/views/Mytickets.vue')
+  },
+  { 
+    path: "/mytickets/:id", 
+    name: "MyticketsDetail", 
+    component: () => import('@/views/DetailOrder.vue')
+  },
+  { 
+    path: "/account", 
+    name: "Account", 
+    component: () => import('@/views/Account.vue')
+  },
+  { 
+    path: "/pricing", 
+    name: "Pricing", 
+    component: () => import('@/views/Pricing.vue')
+  },
+  { 
+    path: "/events_create", 
+    name: "CreateEvent", 
+    component: () => import('@/views/form/CreateEvent.vue')
+  },
   {
     path: '/admin',
     beforeEnter() {

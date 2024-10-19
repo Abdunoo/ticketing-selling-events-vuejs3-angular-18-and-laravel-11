@@ -17,6 +17,7 @@ import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import App from '../App.vue';
 import vue3GoogleLogin from 'vue3-google-login'
+import VueLazyload from 'vue-lazyload';
 
 // Add icons to the library
 library.add(faUserSecret, faMagnifyingGlass, faBagShopping, faUser, faHouse, faBars);
@@ -44,5 +45,7 @@ app.use(Toast, {
 });
 
 app.component('font-awesome-icon', FontAwesomeIcon);
+
+app.use(VueLazyload)
 
 app.mount('#app');

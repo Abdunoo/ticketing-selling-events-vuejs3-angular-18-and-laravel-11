@@ -9,7 +9,7 @@
                 <div class="sm:col-span-1 flex flex-col items-center">
                     <img :src="user.picture || defaultPicture"
                         class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
-                        alt="User Profile" />
+                        alt="User Profile" loading="lazy" />
     
                     <div class="mt-4 space-y-2 w-full sm:w-auto">
                         <button type="button"

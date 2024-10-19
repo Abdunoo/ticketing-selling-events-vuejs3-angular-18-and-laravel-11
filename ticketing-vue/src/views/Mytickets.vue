@@ -27,7 +27,7 @@
                         <!-- Image Section -->
                         <div class="w-1/4 h-32">
                             <img class="w-full h-full object-cover rounded-lg" :src="item.events.image_banner"
-                                alt="Event Image" />
+                                alt="Event Image" loading="lazy" />
                         </div>
     
                         <!-- Content Section -->

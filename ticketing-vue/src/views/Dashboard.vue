@@ -29,7 +29,7 @@
         <!-- Image Section -->
         <div
           class="hidden lg:mt-0 lg:col-span-5 lg:flex transition-transform duration-1000 ease-in-out transform hover:scale-110">
-          <img src="/src/assets/image/img3.webp" alt="ticket promotion image" class="object-cover object-left">
+          <img src="/src/assets/image/img3.webp" alt="ticket promotion image" loading="lazy" class="object-cover object-left">
         </div>
       </div>
     </section>
@@ -38,32 +38,32 @@
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6">
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst1.jpg" alt="Music Event"
+            <img src="/src/assets/image/lst1.jpg" alt="Music Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst2.jpg" alt="Sports Event"
+            <img src="/src/assets/image/lst2.jpg" alt="Sports Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst3.jpeg" alt="Theater Event"
+            <img src="/src/assets/image/lst3.jpeg" alt="Theater Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst4.jpeg" alt="Comedy Show"
+            <img src="/src/assets/image/lst4.jpeg" alt="Comedy Show" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst5.jpg" alt="Festival"
+            <img src="/src/assets/image/lst5.jpg" alt="Festival" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst6.jpeg" alt="Partner Logo"
+            <img src="/src/assets/image/lst6.jpeg" alt="Partner Logo" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
         </div>
@@ -123,14 +123,14 @@
           </div>
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            src="/src/assets/image/ticket-purchase.webp" alt="Ticket Purchase Feature" />
+            src="/src/assets/image/ticket-purchase.webp" alt="Ticket Purchase Feature" loading="lazy" />
         </div>
 
         <!-- Row 2 -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            src="/src/assets/image/event-recommendations.webp" alt="Event Recommendations Feature" />
+            src="/src/assets/image/event-recommendations.webp" alt="Event Recommendations Feature" loading="lazy" />
           <div
             class="text-gray-500 sm:text-lg translate-y-10 transition duration-1000 delay-300 ease-in-out transform hover:scale-105">
             <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900">

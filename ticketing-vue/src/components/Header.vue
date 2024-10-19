@@ -2,7 +2,7 @@
   <header
     class="sticky top-0 bg-gray-50 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-10 py-2 shadow-sm">
     <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-      <img src="/src/assets/image/logo.png" alt="ticket promotion image" class="object-cover h-10">
+      <img src="/src/assets/image/logo.png" alt="ticket promotion image" loading="lazy" class="object-cover h-10">
     </router-link>
     <div class="flex flex-1 justify-end gap-8">
       <div class="flex items-center gap-9">
