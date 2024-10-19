@@ -38,7 +38,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => '/root/abdun/storage-ticketing',
+            'root' => '/var/www/storage-ticketing',
             'visibility' => 'public',
         ],
 
