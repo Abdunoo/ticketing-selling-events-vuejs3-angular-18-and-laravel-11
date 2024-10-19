@@ -2,8 +2,8 @@
  <section class="bg-gray-50">
   <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
     <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-      <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
-      Flowbite
+      <img src="/src/assets/image/logo.png" alt="ticket promotion image" class="object-cover h-10">
+      Ticketku
     </a>
     <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
       <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -11,6 +11,12 @@
           Create an account
         </h1>
         <form class="space-y-4 md:space-y-6" @submit.prevent="register">
+          <div>
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Your name</label>
+            <input v-model="name" type="text" name="name" id="name"
+              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5"
+              placeholder="John Doe" required>
+          </div>
           <div>
             <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Your email</label>
             <input v-model="email" type="email" name="email" id="email"
@@ -56,21 +62,41 @@
 </template>
 
 <script>
+import apiClient from '@/helpers/axios';
+import router from '@/router';
 import { reactive, ref, toRefs } from 'vue';
 export default {
-
-
-
   setup(props) {
     const state = reactive({
+      name: '',
       email: '',
       password1: '',
       password2: '',
 
     })
 
-    const register = () => {
-      console.log(state)
+    const register = async() => {
+      if (state.password1 != state.password2) {
+        alert('Passwords do not match');
+        return;
+      }
+      const data = {
+        name: state.name,
+        email: state.email,
+        password: state.password1,
+      }
+      const response = await apiClient.post('api/register', data);
+      if (response.code == 200) {
+      // Redirecting to OTP page with email as query parameter
+      router.push({ 
+        path: '/otp',
+        query: { email: data.email }
+      });
+        console.log('Registration success');
+      } else {
+        console.log('Registration failed');
+      }
+
     }
 
     return {

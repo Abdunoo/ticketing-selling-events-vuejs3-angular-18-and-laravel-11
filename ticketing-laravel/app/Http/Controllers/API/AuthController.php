@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
 use App\Mail\OtpMail;
+use Google\Service\Storagetransfer\GoogleServiceAccount;
 use Google_Client;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Http;
@@ -75,21 +77,22 @@ class AuthController extends Controller
                 'email' => 'required|string|unique:users|max:255',
                 'password' => 'required|string|min:8',
             ]);
-
-            $user = User::create([
+    
+            $otp = rand(100000, 999999);
+            
+            // Store user details and OTP in cache for 5 minutes
+            $userData = [
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-            ]);
-
-            $otp = rand(100000, 999999);
-            // Store OTP in session or cache with expiration (e.g., 5 minutes)
-            session(['otp' => $otp]);
-            session(['email' => $request->email]);
-            // dd(session('otp'));
-
+                'otp' => $otp
+            ];
+    
+            Cache::put('user_data_' . $request->email, $userData, now()->addMinutes(5));
+    
+            // Send OTP to user's email
             Mail::to($request->email)->send(new OtpMail($otp));
-
+    
             return $this->json(
                 Response::HTTP_OK,
                 "Registration successful. Please verify your email."
@@ -98,35 +101,41 @@ class AuthController extends Controller
             throw $th;
         }
     }
-
+    
     public function verifyOtp(Request $request)
     {
         $request->validate([
-            'otp' => 'required|numeric',
+            'otp' => 'required',
+            'email' => 'required|email',
         ]);
-        // dd(session('email'));
-
-        $storedOtp = session('otp');
-        $email = session('email');
-
-        if ($storedOtp === $request->otp) {
-            $user = User::where('email', $email)->first();
-            // Mark user as verified (add 'email_verified_at' column to users table if needed)
-
-            session()->forget(['otp', 'email']); // Clear OTP and email from session
-
+    
+        // Retrieve the stored user data from cache
+        $userData = Cache::get('user_data_' . $request->email);
+    
+        if ($userData && $userData['otp'] == $request->otp) {
+            // Create user in the database
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => $userData['password'],
+                'email_verified_at' => now() // Optional: mark the user as verified
+            ]);
+    
+            // Clear the cached data
+            Cache::forget('user_data_' . $request->email);
+    
             return $this->json(
                 Response::HTTP_OK,
-                "Email verification successful.",
+                "Email verification successful. Account created."
             );
         }
-
+    
         return $this->json(
             Response::HTTP_BAD_REQUEST,
-            "Invalid OTP.",
+            "Invalid OTP."
         );
     }
-
+    
     public function login(Request $request)
     {
         // Validate the request inputs
@@ -399,48 +408,30 @@ class AuthController extends Controller
 
             $userData = $userResponse->json();
 
-            $userExist=User::where('email', '=', $userData['email'])->first();
+            $userExist=User::where('name', '=', $userData['name'])->first();
 
-            if ($userExist) {
-                $token = $userExist->createToken('authToken')->plainTextToken;
+            $user = User::createOrFirst([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'avatar' => $userData['picture']
+            ]);
 
-                // Prepare the data to be returned
-                $data = [
-                    'user' => $userExist,
-                    'access_token' => $token,
-                    'token_type' => 'Bearer'
-                ];
+            $token = $user->createToken('authToken')->plainTextToken;
 
-                // Return success response with user and token data
-                return $this->json(
-                    Response::HTTP_OK,
-                    "OTP sent to your email.",
-                    $data
-                );
-            } else {
-                // Create a new user with the fetched data
-                $user = User::create([
-                    'name' => $userData['name'],
-                    'email' => $userData['email'],
-                    'avatar' => $userData['picture']
-                ]);
+            // Prepare the data to be returned
+            $data = [
+                'user' => $user,
+                'access_token' => $token,
+                'token_type' => 'Bearer'
+            ];
 
-                $token = $user->createToken('authToken')->plainTextToken;
+            // Return success response with user and token data
+            return $this->json(
+                Response::HTTP_OK,
+                "OTP sent to your email.",
+                $data
+            );
 
-                // Prepare the data to be returned
-                $data = [
-                    'user' => $user,
-                    'access_token' => $token,
-                    'token_type' => 'Bearer'
-                ];
-
-                // Return success response with user and token data
-                return $this->json(
-                    Response::HTTP_OK,
-                    "OTP sent to your email.",
-                    $data
-                );
-            }
         } catch (\Exception $e) {
             return response()->json([
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,

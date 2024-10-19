@@ -134,16 +134,28 @@ class EventController extends Controller
         if (!$event) {
             return $this->json(
                 Response::HTTP_NOT_FOUND,
-                "Event not found.",
+                "Event not found."
             );
         }
-        $event['image_banner'] = prepend_base_url($event->image_banner);
+
+        // Define the path relative to your configured disk
+        $imagePath = 'images/20241018170016_product.webp';
+
+        // Check if the file exists on the configured local disk
+        if (Storage::disk('local')->exists($imagePath)) {
+            // Manually build the URL assuming your server can access /home/abdun/storage via a specific URL
+            $event['image_banner'] = url("storage/$imagePath");
+        } else {
+            $event['image_banner'] = null; // or set a default image URL
+        }
+
         return $this->json(
             Response::HTTP_OK,
             "Success.",
             $event
         );
     }
+
     
     // Show a specific event
     public function show($id): JsonResponse

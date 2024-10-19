@@ -3,13 +3,14 @@ import Dashboard from "../views/Dashboard.vue";
 import EventCategory from "../views/EventCategory.vue";
 import EventDetail from "../views/EventDetail.vue";
 import Checkout from "../views/Checkout.vue";
-import Register from "../views/Register.vue";
-import Login from "../views/Login.vue";
+import Register from "../views/auth/Register.vue";
+import Login from "../views/auth/Login.vue";
 import Mytickets from "@/views/Mytickets.vue";
 import Account from "@/views/Account.vue";
 import DetailOrder from "@/views/DetailOrder.vue";
 import Pricing from "@/views/Pricing.vue";
 import CreateEvent from "@/views/form/CreateEvent.vue";
+import Otp from "@/views/auth/Otp.vue";
 
 const routes = [
   { path: "/", name: "Dashboard", component: Dashboard },
@@ -17,6 +18,7 @@ const routes = [
   { path: "/:event_name", name: "EventDetail", component: EventDetail },
   { path: "/checkout", name: "Checkout", component: Checkout },
   { path: "/sign_up", name: "SignUp", component: Register },
+  { path: "/otp", name: "Otp", component: Otp },
   { path: "/login", name: "Login", component: Login },
   { path: "/mytickets", name: "Mytickets", component: Mytickets },
   { path: "/mytickets/:id", name: "MyticketsDetail", component: DetailOrder },

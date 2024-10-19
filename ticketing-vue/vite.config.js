@@ -13,5 +13,5 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  publicPath: '/ticketing/'
+  base: 'ticketing/', // This sets the base path for assets
 })
