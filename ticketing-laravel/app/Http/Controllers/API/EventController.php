@@ -42,7 +42,7 @@ class EventController extends Controller
         $updateEvent = $events->getCollection()->map(function ($event) {
             $lowestPrice = $event->ticketTypes->first() ? $event->ticketTypes->first()->price : null;
             $event['price'] = $lowestPrice;
-            $event['image_banner'] = prepend_base_url($event->image_banner);
+            $event['image_banner'] = prepend_base_url($event->image_banner, $event->name);
             return $event;
         });
 
@@ -59,7 +59,7 @@ class EventController extends Controller
     {
         $events = Event::get();
         $events->map(function ($event) {
-            $event->image_banner = prepend_base_url($event->image_banner);
+            $event->image_banner = prepend_base_url($event->image_banner, $event->name);
             return $event;
         });
 
@@ -102,7 +102,7 @@ class EventController extends Controller
         $webpImagePath = $directoryPath . '/' . $webpFileName;
         Storage::put($webpImagePath, $webpImage);
         // Update validated data with the WebP image path
-        $validatedData['image_banner'] = Storage::url($webpImagePath);
+        $validatedData['image_banner'] = $webpImagePath;
         $validatedData['organizer_id'] = $request->user->id;
         $validatedData['is_active'] = 1;
         $validatedData['slug'] = Str::slug($validatedData['name']);
@@ -137,18 +137,8 @@ class EventController extends Controller
                 "Event not found."
             );
         }
-
-        // Define the path relative to your configured disk
-        $imagePath = 'images/20241018170016_product.webp';
-
-        // Check if the file exists on the configured local disk
-        if (Storage::disk('local')->exists($imagePath)) {
-            // Manually build the URL assuming your server can access /home/abdun/storage via a specific URL
-            $event['image_banner'] = url("storage/$imagePath");
-        } else {
-            $event['image_banner'] = null; // or set a default image URL
-        }
-
+        $imagePath = $event->image_banner;
+        $event['image_banner'] = prepend_base_url($imagePath, $event->name);
         return $this->json(
             Response::HTTP_OK,
             "Success.",
@@ -161,7 +151,7 @@ class EventController extends Controller
     public function show($id): JsonResponse
     {
         $event = Event::with(['ticketTypes'])->findOrFail($id);
-        $event['image_banner'] = prepend_base_url($event->image_banner);
+        $event['image_banner'] = prepend_base_url($event->image_banner, $event->name);
         return $this->json(
             Response::HTTP_OK,
             "Success.",

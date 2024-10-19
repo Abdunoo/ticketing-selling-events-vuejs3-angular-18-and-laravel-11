@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Xendit\Configuration;
 use Xendit\Invoice\CreateInvoiceRequest;
 use Xendit\Invoice\InvoiceApi;
@@ -102,13 +103,14 @@ class Ticketku
 }
 
 if (!function_exists('prepend_base_url')) {
-    function prepend_base_url($image_path)
+    function prepend_base_url($image_path, $event_name = '')
     {
-        // Check if the image path already has http or https
-        if (!preg_match('/^https?:\/\//', $image_path)) {
-            return env('APP_URL') . $image_path;
+        if (empty($image_path) || !Storage::disk()->exists($image_path)) {
+            return "https://placehold.jp/600x300.png?text=" . urlencode($event_name);
         }
-
+        if (!preg_match('/^https?:\/\//', $image_path)) {
+            return url("storage/" . ltrim($image_path, '/'));
+        }
         return $image_path;
     }
 }

@@ -39,7 +39,7 @@ class OrderController extends Controller
                 ->orderByDesc('created_at')->paginate($perPage);
 
             $getImageBanner = $orders->getCollection()->map(function ($order) {
-                $order->events->image_banner = prepend_base_url($order->events->image_banner);
+                $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
                 return $order;
             });
 
@@ -60,7 +60,7 @@ class OrderController extends Controller
         $orders = Order::with(['events', 'user'])->get();
 
         $getImageBanner = $orders->map(function ($order) {
-            $order->events->image_banner = prepend_base_url($order->events->image_banner);
+            $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
             return $order;
         });
 
@@ -128,7 +128,7 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = Order::with('events')->find($id);
-        $order->events['image_banner'] = prepend_base_url($order->events->image_banner);
+        $order->events['image_banner'] = prepend_base_url($order->events->image_banner, $order->events->name);
 
         if (!$order) {
             return $this->json(

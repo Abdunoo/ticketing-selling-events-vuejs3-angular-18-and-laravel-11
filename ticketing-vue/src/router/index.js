@@ -30,7 +30,7 @@ const routes = [
     beforeEnter() {
       window.location.href = 'https://sandbox2.panemu.com/ticketing/admin/index.html';
     }
-    }
+  }
 ];
 
 const router = createRouter({
