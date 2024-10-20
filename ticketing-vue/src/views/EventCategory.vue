@@ -27,30 +27,20 @@
         class="text-textPrimary text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Popular Near You
       </h2>
       <div class="grid grid-cols-[repeat(auto-fit,minmax(158px,1fr))] lg:grid-cols-5 gap-3 p-4">
-        <div v-for="event in events" :key="event.id" class="flex flex-col gap-3 pb-3">
-          <router-link class="flex flex-col gap-3 pb-3" :to="{ name: 'EventDetail', params: { event_name: event.slug }}">
-            <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
-              :style="{backgroundImage: `url(${event.image_banner})` }">
-            </div>
-            <div>
-              <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-              <p class="text-textSecondary text-sm font-normal leading-normal">{{ event.location }}</p>
-            </div>
-          </router-link>
-        </div>
+        <EventCard v-for="event in events" :key="event.id" :event="event" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, reactive, onMounted, onBeforeUnmount, toRefs, watch } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, toRefs, watch, defineAsyncComponent } from 'vue';
 import apiClient from '@/helpers/axios';
-import EventCard from '@/components/EventCard.vue';
-import Loading from '@/components/Loading.vue';
+const EventCard = defineAsyncComponent(() => import('@/components/EventCard.vue'));
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
-  name: 'App',
+  name: 'EventCategoryPage',
   components: {
     EventCard,
     Loading,
@@ -66,7 +56,6 @@ export default {
       searchQuery: '', // New search query state
     });
 
-    // Fetch events with optional page and search query
     const fetchEvents = async (page = 1, query = '') => {
       if (state.isLoading || !state.hasMoreEvents) return;
 
@@ -96,7 +85,6 @@ export default {
       }
     };
 
-    // Handle scrolling and fetching more events
     const handleScroll = () => {
       const bottomOfWindow = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
       if (bottomOfWindow && state.hasMoreEvents && !state.isLoading) {
@@ -105,7 +93,6 @@ export default {
       }
     };
 
-    // Handle search input changes
     const handleSearch = () => {
       state.currentPage = 1;
       state.hasMoreEvents = true;
@@ -116,18 +103,15 @@ export default {
           fetchEvents(1, trimmedQuery); 
         }, 500);
       } else {
-        // Fetch all events if search query is empty
         fetchEvents(1, '');
       }
     };
 
-    // On component mount
     onMounted(() => {
-      fetchEvents(); // Initial fetch
-      window.addEventListener('scroll', handleScroll); // Infinite scroll event
+      fetchEvents();
+      window.addEventListener('scroll', handleScroll);
     });
 
-    // Clean up the scroll event listener when component is destroyed
     onBeforeUnmount(() => {
       window.removeEventListener('scroll', handleScroll);
     });

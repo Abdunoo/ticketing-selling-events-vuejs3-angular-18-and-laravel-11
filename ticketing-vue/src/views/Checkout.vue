@@ -58,11 +58,11 @@
 </template>
 
 <script>
-import { onMounted, reactive, toRefs } from 'vue';
+import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
-import Loading from '@/components/Loading.vue';
 import router from '@/router';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
   name: 'Checkout',

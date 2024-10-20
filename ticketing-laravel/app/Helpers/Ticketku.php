@@ -106,7 +106,7 @@ if (!function_exists('prepend_base_url')) {
     function prepend_base_url($image_path, $event_name = '')
     {
         if (empty($image_path) || !Storage::disk()->exists($image_path)) {
-            return "https://placehold.jp/600x300.png?text=" . urlencode($event_name);
+            $image_path = 'images/not_found.webp';
         }
         if (!preg_match('/^https?:\/\//', $image_path)) {
             return url("storage/" . ltrim($image_path, '/'));

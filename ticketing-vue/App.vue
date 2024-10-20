@@ -36,16 +36,16 @@
           class="w-full flex space-x-4 justify-center bg-red-700 text-sm font-medium text-gray-500"
         >
           <li>
-            <a href="#" class="hover:underline mr-4 md:mr-6">About</a>
+            <a href="about" class="hover:underline mr-4 md:mr-6">About</a>
           </li>
           <li>
-            <a href="#" class="hover:underline mr-4 md:mr-6">Privacy Policy</a>
+            <a href="terms" class="hover:underline mr-4 md:mr-6">Terms</a>
           </li>
           <li>
-            <a href="#" class="hover:underline mr-4 md:mr-6">Licensing</a>
+            <a href="privacy" class="hover:underline mr-4 md:mr-6">Privacy Policy</a>
           </li>
           <li>
-            <a href="#" class="hover:underline">Contact</a>
+            <a href="contact" class="hover:underline">Contact</a>
           </li>
         </ul>
       </div>
@@ -76,44 +76,10 @@ export default {
   },
   setup() {
     const isBottomMenuVisible = ref(true);
-    const lastScrollY = ref(0);
     const showHeader = ref(false);
-
-    const handleScroll = () => {
-      const mainElement = document.querySelector("main");
-      const mainHeight = mainElement.offsetHeight;
-      const scrollPosition = window.scrollY + window.innerHeight;
-
-      if (scrollPosition >= mainHeight - 100) {
-        if (isBottomMenuVisible.value) {
-          loadData();
-        }
-      }
-
-      const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY.value) {
-        isBottomMenuVisible.value = false;
-      } else {
-        isBottomMenuVisible.value = true;
-      }
-      lastScrollY.value = currentScrollY;
-    };
-
-    const loadData = () => {
-      // Logic to fetch more data
-      console.log("Loading more data...");
-    };
 
     const checkScreenSize = () => {
       showHeader.value = window.innerWidth >= 768;
-    };
-
-    const checkLogin = () => {
-      let isLogin = localStorage.getItem("isLogin");
-      isLogin = isLogin === "true";
-      if (!isLogin) {
-        router.push({ name: "Login" });
-      }
     };
 
     const menuItems = [
@@ -125,12 +91,10 @@ export default {
 
     onMounted(() => {
       checkScreenSize();
-      window.addEventListener("scroll", handleScroll);
       window.addEventListener("resize", checkScreenSize);
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", checkScreenSize);
     });
 

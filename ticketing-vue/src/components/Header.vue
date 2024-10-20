@@ -6,16 +6,16 @@
     </router-link>
     <div class="flex flex-1 justify-end gap-8">
       <div class="flex items-center gap-9">
-        <router-link class="text-textPrimary text-sm font-medium leading-normal"
-          :to="{ name: 'Dashboard' }">Dashboard</router-link>
-        <router-link class="text-textPrimary text-sm font-medium leading-normal"
-          :to="{ name: 'Events' }">Events</router-link>
-        <router-link class="text-textPrimary text-sm font-medium leading-normal" :to="{ name: 'Mytickets' }">My
-          Tickets</router-link>
+        <button class="text-textPrimary text-sm font-medium leading-normal"
+          @click="toDashboard" >Dashboard</button>
+        <button class="text-textPrimary text-sm font-medium leading-normal"
+          @click="toEvents">Events</button>
+        <button class="text-textPrimary text-sm font-medium leading-normal"
+          @click="toMyTickets">My Tickets</button>
       </div>
-      <router-link :to="{name: 'Pricing'}"
-        class="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-        Create Events</router-link>
+      <button 
+        class="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
+          @click="toPricing">Create Events</button>
       <div v-if="isLogin == true" class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
         @click="toAccount"
         style='background-image: url("https://cdn.usegalileo.ai/sdxl10/559d5a52-d216-481a-bf44-a4a16128965d.png");'>
@@ -42,12 +42,26 @@ export default {
       isLogin: false,
     });
 
-    const toLogin = () => {
-      router.push({ name: 'Login' })
+    const toDashboard = () => {
+      router.push({ name: 'Dashboard' })
+    }
+    const toMyTickets = () => {
+      router.push({ name: 'Mytickets' })
+    }
+    const toEvents = () => {
+      router.push({ name: 'Events' })
+    }
+
+    const toPricing = () => {
+      router.push({ name: 'Pricing' })
     }
 
     const toAccount = () => {
       router.push({ name: 'Account' })
+    }
+
+    const toLogin = () => {
+      router.push({name: 'Login'})
     }
 
     const checkLogin = () => {
@@ -61,9 +75,14 @@ export default {
 
     return {
       ...toRefs(state),
+      checkLogin,
+      toDashboard,
+      toEvents,
+      toPricing,
+      toMyTickets,
+      toPricing,
       toLogin,
       toAccount,
-      checkLogin,
     }
   }
 }

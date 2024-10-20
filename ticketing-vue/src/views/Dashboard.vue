@@ -449,7 +449,6 @@
 
 <script>
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faTachometerAlt,
   faCalendarAlt,
@@ -458,8 +457,9 @@ import {
   faCheckCircle,
   faShieldAlt,
 } from "@fortawesome/free-solid-svg-icons";
-import { onMounted, reactive, toRefs } from "vue";
+import { defineAsyncComponent, onMounted, reactive, toRefs } from "vue";
 import apiClient from "@/helpers/axios";
+const FontAwesomeIcon = defineAsyncComponent(() => import('@fortawesome/vue-fontawesome'));
 
 export default {
   components: {

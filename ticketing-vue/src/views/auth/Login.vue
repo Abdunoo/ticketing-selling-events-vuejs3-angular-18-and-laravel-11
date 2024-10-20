@@ -98,7 +98,7 @@
 
 <script>
 import Loading from '@/components/Loading.vue';
-import { API_URL } from '@/config';
+import { API_URL, CLIENT_ID } from '@/config';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { reactive, ref, toRefs } from 'vue';
@@ -150,8 +150,7 @@ export default {
       googleSdkLoaded(google => {
         google.accounts.oauth2
           .initCodeClient({
-            client_id:
-              "250953076859-h0hqsnbj4mfi3c9pvqm9d5k5nd398a1g.apps.googleusercontent.com",
+            client_id: CLIENT_ID,
             scope: "email profile openid",
             callback: response => {
               if (response.code) {

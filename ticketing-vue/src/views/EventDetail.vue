@@ -75,11 +75,11 @@
 </template>
   
   <script>
-import Loading from '@/components/Loading.vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
-import { onMounted, reactive, toRefs } from 'vue';
+import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
   components: {

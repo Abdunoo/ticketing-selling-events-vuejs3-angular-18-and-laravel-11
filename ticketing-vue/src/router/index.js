@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 const routes = [
+  // Route
   { 
     path: "/", 
     name: "Dashboard", 
@@ -20,6 +21,7 @@ const routes = [
     name: "Checkout", 
     component: () => import('@/views/Checkout.vue')
   },
+  // Route auth
   { 
     path: "/sign_up", 
     name: "SignUp", 
@@ -35,6 +37,13 @@ const routes = [
     name: "Login", 
     component: () => import('@/views/auth/Login.vue')
   },
+  // Route Form
+  { 
+    path: "/events_create", 
+    name: "CreateEvent", 
+    component: () => import('@/views/form/CreateEvent.vue')
+  },
+  // Other
   { 
     path: "/mytickets", 
     name: "Mytickets", 
@@ -55,10 +64,26 @@ const routes = [
     name: "Pricing", 
     component: () => import('@/views/Pricing.vue')
   },
-  { 
-    path: "/events_create", 
-    name: "CreateEvent", 
-    component: () => import('@/views/form/CreateEvent.vue')
+  // Other again
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import('@/views/footer/About.vue')
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('@/views/footer/Terms.vue')
+  },
+  {
+    path: '/privacy',
+    name: 'Privacy',
+    component: () => import('@/views/footer/Privacy.vue')
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('@/views/footer/Contact.vue')
   },
   {
     path: '/admin',
@@ -69,7 +94,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory("/ticketing"), // Set the base path here
+  history: createWebHistory("/ticketing"), 
   routes,
 });
 
