@@ -87,8 +87,8 @@
       </div>
     </div>
   </div>
-  <div v-if="xenditInvoice" class="fixed inset-0 z-40 bg-black bg-opacity-70" @click="xenditInvoice = null"></div>
-  <div v-if="xenditInvoice" class="fixed inset-20 z-50 items-center justify-center bg-white">
+  <div v-if="xenditInvoice" class="fixed inset-0 z-40 bg-black bg-opacity-70"></div>
+  <div v-if="xenditInvoice" class="fixed inset-0 md:inset-20 z-50  items-center justify-center bg-white">
     <iframe :src="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
   </div>
 </template>

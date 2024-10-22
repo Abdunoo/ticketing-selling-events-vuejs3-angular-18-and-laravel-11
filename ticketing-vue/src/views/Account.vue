@@ -86,6 +86,7 @@
 <script>
 import apiClient from '@/helpers/axios';
 import router from '@/router';
+import { useAuthStore } from '@/stores/auth';
 import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
@@ -107,6 +108,8 @@ export default {
       },
       defaultPicture: 'https://via.placeholder.com/150',
     });
+
+    const authStore = useAuthStore();
 
     const splitName = (fullName) => {
       const nameParts = fullName.split(' ');
@@ -158,6 +161,7 @@ export default {
       localStorage.removeItem('_usr');
       localStorage.setItem('isLogin', 'false');
       state.isLoading = false;
+      authStore.setLoginState(false); // Update Pinia state
     };
 
     onMounted(() => {

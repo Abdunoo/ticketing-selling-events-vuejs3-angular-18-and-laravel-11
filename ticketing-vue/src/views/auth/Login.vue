@@ -101,6 +101,7 @@ import Loading from '@/components/Loading.vue';
 import { API_URL, CLIENT_ID } from '@/config';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
+import { useAuthStore } from '@/stores/auth';
 import { reactive, ref, toRefs } from 'vue';
 import { googleSdkLoaded } from 'vue3-google-login';
 
@@ -118,6 +119,8 @@ export default {
       error: null
     });
 
+    const authStore = useAuthStore();
+
     const login = async () => {
       state.isLoading = true;
       await apiClient.post('/api/login', {
@@ -133,6 +136,7 @@ export default {
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('_usr', JSON.stringify(response.data.user));
             localStorage.setItem('isLogin', true);
+            authStore.setLoginState(true); // Update Pinia state
             if (response.data.user.role == 'admin') {
               router.push('/admin/login');
               return;
@@ -171,6 +175,7 @@ export default {
           localStorage.setItem('token', response.data.access_token);
           localStorage.setItem('_usr', JSON.stringify(response.data.user));
           localStorage.setItem('isLogin', true);
+          authStore.setLoginState(true); // Update Pinia state
           if (response.data.user.role == 'admin') {
             router.push('/admin/login');
             return;

@@ -101,9 +101,9 @@ const router = createRouter({
 router.afterEach((to, from) => {
   // Log navigation
   if (from.path == '/login' && to.path == '/') {
-    window.location.reload();
+    // window.location.reload();
   } else if (from.path == '/account' && to.path == '/login') {
-    window.location.reload();
+    // window.location.reload();
   }
 
   console.log("Navigated to:", to.path);

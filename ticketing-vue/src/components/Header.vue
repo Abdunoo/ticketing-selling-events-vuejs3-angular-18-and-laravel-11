@@ -31,8 +31,9 @@
 </template>
 <script>
 import router from '@/router';
+import { useAuthStore } from '@/stores/auth';
 import Pricing from '@/views/Pricing.vue';
-import { onMounted, reactive, toRefs } from 'vue';
+import { computed, onMounted, reactive, toRefs } from 'vue';
 import { RouterLink } from 'vue-router';
 
 export default {
@@ -41,6 +42,10 @@ export default {
       isMobile: false,
       isLogin: false,
     });
+
+    const authStore = useAuthStore();
+
+    state.isLogin = computed(() => authStore.isLogin);
 
     const toDashboard = () => {
       router.push({ name: 'Dashboard' })
@@ -64,18 +69,12 @@ export default {
       router.push({name: 'Login'})
     }
 
-    const checkLogin = () => {
-      let isLogin = localStorage.getItem('isLogin');
-      state.isLogin = isLogin === 'true';
-    };
-
     onMounted(() => {
-      checkLogin();
+      authStore.checkLogin();
     })
 
     return {
       ...toRefs(state),
-      checkLogin,
       toDashboard,
       toEvents,
       toPricing,
