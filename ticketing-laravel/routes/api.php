@@ -39,6 +39,7 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
     Route::get('events/by-slug/{slug}', [EventController::class, 'bySlug']);
+    Route::get('my_events', [EventController::class, 'myEvent']);
 
     Route::apiResource('users', UserController::class);
     // Route::apiResource('ticket-types', TicketTypeController::class);

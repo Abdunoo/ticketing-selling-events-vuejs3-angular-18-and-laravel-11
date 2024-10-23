@@ -165,7 +165,7 @@ class AuthController extends Controller
             // Return success response with user and token data
             return $this->json(
                 Response::HTTP_OK,
-                "OTP sent to your email.",
+                "Login Success.",
                 $data
             );
         }
@@ -408,13 +408,20 @@ class AuthController extends Controller
 
             $userData = $userResponse->json();
 
-            $userExist=User::where('name', '=', $userData['name'])->first();
+            $userExist = User::where('email', '=', $userData['email'])->first();
 
-            $user = User::createOrFirst([
-                'name' => $userData['name'],
-                'email' => $userData['email'],
-                'avatar' => $userData['picture']
-            ]);
+            $user = null;
+
+            if ($userExist) {
+                $user = $userExist; 
+            } else {
+                $user = User::create([
+                    'name'=> $userData['name'],
+                    'email'=> $userData['email'],
+                    'avatar'=> $userData['avatar']
+                ]);
+
+            }
 
             $token = $user->createToken('authToken')->plainTextToken;
 
@@ -425,7 +432,6 @@ class AuthController extends Controller
                 'token_type' => 'Bearer'
             ];
 
-            // Return success response with user and token data
             return $this->json(
                 Response::HTTP_OK,
                 "OTP sent to your email.",

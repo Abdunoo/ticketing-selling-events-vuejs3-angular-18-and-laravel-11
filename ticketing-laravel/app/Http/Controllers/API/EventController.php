@@ -55,6 +55,39 @@ class EventController extends Controller
         ]);
     }
 
+    public function myEvent(Request $request): JsonResponse
+    {
+        $perPage = $request->input('limit', 10);
+        $orderBy = $request->input('order_by', 'id');
+        $searchTerm = '%' . $request->input('search', '') . '%';
+
+        $events = Event::with([
+            'ticketTypes' => function ($query) {
+                $query->orderBy('price', 'asc')->limit(1);
+            }
+        ])
+            ->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'LIKE', $searchTerm)
+                    ->orWhere('location', 'LIKE', $searchTerm);
+            })
+            ->where('organizer_id', $request->user->id)
+            ->orderByDesc($orderBy)
+            ->paginate($perPage);
+
+        $updateEvent = $events->getCollection()->map(function ($event) {
+            $event['image_banner'] = prepend_base_url($event->image_banner, $event->name);
+            return $event;
+        });
+
+        $events->setCollection($updateEvent);
+
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Success.',
+            'data' => $events
+        ]);
+    }
+
     public function index(Request $request): JsonResponse
     {
         $events = Event::get();

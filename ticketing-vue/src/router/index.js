@@ -45,12 +45,12 @@ const routes = [
   },
   // Other
   { 
-    path: "/mytickets", 
+    path: "/my_tickets", 
     name: "Mytickets", 
     component: () => import('@/views/Mytickets.vue')
   },
   { 
-    path: "/mytickets/:id", 
+    path: "/my_tickets/:id", 
     name: "MyticketsDetail", 
     component: () => import('@/views/DetailOrder.vue')
   },
@@ -58,6 +58,11 @@ const routes = [
     path: "/account", 
     name: "Account", 
     component: () => import('@/views/Account.vue')
+  },
+  { 
+    path: "/my_events", 
+    name: "MyEvents", 
+    component: () => import('@/views/MyEvent.vue')
   },
   { 
     path: "/pricing", 

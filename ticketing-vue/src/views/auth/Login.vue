@@ -103,6 +103,7 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { reactive, ref, toRefs } from 'vue';
+import { useToast } from 'vue-toastification';
 import { googleSdkLoaded } from 'vue3-google-login';
 
 export default {
@@ -118,6 +119,8 @@ export default {
       isLoading: false,
       error: null
     });
+
+    const toast = useToast();
 
     const authStore = useAuthStore();
 
@@ -137,6 +140,7 @@ export default {
             localStorage.setItem('_usr', JSON.stringify(response.data.user));
             localStorage.setItem('isLogin', true);
             authStore.setLoginState(true); // Update Pinia state
+            toast.success('Login Success')
             if (response.data.user.role == 'admin') {
               router.push('/admin/login');
               return;
@@ -146,6 +150,7 @@ export default {
         })
         .catch(error => {
           console.error(error);
+          toast.error('Login failed')
         });
       state.isLoading = false;
     }
@@ -176,6 +181,7 @@ export default {
           localStorage.setItem('_usr', JSON.stringify(response.data.user));
           localStorage.setItem('isLogin', true);
           authStore.setLoginState(true); // Update Pinia state
+          toast.success('Login Success');
           if (response.data.user.role == 'admin') {
             router.push('/admin/login');
             return;
@@ -183,6 +189,7 @@ export default {
           router.push('/');
         }
       } catch (error) {
+        toast.error('Login failed');
         console.error("Failed to send code to backend:", error);
       }
     }
