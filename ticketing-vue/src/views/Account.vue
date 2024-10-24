@@ -8,20 +8,16 @@
         <!-- Profile Picture Section -->
         <div class="sm:col-span-1 flex flex-col items-center">
           <img :src="user.picture || defaultPicture"
-            class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-500"
+            class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500"
             alt="User Profile" loading="lazy" />
 
           <div class="mt-4 space-y-2 w-full sm:w-auto">
-            <button type="button"
-              class="w-full py-3 px-6 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300">
-              Change picture
-            </button>
-            <button type="button"
-              class="w-full py-3 px-6 text-indigo-900 bg-white border border-indigo-300 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200">
-              Delete picture
+            <button type="button" @click="toCreateEvent"
+              class="w-full py-3 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+              Create Event
             </button>
             <button type="button" @click="toMyEvents"
-              class="w-full py-3 px-6 text-indigo-900 bg-white border border-indigo-300 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200">
+              class="w-full py-3 px-6 text-primary bg-white border border-blue-300 rounded-lg hover:bg-blue-200 hover:text-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200">
               My Events
             </button>
           </div>
@@ -34,7 +30,7 @@
             <div class="w-full">
               <label for="first_name" class="block text-sm font-medium text-gray-900">First Name</label>
               <input v-model="user.first_name" type="text" id="first_name"
-                class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required />
             </div>
 
@@ -42,7 +38,7 @@
             <div class="w-full">
               <label for="last_name" class="block text-sm font-medium text-gray-900">Last Name</label>
               <input v-model="user.last_name" type="text" id="last_name"
-                class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+                class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required />
             </div>
           </div>
@@ -51,7 +47,7 @@
           <div class="w-full">
             <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
             <input v-model="user.email" type="email" id="email"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               required />
           </div>
 
@@ -59,7 +55,7 @@
           <div class="w-full">
             <label for="profession" class="block text-sm font-medium text-gray-900">Profession</label>
             <input v-model="user.profession" type="text" id="profession"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               required />
           </div>
 
@@ -67,17 +63,17 @@
           <div class="w-full">
             <label for="bio" class="block text-sm font-medium text-gray-900">Bio</label>
             <textarea v-model="user.bio" id="bio" rows="4"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
+              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
               placeholder="Write your bio here..."></textarea>
           </div>
 
           <!-- Save Button -->
           <div class="w-full flex justify-between">
             <button @click="toLogout"
-              class="py-2.5 px-6 text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
+              class="py-2.5 px-6 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
             </button>
             <button @click="saveProfile"
-              class="py-2.5 px-6 text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+              class="py-2.5 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
               Save
             </button>
           </div>
@@ -162,6 +158,10 @@ export default {
       router.push('/my_events');
     };
 
+    const toCreateEvent = () => {
+      router.push('/pricing');
+    };
+
     const toLogout = () => {
       state.isLoading = true;
       router.push('/login');
@@ -181,6 +181,7 @@ export default {
       saveProfile,
       toLogout,
       toMyEvents,
+      toCreateEvent,
     };
   },
 };

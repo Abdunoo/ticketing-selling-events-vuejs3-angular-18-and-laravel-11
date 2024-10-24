@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import viteCompression from 'vite-plugin-compression'; // For asset compression
 import viteImagemin from 'vite-plugin-imagemin'; // For image optimization
+import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   plugins: [
@@ -29,13 +30,38 @@ export default defineConfig({
         ],
       },
     }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      workbox: {
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/your-api\.com\/.*$/, // Adjust this to your API URL
+            handler: 'NetworkFirst', // Cache strategy
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+              },
+            },
+          },
+          {
+            urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/, // Example for caching Google Fonts
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'google-fonts-stylesheets',
+            },
+          },
+        ],
+      },
+    }),
   ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
-  base: '/ticketing/', // Ensure the base path starts and ends with '/'
+  base: '/ticketing', // Ensure the base path starts and ends with '/'
   build: {
     target: 'es2015', // Set the target to improve compatibility across browsers
     minify: 'esbuild', // Ensure ESBuild minification for faster builds

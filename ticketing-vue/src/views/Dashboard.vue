@@ -38,32 +38,32 @@
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6">
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst1.jpg" alt="Music Event" loading="lazy"
+            <img src="/src/assets/image/lst1.webp" alt="Music Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst2.jpg" alt="Sports Event" loading="lazy"
+            <img src="/src/assets/image/lst2.webp" alt="Sports Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst3.jpeg" alt="Theater Event" loading="lazy"
+            <img src="/src/assets/image/lst3.webp" alt="Theater Event" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst4.jpeg" alt="Comedy Show" loading="lazy"
+            <img src="/src/assets/image/lst4.webp" alt="Comedy Show" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst5.jpg" alt="Festival" loading="lazy"
+            <img src="/src/assets/image/lst5.webp" alt="Festival" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img src="/src/assets/image/lst6.jpeg" alt="Partner Logo" loading="lazy"
+            <img src="/src/assets/image/lst6.webp" alt="Partner Logo" loading="lazy"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
         </div>
