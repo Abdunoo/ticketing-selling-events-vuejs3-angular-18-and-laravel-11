@@ -3,68 +3,130 @@
     <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
         <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
             <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your
-                events
-            </h2>
-            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+                events</h2>
+
+            <!-- Search Input -->
+            <input v-model="searchQuery" @input="debouncedSearch" type="text"
+                class="mb-4 p-2 border border-gray-300 rounded" placeholder="Search events..." />
+
+            <!-- Event List -->
+            <div v-for="event in events" :key="event.id"
+                class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
                 <div class="flex items-center gap-4">
                     <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                        style='background-image: url("https://cdn.usegalileo.ai/sdxl10/9c0269b9-ea3c-45ae-9553-fa25cb0ba09d.png");'>
-                    </div>
+                        :style="{ backgroundImage: `url(${event.image_banner})` }"></div>
                     <div class="flex flex-col justify-center">
-                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Design sprint
-                            workshop
-                        </p>
-                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Mar 21, 2023</p>
+                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
+                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">{{
+                            formatDate(event.start_datetime) }}</p>
                     </div>
                 </div>
-                <div class="shrink-0"><button class="text-base font-medium leading-normal">Edit</button></div>
-            </div>
-            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                        style='background-image: url("https://cdn.usegalileo.ai/stability/eed5d9cc-c6bd-4e6c-96fc-f0bf651c1f9e.png");'>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Product launch party
-                        </p>
-                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Mar 24, 2023</p>
-                    </div>
+                <div class="flex space-x-2">
+                    <button class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
+                    <button class="text-base font-medium leading-normal bg-red-500 hover:bg-red-600 text-white p-1 rounded">Remove</button>
                 </div>
-                <div class="shrink-0"><button class="text-base font-medium leading-normal">Edit</button></div>
             </div>
-            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                        style='background-image: url("https://cdn.usegalileo.ai/sdxl10/c5eb26bb-47b7-4529-95f6-b347010d8062.png");'>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Team offsite retreat
-                        </p>
-                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Mar 28, 2023</p>
-                    </div>
-                </div>
-                <div class="shrink-0"><button class="text-base font-medium leading-normal">Edit</button></div>
-            </div>
-            <div class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                        style='background-image: url("https://cdn.usegalileo.ai/stability/14e7c413-fa4d-4611-ac37-0e8aaa28e186.png");'>
-                    </div>
-                    <div class="flex flex-col justify-center">
-                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">Company all-hands
-                            meeting</p>
-                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">Apr 2, 2023</p>
-                    </div>
-                </div>
-                <div class="shrink-0"><button class="text-base font-medium leading-normal">Edit</button></div>
-            </div>
-            
         </div>
     </div>
 </template>
 
 <script>
-export default {
+import { ref, reactive, onMounted, onBeforeUnmount, toRefs, defineAsyncComponent } from 'vue';
+import apiClient from '@/helpers/axios';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
-}
+export default {
+    name: 'My Events',
+    components: {
+        Loading,
+    },
+    setup() {
+        const state = reactive({
+            events: [],
+            isLoading: false,
+            currentPage: 1,
+            totalPages: 1,
+            hasMoreEvents: true,
+            searchQuery: '', // Search query for filtering
+        });
+
+        // Fetch events from API
+        const fetchEvents = async (page = 1, query = '') => {
+            if (state.isLoading || !state.hasMoreEvents) return;
+
+            state.isLoading = true;
+            try {
+                const response = await apiClient.get('/api/my_events', {
+                    params: {
+                        page,
+                        limit: 6,
+                        search: query || undefined,
+                    },
+                });
+
+                if (response.code === 200) {
+                    const newEvents = response.data.data;
+                    state.events = page === 1 ? newEvents : [...state.events, ...newEvents];
+                    state.totalPages = response.data.last_page;
+                    state.hasMoreEvents = page < state.totalPages;
+                }
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            } finally {
+                state.isLoading = false;
+            }
+        };
+
+        // Handle scroll for infinite loading
+        const handleScroll = () => {
+            const bottomOfWindow = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
+            if (bottomOfWindow && state.hasMoreEvents && !state.isLoading) {
+                state.currentPage += 1;
+                fetchEvents(state.currentPage, state.searchQuery);
+            }
+        };
+
+        // Debounced search input handler
+        const debouncedSearch = () => {
+            state.currentPage = 1;
+            state.hasMoreEvents = true;
+            setTimeout(() => {
+                fetchEvents(1, state.searchQuery.trim());
+            }, 500);
+        };
+
+        const formatDate = (dateTimeString) => {
+            const date = new Date(dateTimeString);
+            const options = {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true,
+            };
+            return date.toLocaleString('en-US', options);
+        };
+
+        onMounted(() => {
+            fetchEvents();
+            window.addEventListener('scroll', handleScroll);
+        });
+
+        onBeforeUnmount(() => {
+            window.removeEventListener('scroll', handleScroll);
+        });
+
+        return {
+            ...toRefs(state),
+            debouncedSearch,
+            formatDate,
+        };
+    },
+};
 </script>
+
+<style scoped>
+/* Add any custom styles here */
+</style>

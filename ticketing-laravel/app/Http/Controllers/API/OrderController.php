@@ -31,12 +31,19 @@ class OrderController extends Controller
     public function list(Request $request): JsonResponse
     {
         $perPage = $request->input('limit', 6);
+        $searchTerm = '%' . $request->input('query', '') . '%';
         $user = $request->user;
 
         try {
             $orders = Order::with('events')
                 ->where('user_id', $user->id)
-                ->orderByDesc('created_at')->paginate($perPage);
+                ->whereHas('events', function ($query) use ($searchTerm) {
+                    $query->where('name', 'LIKE', $searchTerm)
+                        ->orWhere('location', 'LIKE', $searchTerm);
+                })
+                ->orderByDesc('created_at')
+                ->paginate($perPage);
+
 
             $getImageBanner = $orders->getCollection()->map(function ($order) {
                 $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);

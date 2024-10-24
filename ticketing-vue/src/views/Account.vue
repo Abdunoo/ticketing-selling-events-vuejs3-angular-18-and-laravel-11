@@ -20,11 +20,9 @@
               class="w-full py-3 px-6 text-indigo-900 bg-white border border-indigo-300 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200">
               Delete picture
             </button>
-            <button type="button"
+            <button type="button" @click="toMyEvents"
               class="w-full py-3 px-6 text-indigo-900 bg-white border border-indigo-300 rounded-lg hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-200">
-              <router-link :to="{ name: 'MyEvents' }">
-                My Events
-              </router-link>
+              My Events
             </button>
           </div>
         </div>
@@ -160,6 +158,10 @@ export default {
       state.isLoading = false;
     };
 
+    const toMyEvents = () => {
+      router.push('/my_events');
+    };
+
     const toLogout = () => {
       state.isLoading = true;
       router.push('/login');
@@ -178,6 +180,7 @@ export default {
       ...toRefs(state),
       saveProfile,
       toLogout,
+      toMyEvents,
     };
   },
 };

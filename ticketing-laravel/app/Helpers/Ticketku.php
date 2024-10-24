@@ -24,7 +24,7 @@ class Ticketku
             'description' => "Generate URL Invoice " . $params['order_no'],
             'amount' => $params['total_price'],
             'currency' => 'IDR',
-            'success_redirect_url' => env('APP_PUBLIC_URL') . '/mytickets',
+            'success_redirect_url' => env('XENDIT_SUCCESS_REDIRECT_URL'),
             'invoice_duration' => 21600, #6 jam
 
         ]);
