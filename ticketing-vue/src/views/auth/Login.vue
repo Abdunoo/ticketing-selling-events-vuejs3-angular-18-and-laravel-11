@@ -105,7 +105,7 @@ import { CLIENT_ID } from '@/config';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
-import { reactive, ref, toRefs } from 'vue';
+import { defineAsyncComponent, reactive, ref, toRefs } from 'vue';
 import { useToast } from 'vue-toastification';
 import { googleSdkLoaded } from 'vue3-google-login';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));

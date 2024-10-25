@@ -107,26 +107,30 @@ export default {
       }, 300);
     }
 
-      const paymentStatusClass = (status) => status === 'pending' ? 'text-yellow-500 font-medium' : status === 'paid' ? 'text-green-500 font-bold' : 'text-red-500 font-medium';
-      const capitalize = (str) => {
-        if (!str || typeof str !== 'string') return '';
-        return str.charAt(0).toUpperCase() + str.slice(1);
-      };
+    const paymentStatusClass = (status) => status === 'pending' ? 'text-yellow-500 font-medium' : status === 'paid' ? 'text-green-500 font-bold' : 'text-red-500 font-medium';
+    const capitalize = (str) => {
+      if (!str || typeof str !== 'string') return '';
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
 
-      onMounted(() => {
-        fetchMyTickets();
-        window.addEventListener('scroll', handleScroll);
-      });
+    onMounted(() => {
+      fetchMyTickets();
+      window.addEventListener('scroll', handleScroll);
+    });
 
-      return {
-        ...toRefs(state),
-        fetchMyTickets,
-        paymentStatusClass,
-        capitalize,
-        handleSearch,
-      };
-    }
-  };
+    onBeforeUnmount(() => {
+      window.removeEventListener('scroll', handleScroll);
+    });
+
+    return {
+      ...toRefs(state),
+      fetchMyTickets,
+      paymentStatusClass,
+      capitalize,
+      handleSearch,
+    };
+  }
+};
 </script>
 
 <style scoped>
