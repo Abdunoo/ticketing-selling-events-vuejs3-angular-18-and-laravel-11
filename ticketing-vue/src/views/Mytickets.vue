@@ -81,7 +81,7 @@ export default {
     const fetchMyTickets = async (page = 1, query = '') => {
       state.isLoading = true;
       try {
-        const response = await apiClient.get(`/api/orders/list?page=${page}&limit=2&query=${query}`);
+        const response = await apiClient.get(`/api/orders/list?page=${page}&limit=6&query=${query}`);
         state.myTickets = page === 1 ? response.data.data : state.myTickets.concat(response.data.data);
         state.totalPages = response.data.last_page;
         state.hasMore = page < state.totalPages;
