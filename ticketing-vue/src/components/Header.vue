@@ -3,7 +3,7 @@
     class="sticky top-0 bg-gray-50 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-10 py-2 shadow-sm">
     <div class="flex space-x-2 items-center cursor-pointer">
       <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-        <img src="/src/assets/image/logo.webp" alt="ticket promotion image" loading="lazy" class="object-cover h-10">
+        <img src="/src/assets/image/logo.webp" alt="ticket promotion image" loading="lazy" class="object-cover h-[30px] w-[40px]">
       </router-link>
       <span v-if="currentPath && currentPath !== 'Dashboard'" class="flex items-center justify-center space-x-1 italic text-primary text-sm">
         <router-link :to="{name: 'Dashboard'}" class="underline ">

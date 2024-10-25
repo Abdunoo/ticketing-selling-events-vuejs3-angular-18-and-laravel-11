@@ -23,7 +23,7 @@
       </div>
 
       <!-- Categories -->
-      <div class="flex gap-3 p-3 overflow-x-auto no-scrollbar">
+      <div class="flex gap-3 p-3 overflow-x-auto no-scrollbar" style="min-height: 50px;">
         <div v-for="category in categories" :key="category.id"
           class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#f0f2f5] px-4 text-sm font-medium leading-normal text-[#111418]">
           <p>{{ category.name }}</p>
@@ -33,17 +33,23 @@
       <!-- Popular Events Section with Horizontal Scroll -->
       <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
       <p class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>      
-      <div class="p-4 overflow-x-auto no-scrollbar">
+      <div class="p-4 overflow-x-auto no-scrollbar" style="min-height: 180px;">
         <div class="flex items-stretch p-4 gap-3">
-          <div v-for="event in events" :key="event.id">
+          <div v-if="isLoading" class="placeholder-content">
+            <!-- Placeholder structure for loading state -->
+            <div class="w-full aspect-video bg-gray-200 rounded-xl mb-4"></div>
+            <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+            <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          </div>
+          <div v-else v-for="event in events" :key="event.id">
             <div
               class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-60">
-              <div class="w-full bg-center bg-no-repeat aspect-video  bg-cover rounded-xl flex flex-col"
-                :style="{ backgroundImage: `url(${event.image_banner})` }"></div>
-              <div class="flex flex-col  p-4 pt-0 gap-4 space-y-6">
+              <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
+                :style="{ backgroundImage: `url(${event.image_banner})`, minHeight: '180px' }"></div>
+              <div class="flex flex-col p-4 pt-0 gap-4 space-y-6">
                 <div>
                   <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-                  <p class="text-secondary text-sm font-normal leading-normal line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
+                  <p class="text-gray-600 text-sm font-normal leading-normal line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
                 </div>
                 <button @click="toDetail(event)"
                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f0f2f5] text-[#111418] text-sm font-bold leading-normal tracking-[0.015em]">
@@ -58,7 +64,7 @@
       <!-- Trending Section as Vertical Scrollable Grid -->
       <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Trending</h2>
       <p class="text-textSecondary text-base font-medium leading-normal mb-4">Hot deals and discounts</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="min-height: 300px;">
         <EventCard v-for="event in events" :key="event.id" :event="event" />
       </div>
     </div>
@@ -176,5 +182,9 @@ export default {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+.placeholder-content .bg-gray-200 {
+  background-color: #e2e8f0;
 }
 </style>
