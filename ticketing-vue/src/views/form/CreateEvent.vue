@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive, toRefs } from 'vue';
+import { ref, onMounted, reactive, toRefs, defineAsyncComponent } from 'vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
