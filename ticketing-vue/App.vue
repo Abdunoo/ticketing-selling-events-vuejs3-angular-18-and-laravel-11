@@ -64,7 +64,6 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "./src/components/Header.vue";
-import router from "./src/router";
 
 // Add the icons to the library
 library.add(faTachometerAlt, faCalendarAlt, faTicketAlt, faUser);

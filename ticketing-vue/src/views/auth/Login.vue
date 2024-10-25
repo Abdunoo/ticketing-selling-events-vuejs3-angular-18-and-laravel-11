@@ -101,14 +101,14 @@
 </template>
 
 <script>
-import Loading from '@/components/Loading.vue';
-import { API_URL, CLIENT_ID } from '@/config';
+import { CLIENT_ID } from '@/config';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { reactive, ref, toRefs } from 'vue';
 import { useToast } from 'vue-toastification';
 import { googleSdkLoaded } from 'vue3-google-login';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
   name: 'LoginForm',
@@ -148,8 +148,6 @@ export default {
               router.push('/admin/login');
               return;
             }
-            // In your login method or component after setting the login state
-            authStore.setLoginState(true); // Assume successful login
             const redirectPath = authStore.getRedirectPath(); // Retrieve the path
             authStore.clearRedirectPath(); // Clear the path once used
             router.push(redirectPath);
@@ -193,7 +191,9 @@ export default {
             router.push('/admin/login');
             return;
           }
-          router.push('/');
+          const redirectPath = authStore.getRedirectPath(); // Retrieve the path
+          authStore.clearRedirectPath(); // Clear the path once used
+          router.push(redirectPath);
         }
       } catch (error) {
         toast.error('Login failed');

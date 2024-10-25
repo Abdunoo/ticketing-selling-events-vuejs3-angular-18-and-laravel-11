@@ -31,18 +31,19 @@
       </div>
 
       <!-- Popular Events Section with Horizontal Scroll -->
-      <h2 class="text-[#111418] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Popular</h2>
+      <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
+      <p class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>      
       <div class="p-4 overflow-x-auto no-scrollbar">
         <div class="flex items-stretch p-4 gap-3">
           <div v-for="event in events" :key="event.id">
             <div
               class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-60">
-              <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
+              <div class="w-full bg-center bg-no-repeat aspect-video  bg-cover rounded-xl flex flex-col"
                 :style="{ backgroundImage: `url(${event.image_banner})` }"></div>
               <div class="flex flex-col  p-4 pt-0 gap-4 space-y-6">
                 <div>
-                  <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-                  <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
+                  <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
+                  <p class="text-secondary text-sm font-normal leading-normal line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
                 </div>
                 <button @click="toDetail(event)"
                   class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f0f2f5] text-[#111418] text-sm font-bold leading-normal tracking-[0.015em]">
@@ -51,13 +52,12 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
 
       <!-- Trending Section as Vertical Scrollable Grid -->
-      <h2 class="text-white text-2xl font-bold leading-tight max-w-[440px]">Trending</h2>
-      <p class="text-white text-base font-medium leading-normal mb-4">Hot deals and discounts</p>
+      <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Trending</h2>
+      <p class="text-textSecondary text-base font-medium leading-normal mb-4">Hot deals and discounts</p>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <EventCard v-for="event in events" :key="event.id" :event="event" />
       </div>

@@ -124,10 +124,10 @@
 
 <script>
 import { ref, onMounted, reactive, toRefs } from 'vue';
-import Loading from '@/components/Loading.vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
     name: 'CreateEvent',
