@@ -1,3 +1,4 @@
+import { useAuthStore } from "@/stores/auth";
 import { createRouter, createWebHistory } from "vue-router";
 const routes = [
   // Route
@@ -19,7 +20,8 @@ const routes = [
   { 
     path: "/checkout", 
     name: "Checkout", 
-    component: () => import('@/views/Checkout.vue')
+    component: () => import('@/views/Checkout.vue'),
+    meta: { requiresAuth: true }
   },
   // Route auth
   { 
@@ -41,33 +43,38 @@ const routes = [
   { 
     path: "/events_create", 
     name: "CreateEvent", 
-    component: () => import('@/views/form/CreateEvent.vue')
+    component: () => import('@/views/form/CreateEvent.vue'),
+    meta: { requiresAuth: true }
   },
   // Other
   { 
     path: "/my_tickets", 
     name: "Mytickets", 
-    component: () => import('@/views/Mytickets.vue')
+    component: () => import('@/views/Mytickets.vue'),
+    meta: { requiresAuth: true }
   },
   { 
     path: "/my_tickets/:id", 
     name: "MyticketsDetail", 
-    component: () => import('@/views/DetailOrder.vue')
+    component: () => import('@/views/DetailOrder.vue'),
+    meta: { requiresAuth: true }
   },
   { 
     path: "/account", 
     name: "Account", 
-    component: () => import('@/views/Account.vue')
+    component: () => import('@/views/Account.vue'),
+    meta: { requiresAuth: true }
   },
   { 
     path: "/my_events", 
     name: "MyEvents", 
-    component: () => import('@/views/MyEvent.vue')
+    component: () => import('@/views/MyEvent.vue'),
+    meta: { requiresAuth: true }
   },
   { 
     path: "/pricing", 
     name: "Pricing", 
-    component: () => import('@/views/Pricing.vue')
+    component: () => import('@/views/Pricing.vue'),
   },
   // Other again
   {
@@ -103,15 +110,15 @@ const router = createRouter({
   routes,
 });
 
-router.afterEach((to, from) => {
-  // Log navigation
-  if (from.path == '/login' && to.path == '/') {
-    // window.location.reload();
-  } else if (from.path == '/account' && to.path == '/login') {
-    // window.location.reload();
-  }
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
 
-  console.log("Navigated to:", to.path);
+  if (to.meta.requiresAuth && !authStore.isLogin) {
+    authStore.setRedirectPath(to.fullPath); // Save the intended path
+    next({ name: 'Login' });
+  } else {
+    next();
+  }
 });
 
 export default router;

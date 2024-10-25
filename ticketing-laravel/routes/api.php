@@ -30,6 +30,8 @@ Route::get('tickets/download/{orderId}', [TicketController::class, 'downloadTick
 Route::post('handle_invoice_callback', [Ticketku::class, 'handleInvoiceCallback']);
 
 Route::get('events/list', [EventController::class, 'list']);
+Route::get('categories/list', [CategoryController::class, 'index']);
+Route::get('events/by-slug/{slug}', [EventController::class, 'bySlug']);
 
 Route::middleware(['auth.custom'])->group(function () {
     Route::get('orders/list', [OrderController::class, 'list']);
@@ -38,7 +40,6 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('change-password', [AuthController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
-    Route::get('events/by-slug/{slug}', [EventController::class, 'bySlug']);
     Route::get('my_events', [EventController::class, 'myEvent']);
 
     Route::apiResource('users', UserController::class);

@@ -1,33 +1,19 @@
 <template>
-  <router-link :to="{ name: 'EventDetail', params: { event_name: event.slug }}" class="event-card">
-    <img
-      :src="event.image_banner"
-      :alt="event.name"
-      class="event-image w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl"
-      loading="lazy"
-    />
-    <div class="p-2">
-      <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-      <p class="text-textSecondary text-sm font-normal leading-normal line-clamp-1">{{ formatDate(event.start_datetime) }}</p>
-      <p class="text-textSecondary text-sm font-normal leading-normal line-clamp-1">${{ event.price }}</p>
+  <router-link :to="{ name: 'EventDetail', params: { event_name: event.slug } }"
+    class="event-card bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl pt-[132px]"
+    :style="{ backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url(${event.image_banner})` }">
+    <div class="flex w-full items-end justify-between gap-4 p-4">
+      <div class="flex max-w-[440px] flex-1 flex-col gap-1">
+        <p class="text-white text-lg font-bold line-clamp-1">{{ event.name }}</p>
+        <p class="text-white text-sm line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
+      </div>
+      <button
+        class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-primary text-white text-sm font-bold leading-normal">
+        <span class="truncate">Shop Now</span>
+      </button>
     </div>
   </router-link>
 </template>
-
-<style scoped>
-.event-card {
-  display: block;
-  text-decoration: none;
-}
-
-.event-image {
-  transition: transform 0.2s ease-in-out;
-}
-
-.event-image:hover {
-  transform: scale(1.03); /* Slight zoom on hover */
-}
-</style>
 
 <script>
 import { defineComponent } from 'vue';
@@ -57,3 +43,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.event-card {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+</style>

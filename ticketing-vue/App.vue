@@ -11,7 +11,7 @@
     <!-- Bottom Menu for Mobile -->
     <nav
       v-if="!showHeader"
-      class="md:hidden fixed bottom-0 left-0 right-0 bg-secondary text-textSecondary flex justify-around items-center p-2"
+      class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 text-textSecondary flex justify-around items-center p-2"
     >
       <!-- Menu Links -->
       <router-link
