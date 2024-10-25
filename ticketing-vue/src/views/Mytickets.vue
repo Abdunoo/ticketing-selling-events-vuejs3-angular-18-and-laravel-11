@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
+import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
