@@ -1,33 +1,42 @@
 import { fileURLToPath, URL } from "node:url";
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import viteCompression from "vite-plugin-compression"; // For asset compression
-import viteImagemin from "vite-plugin-imagemin"; // For image optimization
+import viteCompression from "vite-plugin-compression";
+import viteImagemin from "vite-plugin-imagemin";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
     vue(),
-    // Enable gzip or Brotli compression to reduce file size
+    // Enable gzip & Brotli compression for production assets
     viteCompression({
-      // Options
-      verbose: true, // Log the output
-      disable: false, // Set to true to disable compression
-      threshold: 10240, // Only compress files larger than this threshold (in bytes)
-      algorithm: "gzip", // Compression algorithm (gzip, brotliCompress, deflate, etc.)
-      ext: ".gz", // File extension for the compressed file
+      verbose: true,
+      disable: false,
+      threshold: 10240,
+      algorithm: "gzip",
+      ext: ".gz",
     }),
-    // Optimize images during build
+    viteCompression({
+      algorithm: "brotliCompress",
+      ext: ".br",
+    }),
+    // Image optimization settings
     viteImagemin({
-      gifsicle: { optimizationLevel: 7 },
+      gifsicle: { optimizationLevel: 7, interlaced: false },
       optipng: { optimizationLevel: 7 },
-      mozjpeg: { quality: 75 },
-      pngquant: { quality: [0.7, 0.8] },
-      webp: { quality: 75 },
+      mozjpeg: { quality: 80, progressive: true },
+      pngquant: { quality: [0.65, 0.8], speed: 1 },
+      webp: { quality: 80 },
+      svgo: {
+        plugins: [
+          { removeViewBox: false },
+          { removeEmptyAttrs: true },
+        ],
+      },
     }),
+    // Progressive Web App settings
     VitePWA({
       registerType: "autoUpdate",
-      // includeAssets: ["favicon.icon", "robots.txt"],
       manifest: {
         name: "Ticketku",
         short_name: "Ticketku",
@@ -63,24 +72,27 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: "/ticketing", // Ensure the base path starts and ends with '/'
+  base: "/ticketing/",
   build: {
-    target: "es2015", // Set the target to improve compatibility across browsers
-    minify: "esbuild", // Ensure ESBuild minification for faster builds
-    cssCodeSplit: true, // Enable CSS code splitting to reduce bundle size
+    target: "es2015",
+    minify: "esbuild",
+    cssCodeSplit: true,
     rollupOptions: {
       output: {
         manualChunks(id) {
-          // Create separate chunks for dependencies, reducing bundle size
           if (id.includes("node_modules")) {
-            return "vendor";
+            if (id.includes("vue")) {
+              return "vue"; // Separate Vue ecosystem libraries
+            }
+            return "vendor"; // Separate all other dependencies
           }
         },
       },
     },
   },
   server: {
-    open: true, // Automatically open the browser on server start
-    cors: true, // Enable CORS if you're accessing this server from other domains
+    open: true,
+    cors: true,
+    strictPort: true, // Ensures server only starts if the port is available
   },
 });
