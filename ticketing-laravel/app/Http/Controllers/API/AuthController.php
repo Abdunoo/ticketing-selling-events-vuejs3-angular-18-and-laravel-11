@@ -418,7 +418,7 @@ class AuthController extends Controller
                 $user = User::create([
                     'name'=> $userData['name'],
                     'email'=> $userData['email'],
-                    'avatar'=> $userData['avatar']
+                    'avatar'=> $userData['avatar'] ?? ''
                 ]);
 
             }
