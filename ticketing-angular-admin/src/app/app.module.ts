@@ -12,6 +12,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PanemuPaginationComponent, PanemuQueryComponent, PanemuTableComponent } from 'ngx-panemu-table';
 import { provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
   imports: [
@@ -29,7 +31,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     EventsComponent,
     OrdersComponent,
     UsersComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    SidebarComponent,
+    HeaderComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

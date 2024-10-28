@@ -1,53 +1,10 @@
-<div class="flex h-screen bg-gray-50">
+<div class="flex h-screen bg-white">
   <!-- Sidebar -->
-  <aside class="w-64 bg-gray-900 text-white flex flex-col">
-    <div class="p-4 text-xl font-bold">
-      App Name
-    </div>
-    <nav class="flex-grow">
-      <div class="mt-4">
-        <router-link
-          routerLink="/dashboard"
-          routerLinkActive="bg-gray-800 text-white"
-          class="block p-4 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-        >
-          Dashboard
-        </router-link>
-        <router-link
-          routerLink="/events"
-          routerLinkActive="bg-gray-800 text-white"
-          class="block p-4 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-        >
-          Events
-        </router-link>
-        <router-link
-          routerLink="/orders"
-          routerLinkActive="bg-gray-800 text-white"
-          class="block p-4 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-        >
-          Orders
-        </router-link>
-        <router-link
-          routerLink="/users"
-          routerLinkActive="bg-gray-800 text-white"
-          class="block p-4 text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-        >
-          Users
-        </router-link>
-      </div>
-    </nav>
-  </aside>
+  <app-sidebar></app-sidebar>
 
   <!-- Main Content -->
   <div class="flex-1 flex flex-col">
-    <header class="bg-white shadow-md p-4">
-      <div class="flex justify-between items-center">
-        <h1 class="text-xl font-semibold text-gray-900">{{ pageTitle }}</h1>
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow transition-colors">
-          Logout
-        </button>
-      </div>
-    </header>
+    <app-header></app-header>
 
     <!-- Main content area -->
     <main class="flex-1 p-6 overflow-y-auto">

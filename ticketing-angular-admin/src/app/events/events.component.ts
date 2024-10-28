@@ -50,7 +50,7 @@ export class EventsComponent implements OnInit {
 
   datasource = new PanemuTableDataSource<Event>();
   controller = PanemuTableController.create<Event>(this.columns, this.datasource, {
-    rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
+    // rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
   });
 
   constructor(private dataService: AppService) {}

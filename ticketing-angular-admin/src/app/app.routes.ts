@@ -6,7 +6,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { UsersComponent } from './users/users.component';
 
 export const routes: Routes = [
-  { path: 'dashboard', component: DashboardComponent, data: { title: 'Dashboard' } },
+  { path: 'dashboard', component: DashboardComponent , data: { title: 'Dashboard', name:'Dashboard' } },
   { path: 'events', component: EventsComponent, data: { title: 'Events' } },
   { path: 'orders', component: OrdersComponent, data: { title: 'Orders' } },
   { path: 'users', component: UsersComponent, data: { title: 'Users' } },

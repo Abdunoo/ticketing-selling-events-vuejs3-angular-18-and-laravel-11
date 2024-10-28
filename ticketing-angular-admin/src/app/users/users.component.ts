@@ -13,19 +13,19 @@ export class UsersComponent {
   pts = inject(PanemuTableService);
   columns = this.pts.buildColumns<User>([
     { field: 'id',type: ColumnType.INT },
-    { field: 'name',type: ColumnType.INT },
-    { field: 'email',type: ColumnType.INT },
-    { field: 'role',type: ColumnType.INT },
-    { field: 'avatar',type: ColumnType.INT },
+    { field: 'name',type: ColumnType.STRING },
+    { field: 'email',type: ColumnType.STRING },
+    { field: 'role',type: ColumnType.STRING },
     { field: 'created_at', 
       type: ColumnType.DATETIME,
       formatter: (row)=>this.convertToIndonesianDate(row)
     },
+    { field: 'avatar',type: ColumnType.STRING },
   ]);
 
   datasource = new PanemuTableDataSource<User>();
   controller = PanemuTableController.create<User>(this.columns, this.datasource, {
-    rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
+    // rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
   });
 
   constructor(private dataService: AppService) {}

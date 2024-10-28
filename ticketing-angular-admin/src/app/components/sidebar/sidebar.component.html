@@ -1,0 +1,96 @@
+<div class="relative flex flex-col bg-white w-64 min-h-screen p-4">
+  <div class="flex flex-col gap-2">
+    <a
+      routerLink="/dashboard"
+      class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#e8eef3]"
+    >
+      <div class="text-[#0e161b]">
+        <!-- Replace with actual Angular Material Icons or SVGs -->
+        <svg width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+          <path
+            d="M218.83,103.77l-80-75.48a1.14,1.14,0,0,1-.11-.11,16,16,0,0,0-21.53,0l-.11.11L37.17,103.77A16,16,0,0,0,32,115.55V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V160h32v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V115.55A16,16,0,0,0,218.83,103.77ZM208,208H160V160a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v48H48V115.55l.11-.1L128,40l79.9,75.43.11.1Z"
+          ></path>
+        </svg>
+      </div>
+      <p class="text-[#0e161b] text-sm font-medium leading-normal">Dashboard</p>
+    </a>
+    <a
+      routerLink="/events"
+      class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#e8eef3]"
+    >
+      <div
+        class="text-[#0e161b]"
+        data-icon="Calendar"
+        data-size="24px"
+        data-weight="fill"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path
+            d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM112,184a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm56-8a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136a23.76,23.76,0,0,1-4.84,14.45L152,176ZM48,80V48H72v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80Z"
+          ></path>
+        </svg>
+      </div>
+      <p class="text-[#0e161b] text-sm font-medium leading-normal">Events</p>
+    </a>
+    <a
+      routerLink="/orders"
+      class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#e8eef3]"
+    >
+      <div
+        class="text-[#0e161b]"
+        data-icon="Folder"
+        data-size="24px"
+        data-weight="regular"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path
+            d="M216,72H131.31L104,44.69A15.86,15.86,0,0,0,92.69,40H40A16,16,0,0,0,24,56V200.62A15.4,15.4,0,0,0,39.38,216H216.89A15.13,15.13,0,0,0,232,200.89V88A16,16,0,0,0,216,72ZM40,56H92.69l16,16H40ZM216,200H40V88H216Z"
+          ></path>
+        </svg>
+      </div>
+      <p class="text-[#0e161b] text-sm font-medium leading-normal">Orders</p>
+    </a>
+    <a
+      routerLink="/users"
+      class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#e8eef3]"
+    >
+      <div
+        class="text-[#0e161b]"
+        data-icon="Users"
+        data-size="24px"
+        data-weight="regular"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24px"
+          height="24px"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path
+            d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"
+          ></path>
+        </svg>
+      </div>
+      <p class="text-[#0e161b] text-sm font-medium leading-normal">Users</p>
+    </a>
+    <!-- Add other items similarly -->
+  </div>
+  <div class="flex flex-col gap-4 mt-auto">
+    <button class="bg-[#3aa0e4] text-[#0e161b] rounded-xl px-4 py-2">
+      New event
+    </button>
+  </div>
+</div>

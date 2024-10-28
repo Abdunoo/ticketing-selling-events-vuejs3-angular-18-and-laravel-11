@@ -33,7 +33,7 @@ export class OrdersComponent {
 
   datasource = new PanemuTableDataSource<Order>();
   controller = PanemuTableController.create<Order>(this.columns, this.datasource, {
-    rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
+    // rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
   });
 
   constructor(private dataService: AppService) {}
