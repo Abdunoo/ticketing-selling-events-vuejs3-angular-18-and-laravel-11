@@ -94,5 +94,6 @@ export default defineConfig({
     open: true,
     cors: true,
     strictPort: true, // Ensures server only starts if the port is available
+    historyApiFallback: true,
   },
 });
