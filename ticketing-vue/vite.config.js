@@ -44,8 +44,8 @@ export default defineConfig({
         theme_color: "#0d7cf2",
         background_color: "#ffffff",
         display: "standalone",
-        start_url: "/ticketing",
-        id: "/ticketing",
+        start_url: "/ticketing/",
+        id: "/ticketing/",
         icons: [
           {
             src: "/ticketing/assets/image/logo_192x192.webp",
