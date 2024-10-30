@@ -18,6 +18,7 @@ import { CreateEventComponent } from './events/form/create-event.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './auth.interceptor';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { AuthInterceptor } from './auth.interceptor';
     HeaderComponent,
     CreateEventComponent,
     LoginComponent,
+    LoadingSpinnerComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

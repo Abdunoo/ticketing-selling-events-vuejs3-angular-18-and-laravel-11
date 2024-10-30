@@ -7,32 +7,37 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { LoadingService } from './loading.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
-
   private tokenKey = 'authToken';
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = localStorage.getItem(this.tokenKey); // Replace 'token' with your actual token key
+  constructor(private router: Router, private loadingService: LoadingService) {}
 
-    if (token) {
-      const authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`)
-      });
-      return next.handle(authReq);
-    } else {
-      return next.handle(req).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.router.navigate(['/login']);
-          }
-          return throwError(error);
-        })
-      );
-    }
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Show loading indicator when request starts
+    this.loadingService.show();
+
+    const token = localStorage.getItem(this.tokenKey);
+
+    // If token exists, clone the request with the authorization header
+    const authReq = token ? req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${token}`)
+    }) : req;
+
+    return next.handle(authReq).pipe(
+      // Catch any error that occurs
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
+      }),
+      // Hide the loading indicator when request completes or fails
+      finalize(() => this.loadingService.hide())
+    );
   }
 }

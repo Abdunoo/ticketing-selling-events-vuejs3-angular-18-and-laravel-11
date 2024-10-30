@@ -52,7 +52,6 @@ export class OrdersComponent {
 
   convertToIndonesianDate(dateString: string): string {
     const date = new Date(dateString);
-    console.log('date ', dateString);
   
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
