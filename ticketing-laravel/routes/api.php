@@ -47,11 +47,14 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::apiResource('tickets', TicketController::class);
     Route::apiResource('orders', OrderController::class);
     Route::apiResource('categories', CategoryController::class);
+
+    // admin routes
+    Route::apiResource('admin/events', EventController::class);
+    Route::apiResource('admin/orders', OrderController::class);
+    Route::apiResource('admin/users', AuthController::class);
+    Route::apiResource('admin/categories', CategoryController::class);
 });
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-Route::apiResource('admin/events', EventController::class);
-Route::apiResource('admin/orders', OrderController::class);
-Route::apiResource('admin/users', AuthController::class);
-Route::apiResource('admin/categories', CategoryController::class);
+
 

@@ -10,10 +10,14 @@ import { OrdersComponent } from './orders/orders.component';
 import { UsersComponent } from './users/users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PanemuPaginationComponent, PanemuQueryComponent, PanemuTableComponent } from 'ngx-panemu-table';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
+import { CreateEventComponent } from './events/form/create-event.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   imports: [
@@ -23,7 +27,10 @@ import { HeaderComponent } from './components/header/header.component';
     PanemuTableComponent, 
     PanemuPaginationComponent, 
     PanemuQueryComponent,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   declarations: [
     AppComponent, 
@@ -34,9 +41,14 @@ import { HeaderComponent } from './components/header/header.component';
     PageNotFoundComponent,
     SidebarComponent,
     HeaderComponent,
+    CreateEventComponent,
+    LoginComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
-  providers: [provideHttpClient()]
+  providers: [
+    provideHttpClient(),
+    {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true}
+  ],
 })
 export class AppModule {}

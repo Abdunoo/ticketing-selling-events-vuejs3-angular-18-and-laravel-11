@@ -5,7 +5,7 @@ import {
   PanemuTableService,
   ColumnType,
 } from 'ngx-panemu-table';
-import { AppService, Event } from '../app.service';
+import { AppService, Events } from '../app.service';
 
 @Component({
   selector: 'app-events',
@@ -15,8 +15,8 @@ import { AppService, Event } from '../app.service';
 export class EventsComponent implements OnInit {
   title = 'Events';
   pts = inject(PanemuTableService);
-  columns = this.pts.buildColumns<Event>([
-    { field: 'id', width: 50, type: ColumnType.INT },
+  columns = this.pts.buildColumns<Events>([
+    { field: 'id', width: 75, type: ColumnType.INT },
     { field: 'name', 
       label: "Name",
       width: 200
@@ -48,8 +48,8 @@ export class EventsComponent implements OnInit {
     },
   ]);
 
-  datasource = new PanemuTableDataSource<Event>();
-  controller = PanemuTableController.create<Event>(this.columns, this.datasource, {
+  datasource = new PanemuTableDataSource<Events>();
+  controller = PanemuTableController.create<Events>(this.columns, this.datasource, {
     // rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
   });
 
@@ -57,7 +57,7 @@ export class EventsComponent implements OnInit {
 
   ngOnInit() {
     // Retrieve events from server via the DataService
-    this.dataService.getListEvents().subscribe((result: Event[]) => {
+    this.dataService.getListEvents().subscribe((result: Events[]) => {
       // Set the data to the data source
       this.controller.maxRows = 20;
       this.datasource.setData(result);
@@ -69,7 +69,6 @@ export class EventsComponent implements OnInit {
 
   convertToIndonesianDate(dateString: string): string {
     const date = new Date(dateString);
-    console.log('date ', dateString);
   
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];

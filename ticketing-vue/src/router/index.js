@@ -98,20 +98,6 @@ const routes = [
     name: "Contact",
     component: () => import("@/views/footer/Contact.vue"),
   },
-  {
-    path: "/admin",
-    beforeEnter() {
-      window.location.href =
-        "http://localhost:4200/orders";
-    },
-  },
-  {
-    path: "/admin/",
-    beforeEnter() {
-      window.location.href =
-        "http://localhost:4200/orders";
-    },
-  },
 ];
 
 const router = createRouter({
@@ -122,8 +108,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to.path === '/admin' || to.path === '/admin/') {
-    // Redirect to the target URL
-    // router.replace('/admin/index.html');
     window.location.href = APP_URL + '/admin/index.html';
   }
 

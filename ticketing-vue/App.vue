@@ -54,16 +54,16 @@
 </template>
 
 <script>
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, onMounted, onBeforeUnmount, defineAsyncComponent } from "vue";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import {
   faTachometerAlt,
   faCalendarAlt,
   faTicketAlt,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import Header from "./src/components/Header.vue";
+const FontAwesomeIcon = defineAsyncComponent(() => import('@fortawesome/vue-fontawesome'));
+const Header = defineAsyncComponent(() => import('@/components/Header.vue'));
 
 // Add the icons to the library
 library.add(faTachometerAlt, faCalendarAlt, faTicketAlt, faUser);
