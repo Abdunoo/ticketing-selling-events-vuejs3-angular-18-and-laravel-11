@@ -90,7 +90,7 @@ class EventController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $events = Event::get();
+        $events = Event::lazyByIdDesc();
         $events->map(function ($event) {
             $event->image_banner = prepend_base_url($event->image_banner, $event->name);
             return $event;
@@ -179,7 +179,7 @@ class EventController extends Controller
         );
     }
 
-    
+
     // Show a specific event
     public function show($id): JsonResponse
     {
@@ -203,10 +203,27 @@ class EventController extends Controller
             'start_datetime' => 'sometimes|required|date',
             'end_datetime' => 'sometimes|required|date',
             'location' => 'sometimes|required|string|max:255',
-            'image_banner' => 'sometimes|required|string|max:255',
-            'organizer_id' => 'sometimes|required|exists:users,id',
-            'is_active' => 'boolean',
         ]);
+
+        if ($request->hasFile('image_banner')) {
+            $image = $request->file('image_banner');
+            $ext = $image->getClientOriginalExtension();
+            $fileName = date('YmdHis') . '_product.' . $ext;
+            $webpFileName = pathinfo($fileName, PATHINFO_FILENAME) . '.webp';
+            $directoryPath = 'images';
+
+            // Create the directory if it doesn't exist
+            if (!Storage::exists($directoryPath)) {
+                Storage::makeDirectory($directoryPath);
+            }
+
+            $imagePath = $image->storeAs($directoryPath, $fileName);
+            $webpImage = Image::read($image->getRealPath())->encode(new WebpEncoder(quality: 80));
+            $webpImagePath = $directoryPath . '/' . $webpFileName;
+            Storage::put($webpImagePath, $webpImage);
+            $validatedData['image_banner'] = $webpImagePath;
+            $validatedData['slug'] = Str::slug($validatedData['name']);
+        }
 
         $event->update($validatedData);
 

@@ -6,6 +6,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { UsersComponent } from './users/users.component';
 import { CreateEventComponent } from './events/form/create-event.component';
 import { LoginComponent } from './login/login.component';
+import { EditEventComponent } from './events/form/edit/edit-event.component';
 
 export const routes: Routes = [
   // page
@@ -18,11 +19,12 @@ export const routes: Routes = [
 
   // form
   { path: 'create_event', component: CreateEventComponent, data: { title: 'Create_Event' } },
+  { path: 'edit_event/:id', component: EditEventComponent },
 
   // auth
   { path: 'login', component: LoginComponent },
 
 
-  // not found 
+  // not found
   { path: '**', component: PageNotFoundComponent },
 ];

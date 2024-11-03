@@ -109,7 +109,11 @@ if (!function_exists('prepend_base_url')) {
             $image_path = 'images/not_found.webp';
         }
         if (!preg_match('/^https?:\/\//', $image_path)) {
-            return env('APP_URL') . "/storage/" . ltrim($image_path, '/');
+            if (env('APP_ENV') === 'production') {
+                return secure_url("storage/" . ltrim($image_path, '/'));
+            } else {
+                return url("storage/" . ltrim($image_path, '/'));
+            }
         }
         return $image_path;
     }

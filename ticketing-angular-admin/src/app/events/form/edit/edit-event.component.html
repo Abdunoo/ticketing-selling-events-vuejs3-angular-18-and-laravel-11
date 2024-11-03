@@ -18,7 +18,7 @@
   </div>
 
   <!-- Category -->
-  <div class="mb-3">
+  <!-- <div class="mb-3">
     <label for="category" class="font-medium">Category*</label>
     <select
       [(ngModel)]="newEvent.category"
@@ -30,7 +30,7 @@
       <option value="">Select category</option>
       <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
     </select>
-  </div>
+  </div> -->
 
   <!-- Start Date and End Date -->
   <div class="flex space-x-2 mb-3">
@@ -131,5 +131,5 @@
     <img *ngIf="imageUrl" [src]="imageUrl" class="w-full h-auto mt-4" alt="Image preview" />
   </div>
 
-  <button type="submit" class="bg-blue-600 text-white w-full px-4 py-2 rounded-md">Create</button>
+  <button type="submit" class="bg-blue-600 text-white w-full px-4 py-2 rounded-md">Update Event</button>
 </form>

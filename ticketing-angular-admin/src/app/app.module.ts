@@ -19,14 +19,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
+import { EditEventComponent } from './events/form/edit/edit-event.component';
 
 @NgModule({
   imports: [
     CommonModule,
     BrowserModule,
     RouterModule.forRoot(routes),
-    PanemuTableComponent, 
-    PanemuPaginationComponent, 
+    PanemuTableComponent,
+    PanemuPaginationComponent,
     PanemuQueryComponent,
     BrowserAnimationsModule,
     FormsModule,
@@ -34,7 +35,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     HttpClientModule,
   ],
   declarations: [
-    AppComponent, 
+    AppComponent,
     DashboardComponent,
     EventsComponent,
     OrdersComponent,
@@ -45,6 +46,7 @@ import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.compo
     CreateEventComponent,
     LoginComponent,
     LoadingSpinnerComponent,
+    EditEventComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

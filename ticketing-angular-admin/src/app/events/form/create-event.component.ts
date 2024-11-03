@@ -22,7 +22,6 @@ export class CreateEventComponent implements OnInit {
   categories: Array<any> = [];
   imageUrl: string | null = null;
   filename: string = '';
-  isLoading: boolean = false;
   errorMessage: string = '';
 
   constructor(
@@ -79,7 +78,6 @@ export class CreateEventComponent implements OnInit {
   }
 
   handleSubmit() {
-    this.isLoading = true;
     const formData = new FormData();
     Object.keys(this.newEvent).forEach((key) => {
       formData.append(key, (this.newEvent as any)[key]);
@@ -95,14 +93,13 @@ export class CreateEventComponent implements OnInit {
     try {
       this.dataService.createEvent(formData).subscribe(
         () => {
-          this.isLoading = false;
-          this.router.navigate(['/all-for-you']);
+          this.router.navigate(['/events']);
         }
-      );  
+      );
     } catch (error) {
       console.error(error);
     }
 
-    
+
   }
 }

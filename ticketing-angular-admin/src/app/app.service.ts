@@ -6,28 +6,28 @@ import { environment } from '../environment.prod';
 export interface Events {
   id: number;
   name: string;
-  slug: string;
+  slug?: string;
   description: string;
   start_datetime: string;
   end_datetime: string;
   location: string;
   image_banner: string;
-  organizer_id: number;
-  is_active: boolean;
-  price: string;
-  created_at: string;
-  updated_at: string;
-  ticket_types: [TicketType];
+  organizer_id?: number;
+  is_active?: boolean;
+  price?: string;
+  created_at?: string;
+  updated_at?: string;
+  ticket_types?: [TicketType];
 }
 
 export interface TicketType {
-  id: number;
-  event_id: number;
+  id?: number;
+  event_id?: number;
   name: string;
   price: string;
   available_quantity: number;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
 }
 
 export interface Order {
@@ -88,9 +88,9 @@ export class AppService {
     return this.http.post<Events>(url, eventData);
   }
 
-  updateEvent(eventId: number, event: Events): Observable<Events> {
-    const url = `${environment.apiUrl}/admin/events/${eventId}`;
-    return this.http.put<Events>(url, event);
+  updateEvent(eventId: number, event: FormData): Observable<Events> {
+      const url = `${environment.apiUrl}/admin/events/${eventId}`;
+      return this.http.post<Events>(url, event);
   }
 
   deleteEvent(eventId: number): Observable<void> {
