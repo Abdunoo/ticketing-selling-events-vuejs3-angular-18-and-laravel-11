@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthInterceptor } from './auth.interceptor';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { EditEventComponent } from './events/form/edit/edit-event.component';
+import { BaseChartDirective, provideCharts } from 'ng2-charts';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { EditEventComponent } from './events/form/edit/edit-event.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    BaseChartDirective,
   ],
   declarations: [
     AppComponent,

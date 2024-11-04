@@ -16,11 +16,11 @@ export class UsersComponent {
     { field: 'name',type: ColumnType.STRING },
     { field: 'email',type: ColumnType.STRING },
     { field: 'role',type: ColumnType.STRING },
-    { field: 'created_at', 
+    { field: 'created_at',
       type: ColumnType.DATETIME,
       formatter: (row)=>this.convertToIndonesianDate(row)
     },
-    { field: 'avatar',type: ColumnType.STRING },
+    // { field: 'avatar',type: ColumnType.STRING },
   ]);
 
   datasource = new PanemuTableDataSource<User>();
@@ -44,22 +44,22 @@ export class UsersComponent {
 
   convertToIndonesianDate(dateString: string): string {
     const date = new Date(dateString);
-  
+
     const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-  
+
     const dayName = days[date.getDay()]; // Day of the week
     const day = date.getDate(); // Day of the month
     const monthName = months[date.getMonth()]; // Month name
     const year = date.getFullYear(); // Year
     const hours = date.getHours(); // Hours
     const minutes = date.getMinutes(); // Minutes
-  
+
     const formattedHours = hours < 10 ? `0${hours}` : hours;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-  
+
     const formattedDate = `${dayName}, ${day} ${monthName} ${year} ${formattedHours}.${formattedMinutes} WIB`;
-  
+
     return formattedDate;
   }
 }

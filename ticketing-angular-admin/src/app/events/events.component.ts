@@ -36,7 +36,7 @@ export class EventsComponent implements OnInit {
       label: 'Description',
       width: 300,
       cellStyle: () =>
-        'white-space: normal; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;', // Limit to 3 lines with ellipsis
+        '',
     },
     {
       field: 'start_datetime',

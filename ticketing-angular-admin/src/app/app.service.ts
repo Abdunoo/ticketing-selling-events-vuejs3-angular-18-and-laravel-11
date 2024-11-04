@@ -73,6 +73,11 @@ export class AppService {
   private tokenKey = 'authToken';
   private userKey = 'userData';
 
+  getMonthlyCounts(): Observable<any> {
+    const url = environment.apiUrl + '/admin/dashboard/getMonthlyCounts';
+    return this.http.get<any>(url);
+  }
+
   getListEvents(): Observable<Events[]> {
     const url = environment.apiUrl + '/admin/events';
     return this.http.get<Events[]>(url);
@@ -90,7 +95,7 @@ export class AppService {
 
   updateEvent(eventId: number, event: FormData): Observable<Events> {
       const url = `${environment.apiUrl}/admin/events/${eventId}`;
-      return this.http.post<Events>(url, event);
+      return this.http.put<Events>(url, event);
   }
 
   deleteEvent(eventId: number): Observable<void> {
