@@ -61,8 +61,7 @@
 <script>
 import apiClient from '@/helpers/axios';
 import router from '@/router';
-import { reactive, ref, toRefs } from 'vue';
-import Login from './Login.vue';
+import { reactive, toRefs } from 'vue';
 export default {
   setup(props) {
     const state = reactive({

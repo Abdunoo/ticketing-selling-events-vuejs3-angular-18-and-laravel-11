@@ -4,7 +4,7 @@ import { defineStore } from 'pinia';
 export const useAuthStore = defineStore('auth', {
   state: () => ({
     isLogin: false,
-    redirectPath: '/', // Default path after login if none is set
+    redirectPath: '/', 
   }),
   actions: {
     checkLogin() {
@@ -17,13 +17,12 @@ export const useAuthStore = defineStore('auth', {
     },
     setRedirectPath(path) {
       this.redirectPath = path;
-      localStorage.setItem('redirectPath', path); // Persist the intended path
+      localStorage.setItem('redirectPath', path); 
     },
     getRedirectPath() {
       return localStorage.getItem('redirectPath') || this.redirectPath;
     },
     clearRedirectPath() {
-      // this.redirectPath = '/';
       localStorage.removeItem('redirectPath');
     },
   },

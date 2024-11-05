@@ -1,81 +1,83 @@
 <template>
-  <loading :isLoading="isLoading" />
-  <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
-    <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
-      <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">Account Settings</h2>
+  <div>
+    <loading :isLoading="isLoading" />
+    <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
+      <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
+        <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">Account Settings</h2>
 
-      <div class="mt-6 grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
-        <!-- Profile Picture Section -->
-        <div class="sm:col-span-1 flex flex-col items-center">
-          <img :src="user.picture || defaultPicture"
-            class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500"
-            alt="User Profile" loading="lazy" />
+        <div class="mt-6 grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
+          <!-- Profile Picture Section -->
+          <div class="sm:col-span-1 flex flex-col items-center">
+            <img :src="user.picture || defaultPicture"
+              class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500" alt="User Profile"
+              loading="lazy" />
 
-          <div class="mt-4 space-y-2 w-full sm:w-auto">
-            <button type="button" @click="toCreateEvent"
-              class="w-full py-3 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-indigo-300">
-              Create Event
-            </button>
-            <button type="button" @click="toMyEvents"
-              class="w-full py-3 px-6 text-primary bg-white border border-blue-300 rounded-lg hover:bg-blue-200 hover:text-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200">
-              My Events
-            </button>
+            <div class="mt-4 space-y-2 w-full sm:w-auto">
+              <button type="button" @click="toCreateEvent"
+                class="w-full py-3 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-indigo-300">
+                Create Event
+              </button>
+              <button type="button" @click="toMyEvents"
+                class="w-full py-3 px-6 text-primary bg-white border border-blue-300 rounded-lg hover:bg-blue-200 hover:text-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200">
+                My Events
+              </button>
+            </div>
           </div>
-        </div>
 
-        <!-- Account Info Section -->
-        <div class="sm:col-span-2 space-y-6">
-          <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
-            <!-- First Name -->
+          <!-- Account Info Section -->
+          <div class="sm:col-span-2 space-y-6">
+            <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
+              <!-- First Name -->
+              <div class="w-full">
+                <label for="first_name" class="block text-sm font-medium text-gray-900">First Name</label>
+                <input v-model="user.first_name" type="text" id="first_name"
+                  class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  required />
+              </div>
+
+              <!-- Last Name -->
+              <div class="w-full">
+                <label for="last_name" class="block text-sm font-medium text-gray-900">Last Name</label>
+                <input v-model="user.last_name" type="text" id="last_name"
+                  class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  required />
+              </div>
+            </div>
+
+            <!-- Email -->
             <div class="w-full">
-              <label for="first_name" class="block text-sm font-medium text-gray-900">First Name</label>
-              <input v-model="user.first_name" type="text" id="first_name"
+              <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
+              <input v-model="user.email" type="email" id="email"
                 class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required />
             </div>
 
-            <!-- Last Name -->
+            <!-- Profession -->
             <div class="w-full">
-              <label for="last_name" class="block text-sm font-medium text-gray-900">Last Name</label>
-              <input v-model="user.last_name" type="text" id="last_name"
+              <label for="profession" class="block text-sm font-medium text-gray-900">Profession</label>
+              <input v-model="user.profession" type="text" id="profession"
                 class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required />
             </div>
-          </div>
 
-          <!-- Email -->
-          <div class="w-full">
-            <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
-            <input v-model="user.email" type="email" id="email"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required />
-          </div>
+            <!-- Bio -->
+            <div class="w-full">
+              <label for="bio" class="block text-sm font-medium text-gray-900">Bio</label>
+              <textarea v-model="user.bio" id="bio" rows="4"
+                class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Write your bio here..."></textarea>
+            </div>
 
-          <!-- Profession -->
-          <div class="w-full">
-            <label for="profession" class="block text-sm font-medium text-gray-900">Profession</label>
-            <input v-model="user.profession" type="text" id="profession"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              required />
-          </div>
-
-          <!-- Bio -->
-          <div class="w-full">
-            <label for="bio" class="block text-sm font-medium text-gray-900">Bio</label>
-            <textarea v-model="user.bio" id="bio" rows="4"
-              class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Write your bio here..."></textarea>
-          </div>
-
-          <!-- Save Button -->
-          <div class="w-full flex justify-between">
-            <button @click="toLogout"
-              class="py-2.5 px-6 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
-            </button>
-            <button @click="saveProfile"
-              class="py-2.5 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
-              Save
-            </button>
+            <!-- Save Button -->
+            <div class="w-full flex justify-between">
+              <button @click="toLogout"
+                class="py-2.5 px-6 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
+              </button>
+              <button @click="saveProfile"
+                class="py-2.5 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-300">
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -2,23 +2,19 @@ import { API_URL } from '@/config';
 import router from '@/router';
 import axios from 'axios';
 
-// Function untuk mendapatkan token, ganti dengan logika Anda
 const getToken = () => {
-  return localStorage.getItem('token'); // Contoh: token disimpan di localStorage
+  return localStorage.getItem('token'); 
 };
 
-// Buat instance axios dengan konfigurasi default
 const apiClient = axios.create({
-  baseURL: API_URL, // Ganti dengan URL backend Anda
+  baseURL: API_URL, 
   headers: {
     'Content-Type': 'application/json',
   }
 });
 
-// Tambahkan request interceptor
 apiClient.interceptors.request.use(
   (config) => {
-    // Periksa apakah config.headers.skipToken diset ke true
     if (!config.headers.skipToken) {
       const token = getToken();
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -30,10 +26,8 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Tambahkan response interceptor
 apiClient.interceptors.response.use(
   (response) => {
-    // Return langsung data dari response
     return response.data;
   },
   (error) => {

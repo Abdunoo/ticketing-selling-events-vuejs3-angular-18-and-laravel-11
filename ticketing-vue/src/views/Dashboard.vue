@@ -448,76 +448,18 @@
 </template>
 
 <script>
-import { library } from "@fortawesome/fontawesome-svg-core";
-import {
-  faTachometerAlt,
-  faCalendarAlt,
-  faTicketAlt,
-  faUser,
-  faCheckCircle,
-  faShieldAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import { defineAsyncComponent, onMounted, reactive, toRefs } from "vue";
-import apiClient from "@/helpers/axios";
-const FontAwesomeIcon = defineAsyncComponent(() => import('@fortawesome/vue-fontawesome'));
+import { ref } from "vue";
 
 export default {
-  components: {
-    FontAwesomeIcon,
-  },
   setup() {
-    library.add(
-      faTachometerAlt,
-      faCalendarAlt,
-      faTicketAlt,
-      faUser,
-      faCheckCircle,
-      faShieldAlt
-    );
-
-    const state = reactive({
-      popularEvents: [],
-      testimonials: [
-        {
-          id: 1,
-          name: "John Doe",
-          event: "Rock Concert",
-          feedback: "Amazing experience! Loved every second.",
-        },
-        {
-          id: 2,
-          name: "Jane Smith",
-          event: "Comedy Show",
-          feedback: "Hilarious! I couldn’t stop laughing.",
-        },
-        {
-          id: 3,
-          name: "Sam Lee",
-          event: "Jazz Festival",
-          feedback: "The music was incredible and the atmosphere was perfect.",
-        },
-      ],
-    });
-
-    const fetchEvents = async () => {
-      try {
-        const response = await apiClient.get(
-          `/api/events/list?limit=3&order_by=created_at`
-        );
-        if (response.code == 200) {
-          state.popularEvents = response.data.data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    onMounted(() => {
-      fetchEvents();
-    });
+    const testimonials = ref([
+      { id: 1, name: "John Doe", event: "Rock Concert", feedback: "Amazing experience! Loved every second." },
+      { id: 2, name: "Jane Smith", event: "Comedy Show", feedback: "Hilarious! I couldn’t stop laughing." },
+      { id: 3, name: "Sam Lee", event: "Jazz Festival", feedback: "The music was incredible and the atmosphere was perfect." },
+    ]);
 
     return {
-      ...toRefs(state),
+      testimonials,
     };
   },
 };

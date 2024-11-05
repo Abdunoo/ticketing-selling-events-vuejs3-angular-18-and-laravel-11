@@ -1,13 +1,14 @@
 <template>
-  <loading :isLoading="isLoading" />
-  <section>
-
+  <div>
+    <loading :isLoading="isLoading" />
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center justify-center">
         <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-          <img src="/src/assets/image/logo.webp" alt="ticket promotion image" loading="lazy" class="object-cover h-10">
+          <img src="/src/assets/image/logo.webp" alt="ticket promotion image" loading="lazy"
+            class="object-cover h-10" />
         </router-link>
-        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          Sign in to your account
         </h2>
       </div>
 
@@ -17,7 +18,7 @@
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
             <div class="mt-2">
               <input v-model="email" id="email" name="email" type="email" autocomplete="email" required
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" />
             </div>
           </div>
 
@@ -28,14 +29,14 @@
             <div class="mt-2">
               <input v-model="password" id="password" name="password" type="password" autocomplete="current-password"
                 required
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5">
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5" />
             </div>
           </div>
 
           <div class="flex items-center justify-between">
             <div class="flex items-center">
               <input id="remember-me" name="remember-me" type="checkbox" v-model="rememberMe"
-                class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary">
+                class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary" />
               <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
             <div class="text-sm">
@@ -45,8 +46,9 @@
 
           <div>
             <button type="submit"
-              class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Sign
-              in</button>
+              class="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+              Sign in
+            </button>
           </div>
         </form>
 
@@ -96,32 +98,31 @@
         </p>
       </div>
     </div>
-  </section>
-
+  </div>
 </template>
 
 <script>
-import { CLIENT_ID } from '@/config';
-import apiClient from '@/helpers/axios';
-import router from '@/router';
-import { useAuthStore } from '@/stores/auth';
-import { defineAsyncComponent, reactive, ref, toRefs } from 'vue';
-import { useToast } from 'vue-toastification';
-import { googleSdkLoaded } from 'vue3-google-login';
-const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
+import { CLIENT_ID } from "@/config";
+import apiClient from "@/helpers/axios";
+import router from "@/router";
+import { useAuthStore } from "@/stores/auth";
+import { defineAsyncComponent, reactive, toRefs } from "vue";
+import { useToast } from "vue-toastification";
+import { googleSdkLoaded } from "vue3-google-login";
+const Loading = defineAsyncComponent(() => import("@/components/Loading.vue"));
 
 export default {
-  name: 'LoginForm',
+  name: "LoginForm",
   components: {
-    Loading
+    Loading,
   },
   setup() {
     const state = reactive({
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       rememberMe: false,
       isLoading: false,
-      error: null
+      error: null,
     });
 
     const toast = useToast();
@@ -129,89 +130,93 @@ export default {
 
     const login = async () => {
       state.isLoading = true;
-      await apiClient.post('/api/login', {
-        email: state.email,
-        password: state.password
-      }, {
-        headers: {
-          skipToken: true,
-        }
-      })
-        .then(response => {
+      await apiClient
+        .post(
+          "/api/login",
+          {
+            email: state.email,
+            password: state.password,
+          },
+          {
+            headers: {
+              skipToken: true,
+            },
+          }
+        )
+        .then((response) => {
           if (response.code == 200) {
-            localStorage.setItem('token', response.data.access_token);
-            localStorage.setItem('_usr', JSON.stringify(response.data.user));
-            localStorage.setItem('isLogin', true);
-            authStore.setLoginState(true); // Update Pinia state
-            toast.success('Login Success')
-            if (response.data.user.role == 'admin') {
-              router.push('/admin/login');
+            localStorage.setItem("token", response.data.access_token);
+            localStorage.setItem("_usr", JSON.stringify(response.data.user));
+            localStorage.setItem("isLogin", true);
+            authStore.setLoginState(true);
+            toast.success("Login Success");
+            if (response.data.user.role == "admin") {
+              router.push("/admin/login");
               return;
             }
-            const redirectPath = authStore.getRedirectPath(); // Retrieve the path
-            authStore.clearRedirectPath(); // Clear the path once used
+            const redirectPath = authStore.getRedirectPath();
+            authStore.clearRedirectPath();
             router.push(redirectPath);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
-          toast.error('Login failed')
+          toast.error("Login failed");
         });
       state.isLoading = false;
-    }
+    };
 
     const loginWithGoogle = () => {
-      googleSdkLoaded(google => {
+      googleSdkLoaded((google) => {
         google.accounts.oauth2
           .initCodeClient({
             client_id: CLIENT_ID,
             scope: "email profile openid",
-            callback: response => {
+            callback: (response) => {
               if (response.code) {
                 sendCodeToBackend(response.code);
               }
-            }
+            },
           })
           .requestCode();
       });
-    }
+    };
 
     const sendCodeToBackend = async (code) => {
       let formData = new FormData();
-      formData.append('code', code);
+      formData.append("code", code);
       try {
-        const response = await apiClient.post('/api/google-callback', formData);
+        const response = await apiClient.post("/api/google-callback", formData);
         if (response.code == 200) {
-          localStorage.setItem('token', response.data.access_token);
-          localStorage.setItem('_usr', JSON.stringify(response.data.user));
-          localStorage.setItem('isLogin', true);
-          authStore.setLoginState(true); // Update Pinia state
-          toast.success('Login Success');
-          if (response.data.user.role == 'admin') {
-            router.push('/admin/login');
+          localStorage.setItem("token", response.data.access_token);
+          localStorage.setItem("_usr", JSON.stringify(response.data.user));
+          localStorage.setItem("isLogin", true);
+          authStore.setLoginState(true);
+          toast.success("Login Success");
+          if (response.data.user.role == "admin") {
+            router.push("/admin/login");
             return;
           }
-          const redirectPath = authStore.getRedirectPath(); // Retrieve the path
-          authStore.clearRedirectPath(); // Clear the path once used
+          const redirectPath = authStore.getRedirectPath();
+          authStore.clearRedirectPath();
           router.push(redirectPath);
         }
       } catch (error) {
-        toast.error('Login failed');
+        toast.error("Login failed");
         console.error("Failed to send code to backend:", error);
       }
-    }
+    };
 
     const loginWithGithub = () => {
-      // router.push('/auth/github'); 
-      window.alert('Login Use Github Still In Progress, Please Use Google')
-    }
+      window.alert("Login Use Github Still In Progress, Please Use Google");
+    };
 
     return {
       ...toRefs(state),
       login,
       loginWithGoogle,
-      loginWithGithub
-    }
-  }
+      loginWithGithub,
+    };
+  },
 };
 </script>

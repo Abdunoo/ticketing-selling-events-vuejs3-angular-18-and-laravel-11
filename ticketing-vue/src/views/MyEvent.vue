@@ -1,29 +1,34 @@
 <template>
-    <loading :isLoading="isLoading" />
-    <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
-        <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your
-                events</h2>
+    <div>
+        <loading :isLoading="isLoading" />
+        <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
+            <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+                <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your
+                    events</h2>
 
-            <!-- Search Input -->
-            <input v-model="searchQuery" @input="debouncedSearch" type="text"
-                class="mb-4 p-2 border border-gray-300 rounded" placeholder="Search events..." />
+                <!-- Search Input -->
+                <input v-model="searchQuery" @input="debouncedSearch" type="text"
+                    class="mb-4 p-2 border border-gray-300 rounded" placeholder="Search events..." />
 
-            <!-- Event List -->
-            <div v-for="event in events" :key="event.id"
-                class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
-                <div class="flex items-center gap-4">
-                    <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
-                        :style="{ backgroundImage: `url(${event.image_banner})` }"></div>
-                    <div class="flex flex-col justify-center">
-                        <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-                        <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">{{
-                            formatDate(event.start_datetime) }}</p>
+                <!-- Event List -->
+                <div v-for="event in events" :key="event.id"
+                    class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-lg size-14"
+                            :style="{ backgroundImage: `url(${event.image_banner})` }"></div>
+                        <div class="flex flex-col justify-center">
+                            <p class="text-[#111418] text-base font-medium leading-normal line-clamp-1">{{ event.name }}
+                            </p>
+                            <p class="text-[#60758a] text-sm font-normal leading-normal line-clamp-2">{{
+                                formatDate(event.start_datetime) }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="flex space-x-2">
-                    <button class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
-                    <button class="text-base font-medium leading-normal bg-red-500 hover:bg-red-600 text-white p-1 rounded">Remove</button>
+                    <div class="flex space-x-2">
+                        <button
+                            class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
+                        <button
+                            class="text-base font-medium leading-normal bg-red-500 hover:bg-red-600 text-white p-1 rounded">Remove</button>
+                    </div>
                 </div>
             </div>
         </div>

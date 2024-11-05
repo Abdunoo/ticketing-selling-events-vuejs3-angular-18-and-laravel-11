@@ -42,9 +42,8 @@
 <script>
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
-import Pricing from '@/views/Pricing.vue';
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
-import { RouterLink, useRoute } from 'vue-router';
+import {  useRoute } from 'vue-router';
 
 export default {
   setup(props) {
