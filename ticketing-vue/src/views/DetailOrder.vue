@@ -1,96 +1,99 @@
 <template>
-  <div class="layout-container flex h-full grow flex-col p-4 lg:p-0">
-    <div class="lg:px-40 flex flex-1 justify-center py-5">
-      <div class="layout-content-container flex flex-col w-full lg:w-[512px] max-w-full lg:max-w-[960px] flex-1">
-        <!-- Banner Section -->
-        <div>
-          <div
-            class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#f8f8fc] rounded-lg lg:rounded-xl min-h-[150px] lg:min-h-[200px]"
-            :style="{backgroundImage: `url(${order?.events?.image_banner})`}">
-          </div>
-        </div>
-  
-        <!-- Order Info -->
-        <h2
-          class="text-[#0e0e1b] text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-center pb-2 pt-4">
-          Order Number: {{ order.order_no }}
-        </h2>
-  
-        <!-- Ticket Info -->
-        <div
-          class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
-          <div class="flex flex-col justify-center">
-            <p class="text-[#0e0e1b] text-sm sm:text-base font-medium leading-normal">{{ order.ticket_type }}</p>
-            <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">{{ order.quantity }} tickets x {{
-              formatCurrency(order.price) }}</p>
-          </div>
-          <div class="shrink-0">
-            <p class="text-[#0e0e1b] text-sm sm:text-base font-normal leading-normal">{{
-              formatCurrency(order.total_price) }}</p>
-          </div>
-        </div>
-  
-        <!-- Discount Info (Hidden if no discount applied) -->
-        <div v-if="order.discount_amount > 0"
-          class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
-          <div class="flex flex-col justify-center">
-            <p class="text-[#0e0e1b] text-sm sm:text-base font-medium leading-normal">Discount</p>
-            <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">{{
-              formatCurrency(order.discount_amount) }}</p>
-          </div>
-        </div>
-  
-        <!-- Event Details -->
-        <div class="p-4 grid grid-cols-[30%_1fr] gap-x-6 sm:grid-cols-[20%_1fr]">
-          <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
-            <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Event Name</p>
-            <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{ order?.events?.name }}</p>
-          </div>
-          <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
-            <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Location</p>
-            <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{ order?.events?.location }}</p>
-          </div>
-          <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
-            <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Date & Time</p>
-            <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{
-              formatDateTime(order?.events?.start_datetime) }}</p>
-          </div>
-        </div>
-  
-        <!-- Payment Status -->
-        <h3 class="text-[#0e0e1b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Payment Status</h3>
-        <div class="flex flex-col gap-3 p-4">
-          <div class="flex gap-6 justify-between">
-            <p :class="paymentStatusClass(order.payment_status)">{{ capitalize(order.payment_status) }}</p>
-          </div>
-          <div class="rounded bg-[#d0d0e7]">
-            <div class="h-2 rounded bg-primary" :style="{ width: order.payment_status === 'paid' ? '100%' : '0%' }">
+  <section>
+    <div class="layout-container flex h-full grow flex-col p-4 lg:p-0">
+      <div class="lg:px-40 flex flex-1 justify-center py-5">
+        <div class="layout-content-container flex flex-col w-full lg:w-[512px] max-w-full lg:max-w-[960px] flex-1">
+          <!-- Banner Section -->
+          <div>
+            <div
+              class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#f8f8fc] rounded-lg lg:rounded-xl min-h-[150px] lg:min-h-[200px]"
+              :style="{ backgroundImage: `url(${order?.events?.image_banner})` }">
             </div>
           </div>
-          <p class="text-[#4e4e97] text-sm font-normal leading-normal">
-            {{ formatCurrency(order.total_price) }} {{ order.payment_status === 'paid' ? 'paid on ' +
-            formatDateTime(order.pay_date) : '' }}
-          </p>
-        </div>
-  
-        <!-- Invoice Button -->
-        <div class="flex px-4 py-3">
-          <button v-if="order.payment_status == 'paid'" @click="getTicket"
-            class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
-            <span class="truncate">Download Ticket</span>
-          </button>
-          <button v-else @click="toPay"
-            class="flex w-full cursor-pointer items-center justify-center overflow-hidden border-4 border-primary rounded-xl h-10 px-4 flex-1 bg-white text-primary text-sm font-bold leading-normal tracking-[0.015em]">
-            <span class="truncate">View Invoice</span>
-          </button>
+
+          <!-- Order Info -->
+          <h2
+            class="text-[#0e0e1b] text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-center pb-2 pt-4">
+            Order Number: {{ order.order_no }}
+          </h2>
+
+          <!-- Ticket Info -->
+          <div
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
+            <div class="flex flex-col justify-center">
+              <p class="text-[#0e0e1b] text-sm sm:text-base font-medium leading-normal">{{ order.ticket_type }}</p>
+              <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">{{ order.quantity }} tickets x {{
+                formatCurrency(order.price) }}</p>
+            </div>
+            <div class="shrink-0">
+              <p class="text-[#0e0e1b] text-sm sm:text-base font-normal leading-normal">{{
+                formatCurrency(order.total_price) }}</p>
+            </div>
+          </div>
+
+          <!-- Discount Info (Hidden if no discount applied) -->
+          <div v-if="order.discount_amount > 0"
+            class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
+            <div class="flex flex-col justify-center">
+              <p class="text-[#0e0e1b] text-sm sm:text-base font-medium leading-normal">Discount</p>
+              <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">{{
+                formatCurrency(order.discount_amount) }}</p>
+            </div>
+          </div>
+
+          <!-- Event Details -->
+          <div class="p-4 grid grid-cols-[30%_1fr] gap-x-6 sm:grid-cols-[20%_1fr]">
+            <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
+              <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Event Name</p>
+              <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{ order?.events?.name }}</p>
+            </div>
+            <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
+              <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Location</p>
+              <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{ order?.events?.location }}</p>
+            </div>
+            <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
+              <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Date & Time</p>
+              <p class="text-[#0e0e1b] text-xs sm:text-sm font-normal leading-normal">{{
+                formatDateTime(order?.events?.start_datetime) }}</p>
+            </div>
+          </div>
+
+          <!-- Payment Status -->
+          <h3 class="text-[#0e0e1b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Payment Status
+          </h3>
+          <div class="flex flex-col gap-3 p-4">
+            <div class="flex gap-6 justify-between">
+              <p :class="paymentStatusClass(order.payment_status)">{{ capitalize(order.payment_status) }}</p>
+            </div>
+            <div class="rounded bg-[#d0d0e7]">
+              <div class="h-2 rounded bg-primary" :style="{ width: order.payment_status === 'paid' ? '100%' : '0%' }">
+              </div>
+            </div>
+            <p class="text-[#4e4e97] text-sm font-normal leading-normal">
+              {{ formatCurrency(order.total_price) }} {{ order.payment_status === 'paid' ? 'paid on ' +
+                formatDateTime(order.pay_date) : '' }}
+            </p>
+          </div>
+
+          <!-- Invoice Button -->
+          <div class="flex px-4 py-3">
+            <button v-if="order.payment_status == 'paid'" @click="getTicket"
+              class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
+              <span class="truncate">Download Ticket</span>
+            </button>
+            <button v-else @click="toPay"
+              class="flex w-full cursor-pointer items-center justify-center overflow-hidden border-4 border-primary rounded-xl h-10 px-4 flex-1 bg-white text-primary text-sm font-bold leading-normal tracking-[0.015em]">
+              <span class="truncate">View Invoice</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div v-if="xenditInvoice" class="fixed inset-0 z-40 bg-black bg-opacity-70"></div>
-  <div v-if="xenditInvoice" class="fixed inset-0 md:inset-20 z-50  items-center justify-center bg-white">
-    <iframe :src="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
-  </div>
+    <div v-if="xenditInvoice" class="fixed inset-0 z-40 bg-black bg-opacity-70"></div>
+    <div v-if="xenditInvoice" class="fixed inset-0 md:inset-20 z-50  items-center justify-center bg-white">
+      <iframe :src="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -164,7 +167,7 @@ export default {
     const formatDateTime = (datetime) => {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
       return new Date(datetime).toLocaleDateString('en-US', options);
-    };    
+    };
     const capitalize = (str) => {
       if (!str || typeof str !== 'string') return '';
       return str.charAt(0).toUpperCase() + str.slice(1);
@@ -186,4 +189,3 @@ export default {
   }
 };
 </script>
-

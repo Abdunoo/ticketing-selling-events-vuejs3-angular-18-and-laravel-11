@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <loading :isLoading="isLoading" />
     <div class="h-full w-full px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
       <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
@@ -56,7 +56,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

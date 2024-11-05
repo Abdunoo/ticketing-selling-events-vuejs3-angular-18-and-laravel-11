@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <section class="bg-white">
       <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
         <!-- Content Section -->
@@ -29,7 +29,8 @@
         <!-- Image Section -->
         <div
           class="hidden lg:mt-0 lg:col-span-5 lg:flex transition-transform duration-1000 ease-in-out transform hover:scale-110">
-          <img src="/src/assets/image/img3.webp" alt="ticket promotion image" loading="lazy" class="object-cover object-left">
+          <img src="/src/assets/image/img3.webp" alt="ticket promotion image" loading="lazy"
+            class="object-cover object-left">
         </div>
       </div>
     </section>
@@ -444,7 +445,7 @@
         </div>
       </div>
     </section>
-  </div>
+  </section>
 </template>
 
 <script>

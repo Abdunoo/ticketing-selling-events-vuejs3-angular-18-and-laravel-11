@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <loading :isLoading="isLoading" />
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center justify-center">
@@ -98,7 +98,7 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
