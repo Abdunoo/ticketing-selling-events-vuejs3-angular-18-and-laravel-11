@@ -101,6 +101,7 @@
           :event="order.events"
           :ticketCode="order.order_no"
           :ticketType="order.ticket_type"
+          :ticketQuantity="order.quantity"
         />
         <!-- Close button -->
         <button @click="showModal = false"

@@ -12,6 +12,7 @@
                     <label for="name" class="text-[#0d141c] text-base font-medium">Event name*</label>
                     <input v-model="newEvent.name" type="text" id="name" placeholder="Enter event name" required
                         class="form-input w-full border border-[#cedbe8] rounded-xl bg-slate-50 text-[#0d141c] h-14 px-4 py-2 placeholder:text-[#49719c]" />
+                    <p v-if="eventNameTooLong" class="text-red-500 text-sm">Event name cannot exceed 30 characters.</p>
                 </div>
 
                 <!-- Category -->
@@ -114,6 +115,7 @@
             <!-- Submit Button -->
             <div class="w-full">
                 <button type="submit"
+                    :disabled="eventNameTooLong"
                     class="bg-[#2589f4] text-slate-50 w-full px-5 py-3 rounded-xl text-base font-bold hover:bg-[#1a6bd8]">
                     Create
                 </button>
@@ -123,7 +125,7 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive, toRefs, defineAsyncComponent } from 'vue';
+import { ref, onMounted, reactive, toRefs, defineAsyncComponent, computed } from 'vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
@@ -233,6 +235,8 @@ export default {
             }
         };
 
+        const eventNameTooLong = computed(() => state.newEvent.name.length > 30);
+
         onMounted(() => {
             addTicketType();
             getCategories();
@@ -249,7 +253,8 @@ export default {
             addTicketType,
             removeTicketType,
             handleFileChange,
-            handleSubmit
+            handleSubmit,
+            eventNameTooLong,
         };
     }
 };

@@ -1,13 +1,12 @@
 <template>
   <div class="flex flex-col items-center justify-center min-h-screen rotate-90 md:rotate-0">
     <!-- Ticket container -->
-    <div ref="ticket"
-      class="flex w-[800px] h-[275px] bg-transparent">
-      
+    <div ref="ticket" class="flex w-[800px] h-[275px] bg-transparent">
+
       <!-- Left section: Event details -->
       <div class="flex flex-col justify-center w-2/3 px-6  pb-6 bg-gray-950 rounded-lg">
-        <h1 class="text-white text-5xl font-bold tracking-widest mb-1">{{ event.name }}</h1>
-        <p class="text-primary text-2xl font-semibold tracking-wide mb-4">{{ ticketType }} TICKET</p>
+        <h1 class="text-white text-2xl font-bold tracking-widest mb-1">{{ event.name }}</h1>
+        <p class="text-primary text-xl font-semibold tracking-wide mb-4">{{ ticketType }} TICKET</p>
         <p class="text-white text-lg mb-6">AT {{ eventTime }}</p>
 
         <!-- Date boxes -->
@@ -36,13 +35,13 @@
           <div class="flex items-center justify-center bg-white text-black font-bold py-1 px-4 rounded">{{ eventDate.month }}</div>
           <div class="flex items-center justify-center bg-white text-black font-bold py-1 px-4 rounded">{{ eventDate.year }}</div>
         </div>
-        <p class="text-primary text-2xl font-extralight tracking-wide mt-4">{{ ticketType }} TICKET</p>
+        <p class="text-primary text-2xl font-bold tracking-wide mt-4">{{ ticketType }}</p>
       </div>
     </div>
 
     <!-- Download button -->
     <button @click="downloadTicket" class="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-      Download Ticket as PDF
+      Download Ticket as PDF ({{ ticketQuantity }} Ticket)
     </button>
   </div>
 </template>
@@ -57,7 +56,8 @@ export default defineComponent({
   props: {
     event: { type: Object, required: true },
     ticketCode: { type: String, required: true },
-    ticketType: { type: String, required: true }
+    ticketType: { type: String, required: true },
+    ticketQuantity: { type: Number, required: true }
   },
   computed: {
     eventDate() {
@@ -74,25 +74,31 @@ export default defineComponent({
     }
   },
   methods: {
-    downloadTicket() {
+    async downloadTicket() {
       const ticketElement = this.$refs.ticket;
 
-      // PDF options with adjusted width and height
       const options = {
         margin: 0,
-        filename: 'concert_ticket.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 1.5, width: 800, height: 275 }, // Reduced height
+        html2canvas: { scale: 2, width: 800, height: 275 }, 
         jsPDF: { unit: 'px', format: [800, 275], orientation: 'landscape' },
       };
 
-      html2pdf().set(options).from(ticketElement).save();
+      // Loop through the number of tickets and generate PDF for each
+      for (let i = 1; i <= this.ticketQuantity; i++) {
+        const ticketNumber = this.ticketQuantity > 1 ? `_${i}` : '';
+        const filename = `${this.event.name}_Ticket${ticketNumber}.pdf`;
+
+        const ticketOptions = { ...options, filename };
+
+        await html2pdf().set(ticketOptions).from(ticketElement).save();
+      }
     },
     generateBarcode() {
       const barcodeElement = this.$refs.barcode;
       JsBarcode(barcodeElement, this.ticketCode, {
         format: 'CODE128', // Barcode format
-        displayValue: false, // Show the code below the barcode
+        displayValue: false, // Hide the code below the barcode
         fontSize: 16, // Font size for the code text
         width: 2, // Width of each barcode bar
         height: 50, // Height of the barcode
