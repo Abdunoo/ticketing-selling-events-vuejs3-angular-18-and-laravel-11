@@ -77,7 +77,7 @@
 
           <!-- Invoice Button -->
           <div class="flex px-4 py-3">
-            <button v-if="order.payment_status == 'paid'" @click="getTicket"
+            <button v-if="order.payment_status == 'paid'" @click="showModal=true"
               class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
               <span class="truncate">Download Ticket</span>
             </button>
@@ -93,6 +93,22 @@
     <div v-if="xenditInvoice" class="fixed inset-0 md:inset-20 z-50  items-center justify-center bg-white">
       <iframe :src="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
     </div>
+
+    <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div class="relative w-full max-w-3xl p-4">
+        <!-- Ticket component as popup -->
+        <Ticket
+          :event="order.events"
+          :ticketCode="order.order_no"
+          :ticketType="order.ticket_type"
+        />
+        <!-- Close button -->
+        <button @click="showModal = false"
+          class="absolute top-5 right-2 bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
+          Close
+        </button>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -101,14 +117,17 @@ import { onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
+import Ticket from './Ticket.vue';
 
 export default {
   name: 'DetailOrder',
+  components: {Ticket},
   setup() {
     const state = reactive({
       orderId: null,
       order: {},
       xenditInvoice: null,
+      showModal: false,
     });
 
     const route = useRoute();  // Import and use route here
