@@ -4,10 +4,16 @@ import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 import viteImagemin from "vite-plugin-imagemin";
 import { VitePWA } from "vite-plugin-pwa";
+import viteLegacyPlugin from "@vitejs/plugin-legacy";
 
 export default defineConfig({
   plugins: [
     vue(),
+    viteLegacyPlugin({
+      targets: ['defaults', 'not IE 11'], // Configure supported browsers (ES5 fallback)
+      modernPolyfills: true, // This enables some modern features for older browsers
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime'], // Include if async/await is used
+    }),
     // Enable gzip & Brotli compression for production assets
     viteCompression({
       verbose: true,
@@ -74,7 +80,7 @@ export default defineConfig({
   },
   base: "/ticketing/",
   build: {
-    target: "es2015",
+    chunkSizeWarningLimit: 1000,  // Set the chunk size warning limit to 1000 kB
     minify: "esbuild",
     cssCodeSplit: true,
     rollupOptions: {
@@ -85,6 +91,9 @@ export default defineConfig({
               return "vue"; // Separate Vue ecosystem libraries
             }
             return "vendor"; // Separate all other dependencies
+          }
+          if (id.includes('node_modules/lodash')) {
+            return 'lodash';  // Separate Lodash into its own chunk
           }
         },
       },

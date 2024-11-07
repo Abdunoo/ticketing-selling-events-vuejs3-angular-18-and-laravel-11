@@ -2,7 +2,7 @@
   <section class="bg-gray-50">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-        <img src="/src/assets/image/logo.webp" alt="ticket promotion image" loading="lazy" class="object-cover h-10">
+        <img srcset="/src/assets/image/logo.webp" alt="ticket promotion image" class="object-cover h-10">
         Ticketku
       </a>
       <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
