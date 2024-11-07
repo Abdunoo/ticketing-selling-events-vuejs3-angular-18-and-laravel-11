@@ -4,17 +4,14 @@ import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 import viteImagemin from "vite-plugin-imagemin";
 import { VitePWA } from "vite-plugin-pwa";
-import viteLegacyPlugin from "@vitejs/plugin-legacy";
+
+// No need for legacy plugin if you're targeting esnext
+// import viteLegacyPlugin from "@vitejs/plugin-legacy"; 
 
 export default defineConfig({
   plugins: [
     vue(),
-    viteLegacyPlugin({
-      targets: ['defaults', 'not IE 11'], // Configure supported browsers (ES5 fallback)
-      modernPolyfills: true, // This enables some modern features for older browsers
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'], // Include if async/await is used
-    }),
-    // Enable gzip & Brotli compression for production assets
+    // Gzip and Brotli are enabled, consider adding Zopfli
     viteCompression({
       verbose: true,
       disable: false,
@@ -26,13 +23,13 @@ export default defineConfig({
       algorithm: "brotliCompress",
       ext: ".br",
     }),
-    // Image optimization settings
+    // Image optimization is good, ensure your source images are optimized as well
     viteImagemin({
       gifsicle: { optimizationLevel: 7, interlaced: false },
       optipng: { optimizationLevel: 7 },
       mozjpeg: { quality: 80, progressive: true },
       pngquant: { quality: [0.65, 0.8], speed: 1 },
-      webp: { quality: 80 },
+      webp: { quality: 70 },
       svgo: {
         plugins: [
           { removeViewBox: false },
@@ -40,9 +37,9 @@ export default defineConfig({
         ],
       },
     }),
-    // Progressive Web App settings
+    // PWA is configured, consider a more aggressive `workbox` strategy
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "autoUpdate", 
       manifest: {
         name: "Ticketku",
         short_name: "Ticketku",
@@ -80,29 +77,32 @@ export default defineConfig({
   },
   base: "/ticketing/",
   build: {
-    chunkSizeWarningLimit: 1000,  // Set the chunk size warning limit to 1000 kB
-    minify: "esbuild",
+    target: "esnext", 
+    minify: "esbuild", 
     cssCodeSplit: true,
     rollupOptions: {
       output: {
+        // Consider more fine-grained manual chunks if your vendor bundle is still large
         manualChunks(id) {
           if (id.includes("node_modules")) {
             if (id.includes("vue")) {
-              return "vue"; // Separate Vue ecosystem libraries
+              return "vue"; 
             }
-            return "vendor"; // Separate all other dependencies
-          }
-          if (id.includes('node_modules/lodash')) {
-            return 'lodash';  // Separate Lodash into its own chunk
+            return "vendor"; 
           }
         },
       },
     },
+    // Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+    chunkSizeWarningLimit: 1500, // Increase chunk size limit to 1500kb
   },
   server: {
     open: true,
     cors: true,
-    strictPort: true, // Ensures server only starts if the port is available
+    strictPort: true, 
     historyApiFallback: true,
+  },
+  optimizeDeps: {
+    include: ["vue", "axios"], 
   },
 });
