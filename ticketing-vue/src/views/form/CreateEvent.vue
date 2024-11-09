@@ -255,7 +255,7 @@ export default {
                 },
                 {
                     property: 'og:image',
-                    content: this.imageUrl || 'default-image-url.jpg', // Replace with a default image URL if needed
+                    content: imageUrl || 'default-image-url.jpg', // Replace with a default image URL if needed
                 },
                 {
                     property: 'og:url',
