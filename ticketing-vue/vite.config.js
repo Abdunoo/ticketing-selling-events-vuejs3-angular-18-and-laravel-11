@@ -5,10 +5,13 @@ import viteCompression from "vite-plugin-compression";
 import viteImagemin from "vite-plugin-imagemin";
 import { VitePWA } from "vite-plugin-pwa";
 
+// No need for legacy plugin if you're targeting esnext
+// import viteLegacyPlugin from "@vitejs/plugin-legacy"; 
+
 export default defineConfig({
   plugins: [
     vue(),
-    // Gzip, Brotli, and Zopfli compressions
+    // Gzip and Brotli are enabled, consider adding Zopfli
     viteCompression({
       verbose: true,
       disable: false,
@@ -20,11 +23,7 @@ export default defineConfig({
       algorithm: "brotliCompress",
       ext: ".br",
     }),
-    viteCompression({
-      algorithm: "zopfli",
-      ext: ".gz",
-    }),
-    // Image optimization
+    // Image optimization is good, ensure your source images are optimized as well
     viteImagemin({
       gifsicle: { optimizationLevel: 7, interlaced: false },
       optipng: { optimizationLevel: 7 },
@@ -38,9 +37,9 @@ export default defineConfig({
         ],
       },
     }),
-    // PWA with aggressive caching
+    // PWA is configured, consider a more aggressive `workbox` strategy
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "autoUpdate", 
       manifest: {
         name: "Ticketku",
         short_name: "Ticketku",
@@ -69,18 +68,6 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/sandbox2\.panemu\.com\/.*$/,
-            handler: "NetworkFirst",
-          },
-          {
-            urlPattern: /\.(?:js|css|html)$/,
-            handler: "StaleWhileRevalidate",
-          },
-        ],
-      },
     }),
   ],
   resolve: {
@@ -90,38 +77,32 @@ export default defineConfig({
   },
   base: "/ticketing/",
   build: {
-    target: "esnext",
-    minify: "esbuild",
+    target: "esnext", 
+    minify: "esbuild", 
     cssCodeSplit: true,
     rollupOptions: {
       output: {
+        // Consider more fine-grained manual chunks if your vendor bundle is still large
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            return id.includes("vue") ? "vue" : "vendor";
+            if (id.includes("vue")) {
+              return "vue"; 
+            }
+            return "vendor"; 
           }
         },
-        chunkFileNames: (chunkInfo) =>
-          chunkInfo.name === "vue" ? "vue.js" : "[name]-[hash].js",
-        entryFileNames: "[name].[hash].js",
-        assetFileNames: "[name].[hash].[ext]",
       },
     },
-    chunkSizeWarningLimit: 1500,
+    // Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+    chunkSizeWarningLimit: 1500, // Increase chunk size limit to 1500kb
   },
   server: {
     open: true,
     cors: true,
-    strictPort: true,
+    strictPort: true, 
     historyApiFallback: true,
   },
   optimizeDeps: {
-    include: ["vue", "axios"],
-  },
-  css: {
-    preprocessorOptions: {
-      css: {
-        charset: false,
-      },
-    },
+    include: ["vue", "axios"], 
   },
 });
