@@ -58,6 +58,8 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
+import { useHead } from '@vueuse/head'; // Import useHead to manage meta tags
+
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
@@ -79,6 +81,7 @@ export default {
           if (response.code == 200) {
             state.event = response.data;
             localStorage.setItem('event', JSON.stringify(state.event));
+            updateMetaTags(state.event); // Update meta tags after fetching event data
           }
         })
         .catch(error => {
@@ -104,6 +107,22 @@ export default {
     const toCheckout = () => {
       localStorage.setItem('event', JSON.stringify(state.event));
       router.push({ name: 'Checkout' });
+    };
+
+    const updateMetaTags = (event) => {
+      // Use `useHead` to update title and meta tags dynamically
+      useHead({
+        title: `${event.name} - Ticketku Web Application`, // Set page title dynamically
+        meta: [
+          { name: 'description', content: event.description }, // Set meta description dynamically
+          { property: 'og:title', content: event.name }, // Open Graph title
+          { property: 'og:description', content: event.description }, // Open Graph description
+          { property: 'og:image', content: event.image_banner }, // Open Graph image
+          { name: 'twitter:title', content: event.name }, // Twitter card title
+          { name: 'twitter:description', content: event.description }, // Twitter card description
+          { name: 'twitter:image', content: event.image_banner }, // Twitter card image
+        ],
+      });
     };
 
     onMounted(() => {

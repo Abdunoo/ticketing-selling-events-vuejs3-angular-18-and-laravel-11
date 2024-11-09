@@ -47,6 +47,12 @@ const routes = [
     component: () => import("@/views/form/CreateEvent.vue"),
     meta: { requiresAuth: true },
   },
+  {
+    path: "/edit-event/:id",
+    name: "EditEvent",
+    component: () => import("@/views/form/EditEvent.vue"),
+    meta: { requiresAuth: true },
+  },
   // Other
   {
     path: "/my_tickets",

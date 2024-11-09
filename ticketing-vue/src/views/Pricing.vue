@@ -141,10 +141,19 @@
 </template>
 
 <script>
+import { useHead } from '@vueuse/head';
+
 
 export default {
   name: 'Pricing',
-
-}
-
+  setup() {
+    useHead({
+      title: 'Flexible Ticket Pricing - Ticketku Web Application',
+      meta: [
+        { name: 'description', content: 'Explore flexible pricing plans for events of all sizes, from small gatherings to large festivals.' },
+        { name: 'keywords', content: 'event pricing, ticket plans, flexible pricing, event management' },
+      ],
+    });
+  },
+};
 </script>

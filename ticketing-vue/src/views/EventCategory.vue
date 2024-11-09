@@ -78,6 +78,7 @@
 import { ref, reactive, onMounted, onBeforeUnmount, defineAsyncComponent, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
+import { useHead } from '@vueuse/head';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 const EventCard = defineAsyncComponent(() => import('@/components/EventCard.vue'));
 
@@ -157,6 +158,14 @@ export default {
       };
       return date.toLocaleString('en-US', options);
     }
+
+    useHead({
+      title: 'Event Categories - Ticketku Web Application',
+      meta: [
+        { name: 'description', content: 'Browse events by category and find what interests you the most.' },
+        { name: 'keywords', content: 'events, categories, entertainment, listings' },
+      ],
+    });
 
     onMounted(() => {
       fetchEvents();

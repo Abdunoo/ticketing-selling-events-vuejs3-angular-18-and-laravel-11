@@ -5,7 +5,7 @@
         <div class="px-4 md:px-8 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
             <!-- Main Content -->
             <div class="flex-1">
-                <h2 class="text-[#0d141c] text-2xl font-bold leading-tight mb-6">Create an Event</h2>
+                <h2 class="text-[#0d141c] text-2xl font-bold leading-tight mb-6">Edit Event</h2>
 
                 <!-- Event Name -->
                 <div class="flex flex-col space-y-4 mb-4">
@@ -117,7 +117,7 @@
                 <button type="submit"
                     :disabled="eventNameTooLong"
                     class="bg-[#2589f4] text-slate-50 w-full px-5 py-3 rounded-xl text-base font-bold hover:bg-[#1a6bd8]">
-                    Create
+                    Update
                 </button>
             </div>
         </div>
@@ -126,26 +126,27 @@
 
 <script>
 import { ref, onMounted, reactive, toRefs, defineAsyncComponent, computed } from 'vue';
+import { useRoute } from 'vue-router';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useToast } from 'vue-toastification';
-import { useHead } from '@vueuse/head';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
-    name: 'CreateEvent',
+    name: 'UpdateEvent',
     components: {
         Loading
     },
     setup() {
+        const route = useRoute();
+        const eventId = route.params.id; // Get event ID from path
         const state = reactive({
             newEvent: {
                 name: '',
-                category: '',
+                description: '',
                 start_datetime: '',
                 end_datetime: '',
                 location: '',
-                description: '',
             },
             ticketTypes: [],
             imageUrl: null,
@@ -156,7 +157,6 @@ export default {
         });
 
         const toast = useToast();
-
         const { newEvent, ticketTypes, imageUrl, filename, isLoading, errorMessage } = toRefs(state);
 
         const addTicketType = () => {
@@ -188,12 +188,42 @@ export default {
         const getCategories = async () => {
             try {
                 const response = await apiClient.get('/api/categories/list');
-                state.categories =  response.data;
+                state.categories = response.data;
             } catch (error) {
                 console.error('Error fetching categories:', error);
-                return [];
             }
-        }
+        };
+
+        const fetchEventDetails = async () => {
+            if (!eventId) return;
+            try {
+                const response = await apiClient.get(`/api/events/${eventId}`);
+                const eventData = response.data;
+                // Populate event details
+                state.newEvent.name = eventData.name;
+                state.newEvent.description = eventData.description;
+                state.newEvent.start_datetime = eventData.start_datetime;
+                state.newEvent.end_datetime = eventData.end_datetime;
+                state.newEvent.location = eventData.location;
+                // Populate ticket types
+                state.ticketTypes = eventData.ticket_types.map(ticket => ({
+                    id: ticket.id,
+                    name: ticket.name,
+                    price: ticket.price,
+                    available_quantity: ticket.available_quantity
+                }));
+
+                // Set image banner URL
+                state.imageUrl = eventData.image_banner;
+            } catch (error) {
+                console.log('error.status ', error.status)
+                if (error.status === 404) {
+                    toast.error('Event not found')
+                    router.push('/my_events')
+                }
+                console.error('Error fetching event details:', error);
+            }
+        };
 
         const handleSubmit = async () => {
             state.isLoading = true;
@@ -203,70 +233,42 @@ export default {
                     formData.append(key, newEvent.value[key]);
                 }
                 formData.append('ticket_types', JSON.stringify(ticketTypes.value));
-                // Include image file if it exists
                 const uploadInput = document.getElementById('upload');
                 if (uploadInput.files.length > 0) {
                     formData.append('image_banner', uploadInput.files[0]);
                 }
 
-                await apiClient.post('/api/events', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                });
-                // Reset state after successful submission
-                Object.assign(state.newEvent, {
-                    name: '',
-                    category: '',
-                    start_datetime: '',
-                    end_datetime: '',
-                    location: '',
-                    description: ''
-                });
-                state.ticketTypes = [];
-                imageUrl.value = null;
-                filename.value = '';
+                if (eventId) {
+                    await apiClient.put(`/api/events/${eventId}`, formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    toast.success('Event updated successfully');
+                } else {
+                    await apiClient.post('/api/events', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    toast.success('Event created successfully');
+                }
+
+                router.push('/all-for-you');
             } catch (error) {
-                console.error('Error creating event:', error);
-                toast.error('Create Event Failed');
+                console.error('Error creating or updating event:', error);
+                toast.error('Failed to save event');
             } finally {
                 state.isLoading = false;
-                toast.success('Create Event successfully');
-                router.push('/all-for-you')
             }
         };
 
         const eventNameTooLong = computed(() => state.newEvent.name.length > 30);
 
-        useHead({
-            title: 'Create Event - Event Manager',
-            meta: [
-                {
-                    name: 'description',
-                    content: 'Create a new event, set ticket types, and customize your event details in Event Manager.',
-                },
-                {
-                    property: 'og:title',
-                    content: 'Create Event - Event Manager',
-                },
-                {
-                    property: 'og:description',
-                    content: 'Create and customize your event easily with Event Manager.',
-                },
-                {
-                    property: 'og:image',
-                    content: this.imageUrl || 'default-image-url.jpg', // Replace with a default image URL if needed
-                },
-                {
-                    property: 'og:url',
-                    content: window.location.href,
-                },
-            ],
-        });
-
         onMounted(() => {
             addTicketType();
             getCategories();
+            fetchEventDetails();
         });
 
         return {
@@ -286,7 +288,3 @@ export default {
     }
 };
 </script>
-
-<style scoped>
-/* Add any additional styles here */
-</style>

@@ -10,8 +10,7 @@
           <div class="sm:col-span-1 flex flex-col items-center">
             <img :src="user.picture || defaultPicture"
               class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500" alt="User Profile"
-              />
-
+            />
             <div class="mt-4 space-y-2 w-full sm:w-auto">
               <button type="button" @click="toCreateEvent"
                 class="w-full py-3 px-6 text-white bg-primary rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-4 focus:ring-indigo-300">
@@ -26,16 +25,14 @@
 
           <!-- Account Info Section -->
           <div class="sm:col-span-2 space-y-6">
+            <!-- Form fields for profile update -->
             <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
-              <!-- First Name -->
               <div class="w-full">
                 <label for="first_name" class="block text-sm font-medium text-gray-900">First Name</label>
                 <input v-model="user.first_name" type="text" id="first_name"
                   class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                   required />
               </div>
-
-              <!-- Last Name -->
               <div class="w-full">
                 <label for="last_name" class="block text-sm font-medium text-gray-900">Last Name</label>
                 <input v-model="user.last_name" type="text" id="last_name"
@@ -52,15 +49,13 @@
                 required />
             </div>
 
-            <!-- Profession -->
+            <!-- Profession and Bio -->
             <div class="w-full">
               <label for="profession" class="block text-sm font-medium text-gray-900">Profession</label>
               <input v-model="user.profession" type="text" id="profession"
                 class="mt-1 block w-full p-2.5 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500"
                 required />
             </div>
-
-            <!-- Bio -->
             <div class="w-full">
               <label for="bio" class="block text-sm font-medium text-gray-900">Bio</label>
               <textarea v-model="user.bio" id="bio" rows="4"
@@ -68,7 +63,7 @@
                 placeholder="Write your bio here..."></textarea>
             </div>
 
-            <!-- Save Button -->
+            <!-- Save and Logout Buttons -->
             <div class="w-full flex justify-between">
               <button @click="toLogout"
                 class="py-2.5 px-6 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
@@ -90,14 +85,16 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
+import { useHead } from '@vueuse/head';
+
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
   components: {
-    Loading
+    Loading,
   },
   name: 'Account',
-  setup(props) {
+  setup() {
     const state = reactive({
       isLoading: false,
       user: {
@@ -113,6 +110,7 @@ export default {
 
     const authStore = useAuthStore();
 
+    // Split full name
     const splitName = (fullName) => {
       const nameParts = fullName.split(' ');
       const firstName = nameParts[0];
@@ -120,13 +118,13 @@ export default {
       return { firstName, lastName };
     };
 
+    // Fetch user data
     const me = async () => {
       try {
         state.isLoading = true;
         const response = await apiClient.get('/api/me');
-        if (response.code == 200) {
+        if (response.code === 200) {
           const userData = response.data;
-
           const { firstName, lastName } = splitName(userData.name);
           state.user = {
             first_name: firstName,
@@ -143,6 +141,7 @@ export default {
       state.isLoading = false;
     };
 
+    // Save profile updates
     const saveProfile = async () => {
       try {
         state.isLoading = true;
@@ -156,26 +155,28 @@ export default {
       state.isLoading = false;
     };
 
-    const toMyEvents = () => {
-      router.push('/my_events');
-    };
-
-    const toCreateEvent = () => {
-      router.push('/pricing');
-    };
-
+    // Navigation functions
+    const toMyEvents = () => router.push('/my_events');
+    const toCreateEvent = () => router.push('/pricing');
     const toLogout = () => {
       state.isLoading = true;
       router.push('/login');
       localStorage.removeItem('token');
       localStorage.removeItem('_usr');
       localStorage.setItem('isLogin', 'false');
+      authStore.setLoginState(false);
       state.isLoading = false;
-      authStore.setLoginState(false); // Update Pinia state
     };
 
-    onMounted(() => {
-      me();
+    onMounted(me);
+
+    // Meta tags setup
+    useHead({
+      title: 'Account Settings',
+      meta: [
+        { name: 'description', content: 'Manage your account settings, update your profile, and view event options.' },
+        { name: 'keywords', content: 'account settings, profile management, user profile' },
+      ],
     });
 
     return {
@@ -188,7 +189,6 @@ export default {
   },
 };
 </script>
-
 
 <style>
 /* Custom styles, if necessary */

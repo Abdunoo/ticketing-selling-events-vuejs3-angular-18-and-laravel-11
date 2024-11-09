@@ -119,6 +119,7 @@ import { useRoute } from 'vue-router';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
 import Ticket from './Ticket.vue';
+import { useHead } from '@vueuse/head';
 
 export default {
   name: 'DetailOrder',
@@ -192,6 +193,17 @@ export default {
       if (!str || typeof str !== 'string') return '';
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    useHead({
+      title: `Order Details - ${state.order?.events?.name || 'Ticketku Web Application'}`,
+      meta: [
+        { name: 'description', content: `View details for ${state.order?.events?.name || 'your ticket order'} on our platform.` },
+        { property: 'og:title', content: `Order for ${state.order?.events?.name || 'Ticketing'}` },
+        { property: 'og:description', content: `Order details and options for ${state.order?.events?.name || 'your ticket order'}.` },
+        { property: 'og:url', content: `https://sandbox2.panemu.com/ticketing/my_tickets/${state.orderId}` },
+        { property: 'og:image', content: state.order?.events?.image || '/default-event-image.jpg' },
+      ],
+    });
 
     onMounted(() => {
       getOrderId();  // Ensure orderId is set and fetch the details when component is mounted

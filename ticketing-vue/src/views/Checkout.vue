@@ -64,6 +64,8 @@ import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
 import router from '@/router';
+import { useHead } from '@vueuse/head'; // Import useHead to manage dynamic meta tags
+
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
@@ -114,6 +116,9 @@ export default {
       }
       state.event = event;
       state.ticketType = event.ticket_types || [];
+      // Set dynamic meta tags after event data is fetched
+      updateMetaTags(event);
+
       state.isLoading = false;
     };
 
@@ -148,6 +153,23 @@ export default {
         toast.error('An error occurred while creating the order. Please try again later.');
       }
       state.isLoading = false;
+    };
+
+    const updateMetaTags = (event) => {
+      // Use `useHead` to update title and meta tags dynamically
+      useHead({
+        title: `${event.name} - Checkout - Ticketku Web Application`, // Dynamic title with event name
+        meta: [
+          { name: 'description', content: `Purchase tickets for ${event.name}` }, // Meta description
+          { property: 'og:title', content: `Checkout - ${event.name}` }, // Open Graph title
+          { property: 'og:description', content: `Purchase tickets for ${event.name} and enjoy the event!` }, // Open Graph description
+          { property: 'og:image', content: event.image_banner }, // Open Graph image
+          { property: 'og:url', content: 'https://sandbox2.panemu.com/ticketing/checkout' }, // Open Graph image
+          { name: 'twitter:title', content: `Checkout - ${event.name}` }, // Twitter card title
+          { name: 'twitter:description', content: `Purchase tickets for ${event.name} now!` }, // Twitter card description
+          { name: 'twitter:image', content: event.image_banner }, // Twitter card image
+        ],
+      });
     };
 
     onMounted(() => {

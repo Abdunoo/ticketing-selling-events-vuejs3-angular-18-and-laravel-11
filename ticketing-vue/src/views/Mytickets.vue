@@ -62,6 +62,7 @@
 <script>
 import { defineAsyncComponent, onBeforeUnmount, onMounted, reactive, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
+import { useHead } from '@vueuse/head';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
@@ -114,6 +115,14 @@ export default {
       if (!str || typeof str !== 'string') return '';
       return str.charAt(0).toUpperCase() + str.slice(1);
     };
+
+    useHead({
+      title: 'My Orders - Ticketku Web Application',
+      meta: [
+        { name: 'description', content: 'View and manage your orders, check payment status, and browse through your purchased tickets.' },
+        { name: 'keywords', content: 'orders, tickets, payment status, event tickets, purchases' },
+      ],
+    });
 
     onMounted(() => {
       fetchMyTickets();

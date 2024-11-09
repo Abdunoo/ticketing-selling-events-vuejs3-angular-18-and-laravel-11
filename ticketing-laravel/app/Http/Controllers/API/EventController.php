@@ -203,6 +203,11 @@ class EventController extends Controller
             'start_datetime' => 'sometimes|required|date',
             'end_datetime' => 'sometimes|required|date',
             'location' => 'sometimes|required|string|max:255',
+            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ticket_types' => 'required',
+            'ticket_types.*.name' => 'required|string',
+            'ticket_types.*.price' => 'required|numeric',
+            'ticket_types.*.quantity' => 'required|integer',
         ]);
 
         if ($request->hasFile('image_banner')) {
@@ -225,13 +230,39 @@ class EventController extends Controller
             $validatedData['slug'] = Str::slug($validatedData['name']);
         }
 
+        // Update event data
         $event->update($validatedData);
 
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $event
-        );
+        // Update or create ticket types
+        $ticketTypes = collect(json_decode($request->ticket_types, true));
+        $existingTicketTypeIds = $event->ticketTypes->pluck('id')->toArray();
+
+        foreach ($ticketTypes as $ticketTypeData) {
+            if (isset($ticketTypeData['id']) && in_array($ticketTypeData['id'], $existingTicketTypeIds)) {
+                // Update existing ticket type
+                $ticketType = TicketType::find($ticketTypeData['id']);
+                $ticketType->update([
+                    'name' => $ticketTypeData['name'],
+                    'price' => $ticketTypeData['price'],
+                    'available_quantity' => $ticketTypeData['available_quantity']
+                ]);
+            } else {
+                // Create new ticket type
+                $ticketTypeData['event_id'] = $event->id;
+                TicketType::create($ticketTypeData);
+            }
+        }
+
+        // Delete removed ticket types
+        $newTicketTypeIds = $ticketTypes->pluck('id')->filter()->toArray();
+        $ticketTypesToDelete = array_diff($existingTicketTypeIds, $newTicketTypeIds);
+        TicketType::destroy($ticketTypesToDelete);
+
+        return response()->json([
+            'code' => 200,
+            'message' => 'Success.',
+            'data' => $event->load('ticketTypes')
+        ]);
     }
 
     // Delete an event

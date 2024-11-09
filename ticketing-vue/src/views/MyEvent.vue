@@ -24,9 +24,14 @@
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <button
-                            class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
-                        <button
+                        <!-- Edit Button: Route to event edit page -->
+                        <router-link :to="`/edit-event/${event.id}`">
+                            <button
+                                class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
+                        </router-link>
+
+                        <!-- Delete Button: Trigger delete function -->
+                        <button @click="deleteEvent(event.id)"
                             class="text-base font-medium leading-normal bg-red-500 hover:bg-red-600 text-white p-1 rounded">Remove</button>
                     </div>
                 </div>
@@ -38,6 +43,8 @@
 <script>
 import { ref, reactive, onMounted, onBeforeUnmount, toRefs, defineAsyncComponent } from 'vue';
 import apiClient from '@/helpers/axios';
+import { useRouter } from 'vue-router';  // If using Vue Router
+import { useHead } from '@vueuse/head';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
@@ -46,6 +53,7 @@ export default {
         Loading,
     },
     setup() {
+        const router = useRouter();
         const state = reactive({
             events: [],
             isLoading: false,
@@ -114,6 +122,32 @@ export default {
             return date.toLocaleString('en-US', options);
         };
 
+        // Delete event function
+        const deleteEvent = async (eventId) => {
+            if (confirm('Are you sure you want to delete this event?')) {
+                state.isLoading = true;
+                try {
+                    const response = await apiClient.delete(`/api/events/${eventId}`);
+                    if (response.code === 200) {
+                        // Remove the deleted event from the list
+                        state.events = state.events.filter(event => event.id !== eventId);
+                    }
+                } catch (error) {
+                    console.error('Error deleting event:', error);
+                } finally {
+                    state.isLoading = false;
+                }
+            }
+        };
+
+        useHead({
+            title: 'My Events - Ticketku Web Application',
+            meta: [
+                { name: 'description', content: 'Manage your events and explore upcoming events in your list.' },
+                { name: 'keywords', content: 'my events, manage events, personal events, event list' },
+            ],
+        });
+
         onMounted(() => {
             fetchEvents();
             window.addEventListener('scroll', handleScroll);
@@ -127,6 +161,7 @@ export default {
             ...toRefs(state),
             debouncedSearch,
             formatDate,
+            deleteEvent,
         };
     },
 };

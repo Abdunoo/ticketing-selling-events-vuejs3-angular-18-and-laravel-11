@@ -4,6 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 import viteImagemin from "vite-plugin-imagemin";
 import { VitePWA } from "vite-plugin-pwa";
+import sitemapPlugin from "vite-plugin-sitemap";
 
 // No need for legacy plugin if you're targeting esnext
 // import viteLegacyPlugin from "@vitejs/plugin-legacy"; 
@@ -11,6 +12,28 @@ import { VitePWA } from "vite-plugin-pwa";
 export default defineConfig({
   plugins: [
     vue(),
+    sitemapPlugin({
+      hostname: 'https://sandbox2.panemu.com/ticketing/',
+      routes: [
+        '/',
+        '/all-for-you',
+        '/checkout',
+        '/sign_up',
+        '/otp',
+        '/login',
+        '/events_create',
+        '/edit-event/1', // example of static route
+        '/my_tickets',
+        '/my_tickets/1', // example of static route
+        '/account',
+        '/my_events',
+        '/pricing',
+        '/about',
+        '/terms',
+        '/privacy',
+        '/contact'
+      ],
+    }),
     // Gzip and Brotli are enabled, consider adding Zopfli
     viteCompression({
       verbose: true,

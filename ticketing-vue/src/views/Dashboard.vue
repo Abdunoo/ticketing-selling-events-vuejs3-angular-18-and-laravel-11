@@ -449,6 +449,7 @@
 </template>
 
 <script>
+import { useHead } from "@vueuse/head";
 import { ref } from "vue";
 
 export default {
@@ -458,6 +459,19 @@ export default {
       { id: 2, name: "Jane Smith", event: "Comedy Show", feedback: "Hilarious! I couldn’t stop laughing." },
       { id: 3, name: "Sam Lee", event: "Jazz Festival", feedback: "The music was incredible and the atmosphere was perfect." },
     ]);
+
+    useHead({
+      title: 'Buy Tickets for the Best Events - Ticketku Web Application',
+      meta: [
+        { name: 'description', content: 'Book tickets for concerts, sports, and theater events with exclusive offers and secure checkout.' },
+        { name: 'keywords', content: 'tickets, events, concerts, theater, sports, exclusive offers, secure checkout, event reminders' },
+        { property: 'og:title', content: 'Buy Tickets for the Best Events' },
+        { property: 'og:description', content: 'Get instant digital tickets, secure checkout, and personalized recommendations for the best events near you!' },
+        { property: 'og:image', content: '/src/assets/image/ticket-purchase.webp' },
+        { property: 'og:url', content: 'https://sandbox2.panemu.com/ticketing/' },
+        { property: 'og:type', content: 'website' },
+      ],
+    });
 
     return {
       testimonials,
