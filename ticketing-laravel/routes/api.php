@@ -31,6 +31,7 @@ Route::post('handle_invoice_callback', [Ticketku::class, 'handleInvoiceCallback'
 
 Route::get('events/list', [EventController::class, 'list']);
 Route::get('categories/list', [CategoryController::class, 'index']);
+Route::get('events/get_popular_events', [EventController::class, 'getPopularEvents']);
 Route::get('events/by-slug/{slug}', [EventController::class, 'bySlug']);
 
 Route::middleware(['auth.custom'])->group(function () {
@@ -41,7 +42,6 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
     Route::get('events/my_events', [EventController::class, 'myEvent']);
-    Route::get('get_popular_events', [EventController::class, 'getPopularEvents']);
 
 
     Route::apiResource('users', UserController::class);

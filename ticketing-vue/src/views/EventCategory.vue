@@ -43,15 +43,10 @@
         </div>
 
         <!-- Popular Events Section with Horizontal Scroll -->
-        <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
-        <p class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>
-        
-        <div v-if="!isLoading && events.length === 0" class="flex justify-center py-5">
-          <p class="text-lg font-medium text-gray-500">Data Not Found</p>
-        </div>
-        
-        <div v-else class="p-4 overflow-x-auto no-scrollbar" style="min-height: 180px;">
-          <div class="flex items-stretch p-4 gap-3">
+        <h2 v-show="!searchQuery" class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
+        <p v-show="!searchQuery" class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>
+        <div v-show="!searchQuery" class="overflow-x-auto no-scrollbar" style="min-height: 180px;">
+          <div class="flex items-stretch gap-3">
             <div v-if="isLoading" class="placeholder-content">
               <!-- Placeholder structure for loading state -->
               <div class="w-full aspect-video bg-gray-200 rounded-xl mb-4"></div>
@@ -82,7 +77,10 @@
         <!-- Trending Section as Vertical Scrollable Grid -->
         <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Trending</h2>
         <p class="text-textSecondary text-base font-medium leading-normal mb-4">Hot deals and discounts</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="min-height: 300px;">
+        <div v-if="!isLoading && events.length === 0" class="flex justify-center py-5">
+          <p class="text-lg font-medium text-gray-500">Data Not Found</p>
+        </div>
+        <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="min-height: 300px;">
           <EventCard v-for="event in events" :key="event.id" :event="event" />
         </div>
       </div>
@@ -149,7 +147,7 @@ export default {
     const fetchPopularEvent = async () => {
       if (state.popular.length > 0) return; // Prevent fetching if categories already exist
       try {
-        const response = await apiClient.get('/api/get_popular_events');
+        const response = await apiClient.get('/api/events/get_popular_events');
         state.popular = response.data;
       } catch (error) {
         console.error('Error fetching popular event:', error);

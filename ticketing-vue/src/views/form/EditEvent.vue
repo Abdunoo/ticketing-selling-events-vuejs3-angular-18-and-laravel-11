@@ -108,7 +108,7 @@
                             format.</p>
                         <span id="filename" class="text-gray-500 bg-gray-200 z-50">{{ filename }}</span>
                     </label>
-                    <img v-if="imageUrl" :src="imageUrl" class="w-full h-auto mt-4" alt="Image preview" />
+                    <img v-if="imageUrl" :srcset="imageUrl" class="w-full h-auto mt-4" alt="Image preview" />
                 </div>
             </label>
 

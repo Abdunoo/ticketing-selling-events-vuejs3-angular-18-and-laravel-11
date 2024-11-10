@@ -7,7 +7,7 @@
 
         <!-- Event Info -->
         <div class="flex flex-col items-center justify-center mb-8 text-center">
-          <img :src="event.image_banner" :alt="event.name" class="bg-gray-200 w-24 h-24 rounded-full">
+          <img :srcset="event.image_banner" :alt="event.name" class="bg-gray-200 w-24 h-24 rounded-full">
           <div class="mt-4">
             <h2 class="text-xl sm:text-2xl font-bold text-gray-700">{{ event.name }}</h2>
             <p class="text-gray-600 text-sm sm:text-base">{{ event.location }} | {{ formatDate(event.start_datetime) }}
@@ -54,7 +54,7 @@
     </div>
     <div v-if="xenditInvoice" class="fixed inset-0 z-40 bg-black bg-opacity-70"></div>
     <div v-if="xenditInvoice" class="fixed inset-0 md:inset-20 z-50  items-center justify-center bg-white">
-      <iframe :src="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
+      <iframe :srcset="xenditInvoice" frameborder="0" class="w-full h-full"></iframe>
     </div>
   </section>
 </template>

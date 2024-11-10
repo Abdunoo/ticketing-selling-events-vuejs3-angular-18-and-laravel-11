@@ -124,14 +124,14 @@
           </div>
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            src="/src/assets/image/ticket-purchase.webp" alt="Ticket Purchase Feature" />
+            srcset="/src/assets/image/ticket-purchase.webp" alt="Ticket Purchase Feature" />
         </div>
 
         <!-- Row 2 -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            src="/src/assets/image/event-recommendations.webp" alt="Event Recommendations Feature" />
+            srcset="/src/assets/image/event-recommendations.webp" alt="Event Recommendations Feature" />
           <div
             class="text-gray-500 sm:text-lg translate-y-10 transition duration-1000 delay-300 ease-in-out transform hover:scale-105">
             <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900">

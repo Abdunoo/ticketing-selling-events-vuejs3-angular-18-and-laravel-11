@@ -4,9 +4,9 @@
     <div class="h-full w-full px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
       <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
         <div class="px-4 py-3 w-full h-full">
-          <div class="flex items-center justify-between pb-6">
+          <div class="flex items-center flex-col pb-6">
             <div>
-              <h2 class="text-gray-600 font-semibold">Event Ticket Orders</h2>
+              <h2 class="text-gray-600 font-semibold">My Tickets</h2>
             </div>
             <div class="flex items-center">
               <div class="flex border border-borderColor items-center p-2 rounded-md">
@@ -24,31 +24,39 @@
 
           <!-- Display the filtered tickets -->
           <div v-for="item in myTickets" :key="item.id" class="w-full mb-4">
-            <router-link class="flex w-full bg-white shadow-md rounded-lg p-4 space-x-4"
-              :to="{ name: 'MyticketsDetail', params: { id: item.id } }">
+            <router-link
+              class="flex flex-col md:flex-row w-full bg-white shadow-md rounded-lg p-4 md:space-x-4"
+              :to="{ name: 'MyticketsDetail', params: { id: item.id } }"
+            >
               <!-- Image Section -->
-              <div class="w-1/4 h-32">
-                <img class="w-full h-full object-cover rounded-lg" :src="item.events.image_banner" alt="Event Image"
-                  />
+              <div class="w-full md:w-1/4 h-32 md:h-auto">
+                <img
+                  class="w-full h-full object-cover rounded-lg"
+                  :srcset="item.events.image_banner"
+                  alt="Event Image"
+                />
               </div>
 
               <!-- Content Section -->
-              <div class="w-3/4 flex flex-col justify-between">
+              <div class="w-full md:w-3/4 flex flex-col justify-between">
                 <!-- Upper Content (Event Details) -->
                 <div class="flex flex-col space-y-2">
                   <div class="flex justify-between items-start space-x-2">
                     <h3 class="text-lg font-semibold text-gray-900">{{ item.events.name }}</h3>
-                    <p :class="paymentStatusClass(item.payment_status)">{{ capitalize(item.payment_status) }}</p>
+                    <p :class="paymentStatusClass(item.payment_status)">
+                      {{ capitalize(item.payment_status) }}
+                    </p>
                   </div>
-                  <p class="text-gray-500">Ticket {{ item.ticket_type }}</p>
+                  <p class="text-gray-500 text-sm">Ticket {{ item.ticket_type }}</p>
                 </div>
 
                 <!-- Bottom Content (Total Price) -->
                 <div class="mt-4 flex items-center justify-between">
                   <p class="text-lg font-semibold text-gray-900">
-                    <span class="text-green-600">${{ item.total_price }}</span>
+                    <span :class="paymentStatusClass(item.payment_status)">${{ item.total_price }}</span>
                   </p>
-                  <button class="text-white bg-primary rounded-md px-2 py-1 text-base">Detail</button>
+                  <button v-if="item.payment_status === 'paid'" class="text-white bg-primary rounded-md px-2 py-1 text-base">Detail</button>
+                  <button v-else class="text-white bg-yellow-500 rounded-md px-2 py-1 text-base">Pay now</button>
                 </div>
               </div>
             </router-link>
@@ -110,7 +118,7 @@ export default {
       }, 300);
     }
 
-    const paymentStatusClass = (status) => status === 'pending' ? 'text-yellow-500 font-medium' : status === 'paid' ? 'text-green-500 font-bold' : 'text-red-500 font-medium';
+    const paymentStatusClass = (status) => status === 'pending' ? 'text-yellow-500 font-bold' : status === 'paid' ? 'text-primary font-bold' : 'text-red-500 font-bold';
     const capitalize = (str) => {
       if (!str || typeof str !== 'string') return '';
       return str.charAt(0).toUpperCase() + str.slice(1);

@@ -63,6 +63,9 @@ class EventController extends Controller
     public function getPopularEvents()
     {
         $popularEvents = $this->fetchPopularEvents();
+        if ($popularEvents->count() < 3) {
+            $popularEvents = Event::limit(10)->get();
+        }
         $popularEvents->map(function ($event) {
             $event->image_banner = prepend_base_url($event->image_banner, $event->name);
             return $event;
@@ -86,6 +89,7 @@ class EventController extends Controller
         return Event::select(
                 'events.id',
                 'events.name',
+                'events.slug',
                 'events.start_datetime',
                 'events.location',
                 'events.image_banner',
@@ -150,6 +154,7 @@ class EventController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
+            'category' => 'required|string',
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
             'location' => 'required|string',
