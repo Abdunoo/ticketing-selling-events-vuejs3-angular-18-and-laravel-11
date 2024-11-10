@@ -1,6 +1,7 @@
 <template>
     <div class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-80">
-        <img v-lazy="event.image_banner"
+        <img
+            :src="event.image_banner"
             :srcset="`
                 ${event.image_banner}?w=400 400w,
                 ${event.image_banner}?w=800 800w,
@@ -9,7 +10,8 @@
             sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
             :alt="event.name"
             class="w-full aspect-video bg-center bg-no-repeat object-cover bg-cover rounded-xl"
-        />
+            loading="eager"
+            />
         <div class="flex flex-col p-4 pt-0 gap-4 space-y-6">
             <div>
                 <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
