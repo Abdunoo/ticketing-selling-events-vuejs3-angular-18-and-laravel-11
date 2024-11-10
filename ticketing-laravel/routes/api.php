@@ -41,7 +41,7 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('change-password', [AuthController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
-    Route::get('events/my_events', [EventController::class, 'myEvent']);
+    Route::get('my_events', [EventController::class, 'myEvent']);
 
 
     Route::apiResource('users', UserController::class);
