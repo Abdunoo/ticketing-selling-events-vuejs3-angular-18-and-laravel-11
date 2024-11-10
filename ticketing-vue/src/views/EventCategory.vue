@@ -53,24 +53,12 @@
               <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
               <div class="h-4 bg-gray-200 rounded w-1/2"></div>
             </div>
-            <div v-else v-for="event in popular" :key="event.id">
-              <div
-                class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-60">
-                <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
-                  :style="{ backgroundImage: `url(${event.image_banner})`, minHeight: '180px' }"></div>
-                <div class="flex flex-col p-4 pt-0 gap-4 space-y-6">
-                  <div>
-                    <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
-                    <p class="text-gray-600 text-sm font-normal leading-normal line-clamp-1">{{
-                      formatDate(event.start_datetime) }} · {{ event.location }}</p>
-                  </div>
-                  <button @click="toDetail(event)"
-                    class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#f0f2f5] text-[#111418] text-sm font-bold leading-normal tracking-[0.015em]">
-                    <span class="truncate">See details</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+            <PopCard
+              v-for="event in popular"
+              :key="event.id"
+              :event="event"
+              @go-to-detail="toDetail"
+            />
           </div>
         </div>
 
@@ -94,6 +82,7 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useHead } from '@vueuse/head';
 import { debounce } from 'lodash';
+import PopCard from '@/components/PopCard.vue';
 
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 const EventCard = defineAsyncComponent(() => import('@/components/EventCard.vue'));
@@ -103,6 +92,7 @@ export default {
   components: {
     Loading,
     EventCard,
+    PopCard,
   },
   setup() {
     const state = reactive({
