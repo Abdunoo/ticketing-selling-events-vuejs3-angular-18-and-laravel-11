@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id()->autoIncrement()->primary();
-            $table->string('name')->unique();
+            $table->string('name', 50)->unique();
             $table->string('slug');
-            $table->text('description');
+            $table->string('description', 500);
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');
-            $table->string('location');
+            $table->string('location', 255);
             $table->string('image_banner');
             $table->unsignedBigInteger('organizer_id');
-            $table->boolean('is_active')->default(true); 
+            $table->boolean('is_active')->default(true);
             $table->foreign('organizer_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

@@ -8,7 +8,7 @@
         <div class="mt-6 grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
           <!-- Profile Picture Section -->
           <div class="sm:col-span-1 flex flex-col items-center">
-            <img :src="user.picture || defaultPicture"
+            <img :src="user.picture"
               class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500" alt="User Profile"
             />
             <div class="mt-4 space-y-2 w-full sm:w-auto">
@@ -86,6 +86,8 @@ import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useHead } from '@vueuse/head';
+import defaultPicture from '@/assets/image/not_found.webp';
+
 
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
@@ -105,7 +107,7 @@ export default {
         bio: '',
         picture: '',
       },
-      defaultPicture: 'https://via.placeholder.com/150',
+      defaultPicture
     });
 
     const authStore = useAuthStore();

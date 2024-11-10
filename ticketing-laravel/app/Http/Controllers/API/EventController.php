@@ -9,6 +9,7 @@ use App\Models\TicketType;
 use Illuminate\Http\Request;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Storage;
@@ -26,6 +27,7 @@ class EventController extends Controller
         $perPage = $request->input('limit', 10);
         $orderBy = $request->input('order_by', 'id');
         $searchTerm = '%' . $request->input('search', '') . '%';
+        $category = $request->input('cat', '');
 
         $events = Event::with([
             'ticketTypes' => function ($query) {
@@ -35,6 +37,9 @@ class EventController extends Controller
             ->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'LIKE', $searchTerm)
                     ->orWhere('location', 'LIKE', $searchTerm);
+            })
+            ->when($category, function ($query) use ($category) {
+                return $query->where('category', $category);
             })
             ->orderByDesc($orderBy)
             ->paginate($perPage);
@@ -53,6 +58,46 @@ class EventController extends Controller
             'message' => 'Success.',
             'data' => $events
         ]);
+    }
+
+    public function getPopularEvents()
+    {
+        $popularEvents = $this->fetchPopularEvents();
+        $popularEvents->map(function ($event) {
+            $event->image_banner = prepend_base_url($event->image_banner, $event->name);
+            return $event;
+        });
+
+        // Return the popular events as a JSON response (or to a view)
+        return response()->json([
+            'code' => Response::HTTP_OK,
+            'message' => 'Success.',
+            'data' => $popularEvents
+        ]);
+    }
+
+    /**
+     * Fetch the top 10 most popular events based on ticket sales.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    protected function fetchPopularEvents()
+    {
+        return Event::select(
+                'events.id',
+                'events.name',
+                'events.start_datetime',
+                'events.location',
+                'events.image_banner',
+                DB::raw('COUNT(tickets.id) as total_tickets_sold')
+            )
+            ->join('orders', 'events.id', '=', 'orders.event_id')
+            ->join('tickets', 'orders.id', '=', 'tickets.order_id')
+            ->where('events.start_datetime', '>', now())  // Fetch upcoming events only
+            ->groupBy('events.id', 'events.name', 'events.start_datetime', 'events.location', 'events.image_banner')
+            ->orderByDesc('total_tickets_sold')  // Order by the number of tickets sold
+            ->limit(10)  // Limit to the top 10
+            ->get();
     }
 
     public function myEvent(Request $request): JsonResponse

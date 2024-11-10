@@ -69,7 +69,7 @@ export default {
 
             state.isLoading = true;
             try {
-                const response = await apiClient.get('/api/my_events', {
+                const response = await apiClient.get('/api/events/my_events', {
                     params: {
                         page,
                         limit: 6,

@@ -5,12 +5,13 @@
       <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
         <img srcset="/src/assets/image/logo.webp" alt="ticket promotion image" class="object-cover h-[30px] w-[40px]">
       </router-link>
-      <span v-if="currentPath && currentPath !== 'Dashboard'" class="flex items-center justify-center space-x-1 italic text-primary text-sm">
-        <router-link :to="{name: 'Dashboard'}" class="underline ">
+      <span v-if="currentPath && currentPath !== 'Dashboard'"
+        class="flex items-center justify-center space-x-1 italic text-primary text-sm">
+        <router-link :to="{ name: 'Dashboard' }" class="underline ">
           Dashboard
         </router-link>
         <span>></span>
-        <router-link :to="{name: currentPath}" class="underline ">
+        <router-link :to="{ name: currentPath }" class="underline ">
           {{ currentPath }}
         </router-link>
       </span>
@@ -43,7 +44,8 @@
 import router from '@/router';
 import { useAuthStore } from '@/stores/auth';
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
-import {  useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
+import defaultPicture from '@/assets/image/not_found.webp';
 
 export default {
   setup(props) {
@@ -97,9 +99,7 @@ export default {
 
     onMounted(() => {
       authStore.checkLogin();
-      if (!state.isLogin || !state.user.avatar) {
-        state.user.avatar = 'https://via.placeholder.com/150';
-      }
+      if (!state.isLogin || !state.user.avatar) state.user.avatar = defaultPicture;
     })
 
     return {

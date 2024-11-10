@@ -26,15 +26,31 @@
         <!-- Categories -->
         <div class="flex gap-3 p-3 overflow-x-auto no-scrollbar" style="min-height: 50px;">
           <div v-for="category in categories" :key="category.id"
-            class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl bg-[#f0f2f5] px-4 text-sm font-medium leading-normal text-[#111418]">
-            <p>{{ category.name }}</p>
+            :class="{
+              'bg-primary': category.name === cat,
+              'bg-[#f0f2f5]': category.name !== cat,
+            }" @click="handleCat(category?.name)"
+            class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-xl px-4 text-sm font-medium leading-normal text-[#111418] cursor-pointer transition-all duration-300">
+            <p
+              :class="{
+                'text-white': category.name === cat,
+                'text-[#111418]': category.name !== cat
+              }"
+              class="h-full w-full flex items-center justify-center rounded-xl transition-all duration-300">
+              {{ category?.name }}
+            </p>
           </div>
         </div>
 
         <!-- Popular Events Section with Horizontal Scroll -->
         <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
         <p class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>
-        <div class="p-4 overflow-x-auto no-scrollbar" style="min-height: 180px;">
+        
+        <div v-if="!isLoading && events.length === 0" class="flex justify-center py-5">
+          <p class="text-lg font-medium text-gray-500">Data Not Found</p>
+        </div>
+        
+        <div v-else class="p-4 overflow-x-auto no-scrollbar" style="min-height: 180px;">
           <div class="flex items-stretch p-4 gap-3">
             <div v-if="isLoading" class="placeholder-content">
               <!-- Placeholder structure for loading state -->
@@ -42,7 +58,7 @@
               <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
               <div class="h-4 bg-gray-200 rounded w-1/2"></div>
             </div>
-            <div v-else v-for="event in events" :key="event.id">
+            <div v-else v-for="event in popular" :key="event.id">
               <div
                 class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-60">
                 <div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex flex-col"
@@ -75,10 +91,12 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onBeforeUnmount, defineAsyncComponent, toRefs } from 'vue';
+import { ref, reactive, onMounted, onBeforeUnmount, defineAsyncComponent, toRefs, watch } from 'vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useHead } from '@vueuse/head';
+import { debounce } from 'lodash';
+
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 const EventCard = defineAsyncComponent(() => import('@/components/EventCard.vue'));
 
@@ -97,14 +115,24 @@ export default {
       hasMoreEvents: true,
       searchQuery: '',
       categories: [],
+      popular: [],
+      cat: 'All',
     });
 
-    const fetchEvents = async (page = 1, query = '') => {
-      if (state.isLoading || !state.hasMoreEvents) return;
+    // Debounced search to avoid too many API requests
+    const debouncedSearch = debounce(async (query) => {
+      state.currentPage = 1;
+      state.hasMoreEvents = true;
+      await fetchEvents(1, query, state.cat);
+    }, 500);
+
+    const fetchEvents = async (page = 1, query = '', cat = '') => {
+      if (state.isLoading || (!state.hasMoreEvents && !cat)) return;
+      if (cat === 'All') cat = '';
       state.isLoading = true;
       try {
         const response = await apiClient.get(`/api/events/list`, {
-          params: { page, limit: 6, search: query || undefined }
+          params: { page, limit: 6, search: query || undefined, cat }
         });
         if (response.code === 200) {
           state.events = page === 1 ? response.data.data : [...state.events, ...response.data.data];
@@ -118,30 +146,44 @@ export default {
       }
     };
 
+    const fetchPopularEvent = async () => {
+      if (state.popular.length > 0) return; // Prevent fetching if categories already exist
+      try {
+        const response = await apiClient.get('/api/get_popular_events');
+        state.popular = response.data;
+      } catch (error) {
+        console.error('Error fetching popular event:', error);
+      }
+    };
+
     const getCategories = async () => {
+      if (state.categories.length > 0) return; // Prevent fetching if categories already exist
       try {
         const response = await apiClient.get('/api/categories/list');
         state.categories = response.data;
+        state.categories.unshift({ name: 'All', id: 0 });
       } catch (error) {
         console.error('Error fetching categories:', error);
-        return [];
       }
-    }
-
-    const handleSearch = () => {
-      state.currentPage = 1;
-      state.hasMoreEvents = true;
-      const trimmedQuery = state.searchQuery.trim();
-      setTimeout(() => {
-        fetchEvents(1, trimmedQuery || '');
-      }, 500);
     };
 
+    const handleSearch = () => {
+      const trimmedQuery = state.searchQuery.trim();
+      debouncedSearch(trimmedQuery || '');
+    };
+
+    const handleCat = (cat) => {
+      state.cat = cat;
+      const trimmedQuery = state.searchQuery.trim();
+      fetchEvents(1, trimmedQuery || '', cat);
+    };
+
+    // Throttling the scroll handler to improve performance
     const handleScroll = () => {
       const bottomOfWindow = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
       if (bottomOfWindow && state.hasMoreEvents && !state.isLoading) {
         state.currentPage += 1;
-        fetchEvents(state.currentPage, state.searchQuery);
+        fetchEvents(state.currentPage, state.searchQuery, state.cat);
       }
     };
 
@@ -149,15 +191,16 @@ export default {
       router.push(`/${event.slug}`);
     };
 
+    // Memoized date formatting to avoid reprocessing same date multiple times
     const formatDate = (dateTimeString) => {
       const date = new Date(dateTimeString);
       const options = {
-        weekday: 'short', // Short day of the week (e.g., Sun)
-        month: 'short',   // Short month (e.g., Jan)
-        day: 'numeric',   // Numeric day of the month (e.g., 12)
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
       };
       return date.toLocaleString('en-US', options);
-    }
+    };
 
     useHead({
       title: 'Event Categories - Ticketku Web Application',
@@ -168,10 +211,12 @@ export default {
     });
 
     onMounted(() => {
-      fetchEvents();
       getCategories();
+      fetchPopularEvent();
+      fetchEvents();
       window.addEventListener('scroll', handleScroll);
     });
+
     onBeforeUnmount(() => {
       window.removeEventListener('scroll', handleScroll);
     });
@@ -179,6 +224,7 @@ export default {
     return {
       ...toRefs(state),
       handleSearch,
+      handleCat,
       formatDate,
       toDetail,
     };

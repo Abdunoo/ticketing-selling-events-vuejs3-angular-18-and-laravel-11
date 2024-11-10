@@ -40,7 +40,9 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::post('change-password', [AuthController::class, 'changePassword']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('events', EventController::class);
-    Route::get('my_events', [EventController::class, 'myEvent']);
+    Route::get('events/my_events', [EventController::class, 'myEvent']);
+    Route::get('get_popular_events', [EventController::class, 'getPopularEvents']);
+
 
     Route::apiResource('users', UserController::class);
     // Route::apiResource('ticket-types', TicketTypeController::class);

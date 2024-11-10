@@ -1,8 +1,19 @@
 <template>
   <router-link :to="{ name: 'EventDetail', params: { event_name: event.slug } }"
-    class="event-card bg-cover bg-center flex flex-col items-stretch justify-end rounded-xl pt-[132px]"
-    :style="{ backgroundImage: `linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 100%), url(${event.image_banner})` }">
-    <div class="flex w-full items-end justify-between gap-4 p-4">
+    class="event-card relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden ">
+    <img
+      :src="event.image_banner"
+      :srcset="`
+        ${event.image_banner}?w=400 400w,
+        ${event.image_banner}?w=800 800w,
+        ${event.image_banner}?w=1200 1200w
+      `"
+      sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
+      :alt="event.name"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+    <div class="relative flex w-full items-end justify-between gap-4 p-4 pt-[132px]">
       <div class="flex max-w-[440px] flex-1 flex-col gap-1">
         <p class="text-white text-lg font-bold line-clamp-1">{{ event.name }}</p>
         <p class="text-white text-sm line-clamp-1">{{ formatDate(event.start_datetime) }} · {{ event.location }}</p>
@@ -49,5 +60,19 @@ export default defineComponent({
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+</style>
+
+<style scoped>
+.event-card {
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

@@ -20,10 +20,25 @@ class EventFactory extends Factory
 
     public function definition(): array
     {
+        $categories = [
+            'Music',
+            'Food',
+            'Tech',
+            'Art',
+            'Sports',
+            'Health',
+            'Education',
+            'Entertainment',
+            'Travel',
+            'Lifestyle',
+            'Charity',
+        ];
+
         return [
             'name' => $this->faker->unique()->sentence(3),
             'slug' => Str::slug($this->faker->unique()->sentence(3)),
             'description' => $this->faker->paragraph(),
+            'category' => $this->faker->randomElement($categories), // Random category selection
             'start_datetime' => $this->faker->dateTimeBetween('+1 days', '+2 months'),
             'end_datetime' => $this->faker->dateTimeBetween('+2 months', '+3 months'),
             'location' => $this->faker->address(),

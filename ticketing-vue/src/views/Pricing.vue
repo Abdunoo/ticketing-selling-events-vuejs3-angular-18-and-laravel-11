@@ -19,7 +19,7 @@
                     <p class="font-light text-gray-500 sm:text-lg">Ideal for small events with basic ticketing needs.</p>
                     <div class="flex items-baseline justify-center my-8">
                         <span class="mr-2 text-5xl font-extrabold">$29</span>
-                        <span class="text-gray-500">/event</span>
+                        <span class="text-gray-500">/month</span>
                     </div>
                     <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
@@ -60,7 +60,7 @@
                     <p class="font-light text-gray-500 sm:text-lg">For mid-sized events needing more advanced features.</p>
                     <div class="flex items-baseline justify-center my-8">
                         <span class="mr-2 text-5xl font-extrabold">$99</span>
-                        <span class="text-gray-500">/event</span>
+                        <span class="text-gray-500">/month</span>
                     </div>
                     <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
@@ -102,7 +102,7 @@
                     </p>
                     <div class="flex items-baseline justify-center my-8">
                         <span class="mr-2 text-5xl font-extrabold">$499</span>
-                        <span class="text-gray-500">/event</span>
+                        <span class="text-gray-500">/month</span>
                     </div>
                     <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">

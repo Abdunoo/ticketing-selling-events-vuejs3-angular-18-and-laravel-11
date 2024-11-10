@@ -16,8 +16,13 @@ class EventWithTicketTypeSeeder extends Seeder
     {
         // Create 100 events
         Event::factory(100)->create()->each(function ($event) {
-            // Create 2 ticket types for each event
-            TicketType::factory()->count(2)->create([
+            // Create a regular ticket type for each event
+            TicketType::factory()->regular()->create([
+                'event_id' => $event->id,
+            ]);
+
+            // Create a VIP ticket type for each event
+            TicketType::factory()->vip()->create([
                 'event_id' => $event->id,
             ]);
         });

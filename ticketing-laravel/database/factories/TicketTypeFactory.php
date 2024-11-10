@@ -27,4 +27,30 @@ class TicketTypeFactory extends Factory
             'updated_at' => now(),
         ];
     }
+
+    /**
+     * Define a VIP ticket type state.
+     *
+     * @return static
+     */
+    public function vip(): static
+    {
+        return $this->state([
+            'name' => 'VIP',
+            'price' => $this->faker->randomFloat(2, 100000, 200000),  // Higher price for VIP
+        ]);
+    }
+
+    /**
+     * Define a regular ticket type state.
+     *
+     * @return static
+     */
+    public function regular(): static
+    {
+        return $this->state([
+            'name' => 'Regular',
+            'price' => $this->faker->randomFloat(2, 5000, 50000),  // Lower price for Regular
+        ]);
+    }
 }
