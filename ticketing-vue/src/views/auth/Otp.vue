@@ -1,8 +1,8 @@
 <template>
   <section class="bg-gray-50">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-      <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-        <img srcset="/src/assets/image/logo.webp" alt="ticket promotion image" class="object-cover h-10">
+      <a href="#" class="flex items-center justify-center flex-row mb-6 text-2xl font-semibold text-gray-900">
+        <img v-lazy="logo" alt="ticket applicaiton verivication otp" class="object-cover h-10 w-10 mr-2">
         Ticketku
       </a>
       <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
@@ -38,6 +38,7 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
+import logo from '@/assets/image/logo.webp';
 
 export default {
   setup(props) {
@@ -84,7 +85,8 @@ export default {
     return {
       otp,
       verifyOtp,
-      resendOtp
+      resendOtp,
+      logo,
     };
   }
 };

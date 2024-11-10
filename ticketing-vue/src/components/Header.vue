@@ -3,7 +3,7 @@
     class="sticky top-0 bg-gray-50 z-50 flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#f0f2f5] px-10 py-2 shadow-sm">
     <div class="flex space-x-2 items-center cursor-pointer">
       <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-        <img srcset="/src/assets/image/logo.webp" alt="ticket promotion image" class="object-cover h-[30px] w-[40px]">
+        <img v-lazy="logo" alt="ticket promotion image" class="object-cover h-[30px] w-[40px]">
       </router-link>
       <span v-if="currentPath && currentPath !== 'Dashboard'"
         class="flex items-center justify-center space-x-1 italic text-primary text-sm">
@@ -28,8 +28,9 @@
         class="text-white bg-primary hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
         @click="toPricing">Create Events</button>
       <div v-if="isLogin == true"
-        class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-1 ring-blue-300 dark:ring-blue-500"
-        @click="toAccount" :style="{ backgroundImage: `url(${user?.avatar})` }">
+        class="rounded-full size-10 ring-1 ring-blue-300 dark:ring-blue-500"
+        @click="toAccount">
+        <img v-lazy="user.avatar" class="bg-center bg-no-repeat aspect-square bg-cover  size-10 object-cover rounded-full" :alt="user.name">
       </div>
       <div v-else class="flex gap-2">
         <button @click="toLogin"
@@ -46,6 +47,7 @@ import { useAuthStore } from '@/stores/auth';
 import { computed, onMounted, reactive, ref, toRefs, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import defaultPicture from '@/assets/image/not_found.webp';
+import logo from '@/assets/image/logo.webp';
 
 export default {
   setup(props) {
@@ -59,6 +61,7 @@ export default {
         avatar: ''
       },
       currentPath: ref(null),
+      logo,
     });
 
     const authStore = useAuthStore();

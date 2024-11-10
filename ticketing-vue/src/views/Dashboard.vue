@@ -29,7 +29,7 @@
         <!-- Image Section -->
         <div
           class="hidden lg:mt-0 lg:col-span-5 lg:flex transition-transform duration-1000 ease-in-out transform hover:scale-110">
-          <img srcset="/src/assets/image/img3.webp" alt="ticket promotion image"
+          <img v-lazy="img3" alt="ticket promotion image"
             class="object-cover object-left">
         </div>
       </div>
@@ -39,32 +39,32 @@
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6">
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst1.webp" alt="Music Event"
+            <img v-lazy="lst1" alt="Music Event"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst2.webp" alt="Sports Event"
+            <img v-lazy="lst2" alt="Sports Event"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst3.webp" alt="Theater Event"
+            <img v-lazy="lst3" alt="Theater Event"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst4.webp" alt="Comedy Show"
+            <img v-lazy="lst4" alt="Comedy Show"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst5.webp" alt="Festival"
+            <img v-lazy="lst5" alt="Festival"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img srcset="/src/assets/image/lst6.webp" alt="Partner Logo"
+            <img v-lazy="lst6" alt="Partner Logo"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
         </div>
@@ -124,14 +124,14 @@
           </div>
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            srcset="/src/assets/image/ticket-purchase.webp" alt="Ticket Purchase Feature" />
+            v-lazy="ticketPurchase" alt="Ticket Purchase Feature" />
         </div>
 
         <!-- Row 2 -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
-            srcset="/src/assets/image/event-recommendations.webp" alt="Event Recommendations Feature" />
+            v-lazy="eventRecommendations" alt="Event Recommendations Feature" />
           <div
             class="text-gray-500 sm:text-lg translate-y-10 transition duration-1000 delay-300 ease-in-out transform hover:scale-105">
             <h2 class="mb-4 text-3xl font-extrabold tracking-tight text-gray-900">
@@ -451,6 +451,15 @@
 <script>
 import { useHead } from "@vueuse/head";
 import { ref } from "vue";
+import img3 from '@/assets/image/img3.webp';
+import lst1 from '@/assets/image/lst1.webp';
+import lst2 from '@/assets/image/lst2.webp';
+import lst3 from '@/assets/image/lst3.webp';
+import lst4 from '@/assets/image/lst4.webp';
+import lst5 from '@/assets/image/lst5.webp';
+import lst6 from '@/assets/image/lst6.webp';
+import ticketPurchase from '@/assets/image/ticket-purchase.webp';
+import eventRecommendations from '@/assets/image/event-recommendations.webp';
 
 export default {
   setup() {
@@ -475,6 +484,15 @@ export default {
 
     return {
       testimonials,
+      img3,
+      lst1,
+      lst2,
+      lst3,
+      lst4,
+      lst5,
+      lst6,
+      ticketPurchase,
+      eventRecommendations,
     };
   },
 };

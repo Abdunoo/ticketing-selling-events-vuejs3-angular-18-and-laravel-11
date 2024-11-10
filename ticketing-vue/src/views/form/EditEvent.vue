@@ -21,7 +21,7 @@
                     <select v-model="newEvent.category" id="category" required
                         class="form-input w-full border border-[#cedbe8] rounded-xl bg-slate-50 text-[#0d141c] h-14 px-4 py-2 bg-[image:--select-button-svg] placeholder:text-[#49719c]">
                         <option value="">Select category</option>
-                        <option class="rounded-lg" v-for="category in categories" :key="category.id" :value="category.id">
+                        <option class="rounded-lg" v-for="category in categories" :key="category.id" :value="category.name">
                             {{ category.name }}
                         </option>
                     </select>
@@ -108,7 +108,7 @@
                             format.</p>
                         <span id="filename" class="text-gray-500 bg-gray-200 z-50">{{ filename }}</span>
                     </label>
-                    <img v-if="imageUrl" :srcset="imageUrl" class="w-full h-auto mt-4" alt="Image preview" />
+                    <img v-if="imageUrl" v-lazy="imageUrl" class="w-full h-auto mt-4" alt="Image preview" />
                 </div>
             </label>
 
@@ -147,6 +147,7 @@ export default {
                 start_datetime: '',
                 end_datetime: '',
                 location: '',
+                category: '',
             },
             ticketTypes: [],
             imageUrl: null,
@@ -205,6 +206,7 @@ export default {
                 state.newEvent.start_datetime = eventData.start_datetime;
                 state.newEvent.end_datetime = eventData.end_datetime;
                 state.newEvent.location = eventData.location;
+                state.newEvent.category = eventData.category;
                 // Populate ticket types
                 state.ticketTypes = eventData.ticket_types.map(ticket => ({
                     id: ticket.id,

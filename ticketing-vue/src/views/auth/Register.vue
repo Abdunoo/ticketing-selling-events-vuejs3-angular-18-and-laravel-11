@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-full flex-col justify-center items-center px-6 py-12 lg:px-8">
     <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-      <img srcset="/src/assets/image/logo.webp" alt="ticket promotion image" class="object-cover h-10">
+      <img v-lazy="logo" alt="ticket promotion image" class="object-cover h-10">
       Ticketku
     </a>
     <div class="w-full md:mt-0 sm:max-w-md xl:p-0">
@@ -62,6 +62,8 @@
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { reactive, toRefs } from 'vue';
+import logo from '@/assets/image/logo.webp';
+
 export default {
   setup(props) {
     const state = reactive({
@@ -69,6 +71,7 @@ export default {
       email: '',
       password1: '',
       password2: '',
+      logo,
 
     })
 

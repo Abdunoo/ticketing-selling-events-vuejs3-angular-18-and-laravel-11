@@ -2,7 +2,7 @@
   <router-link :to="{ name: 'EventDetail', params: { event_name: event.slug } }"
     class="event-card relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden ">
     <img
-      :src="event.image_banner"
+      v-lazy="event.image_banner"
       :srcset="`
         ${event.image_banner}?w=400 400w,
         ${event.image_banner}?w=800 800w,
