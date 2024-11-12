@@ -1,13 +1,10 @@
 <template>
     <loading :isLoading="isLoading" />
     <form @submit.prevent="handleSubmit" class="space-y-6 py-4">
-        <!-- Event Details Section -->
         <div class="px-4 md:px-8 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-            <!-- Main Content -->
             <div class="flex-1">
                 <h2 class="text-[#0d141c] text-2xl font-bold leading-tight mb-6">Edit Event</h2>
 
-                <!-- Event Name -->
                 <div class="flex flex-col space-y-4 mb-4">
                     <label for="name" class="text-[#0d141c] text-base font-medium">Event name*</label>
                     <input v-model="newEvent.name" type="text" id="name" placeholder="Enter event name" required
@@ -15,7 +12,6 @@
                     <p v-if="eventNameTooLong" class="text-red-500 text-sm">Event name cannot exceed 30 characters.</p>
                 </div>
 
-                <!-- Category -->
                 <div class="flex flex-col space-y-4 mb-4">
                     <label for="category" class="text-[#0d141c] text-base font-medium">Category*</label>
                     <select v-model="newEvent.category" id="category" required
@@ -27,7 +23,6 @@
                     </select>
                 </div>
 
-                <!-- Start Date and End Date -->
                 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 mb-4">
                     <div class="flex-1">
                         <label for="start_datetime" class="text-[#0d141c] text-base font-medium">Start date*</label>
@@ -41,7 +36,6 @@
                     </div>
                 </div>
 
-                <!-- Location -->
                 <div class="flex flex-col space-y-4 mb-4">
                     <label for="location" class="text-[#0d141c] text-base font-medium">Location (Venue or Online
                         URL)*</label>
@@ -49,7 +43,6 @@
                         class="form-input w-full border border-[#cedbe8] rounded-xl bg-slate-50 text-[#0d141c] h-14 px-4 py-2 placeholder:text-[#49719c]" />
                 </div>
 
-                <!-- Description -->
                 <div class="flex flex-col space-y-4 mb-4">
                     <label for="description" class="text-[#0d141c] text-base font-medium">Description*</label>
                     <textarea v-model="newEvent.description" id="description" placeholder="Enter description" required
@@ -57,7 +50,6 @@
                 </div>
             </div>
 
-            <!-- Ticket Types Section -->
             <div class="flex-1">
                 <h3 class="text-[#0d141c] text-lg font-bold leading-tight mb-4">Ticket Types</h3>
                 <div v-for="(ticket, index) in ticketTypes" :key="index" class="flex flex-col space-y-4 mb-4">
@@ -86,7 +78,6 @@
             </div>
         </div>
 
-        <!-- Image Banner Section -->
         <div class="px-4 md:px-8 mt-6 flex flex-col items-center justify-center">
             <label class="flex flex-col space-y-4 items-center justify-center mb-16">
                 <p class="text-[#0d141c] text-base font-medium">Image Banner*</p>
@@ -112,7 +103,6 @@
                 </div>
             </label>
 
-            <!-- Submit Button -->
             <div class="w-full">
                 <button type="submit"
                     :disabled="eventNameTooLong"
@@ -125,7 +115,7 @@
 </template>
 
 <script>
-import { ref, onMounted, reactive, toRefs, defineAsyncComponent, computed } from 'vue';
+import { onMounted, reactive, toRefs, defineAsyncComponent, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
@@ -200,14 +190,12 @@ export default {
             try {
                 const response = await apiClient.get(`/api/events/${eventId}`);
                 const eventData = response.data;
-                // Populate event details
                 state.newEvent.name = eventData.name;
                 state.newEvent.description = eventData.description;
                 state.newEvent.start_datetime = eventData.start_datetime;
                 state.newEvent.end_datetime = eventData.end_datetime;
                 state.newEvent.location = eventData.location;
                 state.newEvent.category = eventData.category;
-                // Populate ticket types
                 state.ticketTypes = eventData.ticket_types.map(ticket => ({
                     id: ticket.id,
                     name: ticket.name,
@@ -215,7 +203,6 @@ export default {
                     available_quantity: ticket.available_quantity
                 }));
 
-                // Set image banner URL
                 state.imageUrl = eventData.image_banner;
             } catch (error) {
                 console.log('error.status ', error.status)

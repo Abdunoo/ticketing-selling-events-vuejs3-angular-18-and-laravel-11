@@ -5,7 +5,6 @@
       <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
         <h1 class="text-center text-2xl sm:text-3xl font-semibold mb-8 text-gray-800">Review and Purchase</h1>
 
-        <!-- Event Info -->
         <div class="flex flex-col items-center justify-center mb-8 text-center">
           <img v-lazy="event.image_banner" :alt="event.name" class="bg-gray-200 w-24 h-24 rounded-full">
           <div class="mt-4">
@@ -15,11 +14,9 @@
           </div>
         </div>
 
-        <!-- Ticket Types -->
         <div class="mb-8">
           <p class="text-lg font-semibold text-gray-700 mb-4">Select Ticket Type and Quantity</p>
           <div class="space-y-4" v-for="type in ticketType" :key="type.id">
-            <!-- Ticket -->
             <label
               class="flex items-center justify-between bg-white p-4 rounded-lg shadow-sm hover:bg-gray-100 cursor-pointer"
               :class="{ 'bg-gray-100': selectedTicket == type.name }">
@@ -37,13 +34,6 @@
             </label>
           </div>
         </div>
-
-        <!-- ID Required Notice
-      <div class="text-center mb-8">
-        <a href="#" class="text-blue-500 text-sm hover:underline">ID Required for R-Rated Movies</a>
-      </div>
-   -->
-        <!-- Total and Continue Button -->
         <div class="text-center">
           <p class="text-xl font-semibold mb-6 text-gray-800">Total: {{ formatCurrency(countTotalPrice()) }}</p>
           <button class="bg-blue-600 text-white py-3 px-8 rounded-lg w-full hover:bg-blue-700" @click="toStore()">
@@ -64,7 +54,7 @@ import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
 import router from '@/router';
-import { useHead } from '@vueuse/head'; // Import useHead to manage dynamic meta tags
+import { useHead } from '@vueuse/head'; 
 
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
@@ -116,7 +106,6 @@ export default {
       }
       state.event = event;
       state.ticketType = event.ticket_types || [];
-      // Set dynamic meta tags after event data is fetched
       updateMetaTags(event);
 
       state.isLoading = false;
@@ -156,18 +145,17 @@ export default {
     };
 
     const updateMetaTags = (event) => {
-      // Use `useHead` to update title and meta tags dynamically
       useHead({
-        title: `${event.name} - Checkout - Ticketku Web Application`, // Dynamic title with event name
+        title: `${event.name} - Checkout - Ticketku Web Application`, 
         meta: [
-          { name: 'description', content: `Purchase tickets for ${event.name}` }, // Meta description
-          { property: 'og:title', content: `Checkout - ${event.name}` }, // Open Graph title
-          { property: 'og:description', content: `Purchase tickets for ${event.name} and enjoy the event!` }, // Open Graph description
-          { property: 'og:image', content: event.image_banner }, // Open Graph image
-          { property: 'og:url', content: 'https://sandbox2.panemu.com/ticketing/checkout' }, // Open Graph image
-          { name: 'twitter:title', content: `Checkout - ${event.name}` }, // Twitter card title
-          { name: 'twitter:description', content: `Purchase tickets for ${event.name} now!` }, // Twitter card description
-          { name: 'twitter:image', content: event.image_banner }, // Twitter card image
+          { name: 'description', content: `Purchase tickets for ${event.name}` }, 
+          { property: 'og:title', content: `Checkout - ${event.name}` }, 
+          { property: 'og:description', content: `Purchase tickets for ${event.name} and enjoy the event!` }, 
+          { property: 'og:image', content: event.image_banner }, 
+          { property: 'og:url', content: 'https://sandbox2.panemu.com/ticketing/checkout' }, 
+          { name: 'twitter:title', content: `Checkout - ${event.name}` }, 
+          { name: 'twitter:description', content: `Purchase tickets for ${event.name} now!` }, 
+          { name: 'twitter:image', content: event.image_banner }, 
         ],
       });
     };
@@ -186,7 +174,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Add any custom styles if needed */
-</style>

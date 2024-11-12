@@ -20,7 +20,3 @@
   };
   </script>
   
-  <style scoped>
-  /* Add any custom styles specific to Terms.vue here */
-  </style>
-  

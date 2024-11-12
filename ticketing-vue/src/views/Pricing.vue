@@ -12,7 +12,6 @@
                 </router-link>
             </div>
             <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-                <!-- Pricing Card - Basic Plan -->
                 <div
                     class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
                     <h3 class="mb-4 text-2xl font-semibold">Basic</h3>
@@ -21,7 +20,6 @@
                         <span class="mr-2 text-5xl font-extrabold">$29</span>
                         <span class="text-gray-500">/month</span>
                     </div>
-                    <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
                         <li class="flex items-center space-x-3">
                             <svg class="flex-shrink-0 w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -53,7 +51,6 @@
                         started</a>
                 </div>
     
-                <!-- Pricing Card - Professional Plan -->
                 <div
                     class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
                     <h3 class="mb-4 text-2xl font-semibold">Professional</h3>
@@ -62,7 +59,6 @@
                         <span class="mr-2 text-5xl font-extrabold">$99</span>
                         <span class="text-gray-500">/month</span>
                     </div>
-                    <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
                         <li class="flex items-center space-x-3">
                             <svg class="flex-shrink-0 w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -94,7 +90,6 @@
                         started</a>
                 </div>
     
-                <!-- Pricing Card - Enterprise Plan -->
                 <div
                     class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8">
                     <h3 class="mb-4 text-2xl font-semibold">Enterprise</h3>
@@ -104,7 +99,6 @@
                         <span class="mr-2 text-5xl font-extrabold">$499</span>
                         <span class="text-gray-500">/month</span>
                     </div>
-                    <!-- List -->
                     <ul role="list" class="mb-8 space-y-4 text-left">
                         <li class="flex items-center space-x-3">
                             <svg class="flex-shrink-0 w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">

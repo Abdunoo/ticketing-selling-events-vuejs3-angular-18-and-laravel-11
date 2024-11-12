@@ -4,7 +4,6 @@
     <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
       <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
         <div class="px-4 py-3">
-          <!-- Search Bar -->
           <label class="flex flex-col min-w-40 h-12 w-full">
             <div class="flex w-full flex-1 items-stretch rounded-xl h-full">
               <div
@@ -23,7 +22,6 @@
           </label>
         </div>
 
-        <!-- Categories -->
         <div class="flex gap-3 p-3 overflow-x-auto no-scrollbar" style="min-height: 50px;">
           <div v-for="category in categories" :key="category.id"
             :class="{
@@ -42,34 +40,37 @@
           </div>
         </div>
 
-        <!-- Popular Events Section with Horizontal Scroll -->
         <h2 v-show="!searchQuery" class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Popular</h2>
         <p v-show="!searchQuery" class="text-textSecondary text-base font-medium leading-normal mb-4">Only new for you</p>
         <div v-show="!searchQuery" class="overflow-x-auto no-scrollbar" style="min-height: 180px;">
           <div class="flex items-stretch gap-3">
             <div v-if="isLoading" class="placeholder-content">
-              <!-- Placeholder structure for loading state -->
               <div class="w-full aspect-video bg-gray-200 rounded-xl mb-4"></div>
               <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
               <div class="h-4 bg-gray-200 rounded w-1/2"></div>
             </div>
             <PopCard
-              v-for="event in popular"
+              v-for="(event, index) in popular"
               :key="event.id"
               :event="event"
+              :index="index"
               @go-to-detail="toDetail"
             />
           </div>
         </div>
 
-        <!-- Trending Section as Vertical Scrollable Grid -->
         <h2 class="text-textPrimary text-2xl font-bold leading-tight max-w-md">Trending</h2>
         <p class="text-textSecondary text-base font-medium leading-normal mb-4">Hot deals and discounts</p>
         <div v-if="!isLoading && events.length === 0" class="flex justify-center py-5">
           <p class="text-lg font-medium text-gray-500">Data Not Found</p>
         </div>
         <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" style="min-height: 300px;">
-          <EventCard v-for="event in events" :key="event.id" :event="event" />
+          <EventCard
+            v-for="(event, index) in events" 
+            :key="event.id" 
+            :event="event"
+            :index="index"
+          />
         </div>
       </div>
     </div>
@@ -77,15 +78,14 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onBeforeUnmount, defineAsyncComponent, toRefs, watch } from 'vue';
+import { reactive, onMounted, onBeforeUnmount, defineAsyncComponent, toRefs } from 'vue';
 import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { useHead } from '@vueuse/head';
-import { debounce } from 'lodash';
-import PopCard from '@/components/PopCard.vue';
 
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 const EventCard = defineAsyncComponent(() => import('@/components/EventCard.vue'));
+const PopCard = defineAsyncComponent(() => import('@/components/PopCard.vue'));
 
 export default {
   name: 'EventCategoryPage',
@@ -107,12 +107,11 @@ export default {
       cat: 'All',
     });
 
-    // Debounced search to avoid too many API requests
-    const debouncedSearch = debounce(async (query) => {
+    const debouncedSearch = async (query) => {
       state.currentPage = 1;
       state.hasMoreEvents = true;
       await fetchEvents(1, query, state.cat);
-    }, 500);
+    }
 
     const fetchEvents = async (page = 1, query = '', cat = '') => {
       if (state.isLoading || (!state.hasMoreEvents && !cat)) return;
@@ -135,7 +134,7 @@ export default {
     };
 
     const fetchPopularEvent = async () => {
-      if (state.popular.length > 0) return; // Prevent fetching if categories already exist
+      if (state.popular.length > 0) return; 
       try {
         const response = await apiClient.get('/api/events/get_popular_events');
         state.popular = response.data;
@@ -145,7 +144,7 @@ export default {
     };
 
     const getCategories = async () => {
-      if (state.categories.length > 0) return; // Prevent fetching if categories already exist
+      if (state.categories.length > 0) return; 
       try {
         const response = await apiClient.get('/api/categories/list');
         state.categories = response.data;
@@ -166,7 +165,6 @@ export default {
       fetchEvents(1, trimmedQuery || '', cat);
     };
 
-    // Throttling the scroll handler to improve performance
     const handleScroll = () => {
       const bottomOfWindow = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 10;
       if (bottomOfWindow && state.hasMoreEvents && !state.isLoading) {
@@ -179,7 +177,6 @@ export default {
       router.push(`/${event.slug}`);
     };
 
-    // Memoized date formatting to avoid reprocessing same date multiple times
     const formatDate = (dateTimeString) => {
       const date = new Date(dateTimeString);
       const options = {

@@ -18,7 +18,3 @@
   };
   </script>
   
-  <style scoped>
-  /* Add any custom styles specific to Privacy.vue here */
-  </style>
-  

@@ -6,7 +6,6 @@
         <h2 class="text-2xl font-bold text-gray-900 sm:text-3xl">Account Settings</h2>
 
         <div class="mt-6 grid grid-cols-1 gap-y-8 sm:grid-cols-3 sm:gap-x-6">
-          <!-- Profile Picture Section -->
           <div class="sm:col-span-1 flex flex-col items-center">
             <img v-lazy="user.picture"
               class="object-cover w-40 h-40 p-1 rounded-full ring-2 ring-blue-300 dark:ring-blue-500" alt="User Profile"
@@ -23,9 +22,7 @@
             </div>
           </div>
 
-          <!-- Account Info Section -->
           <div class="sm:col-span-2 space-y-6">
-            <!-- Form fields for profile update -->
             <div class="flex flex-col sm:flex-row sm:space-x-6 space-y-4 sm:space-y-0">
               <div class="w-full">
                 <label for="first_name" class="block text-sm font-medium text-gray-900">First Name</label>
@@ -41,7 +38,6 @@
               </div>
             </div>
 
-            <!-- Email -->
             <div class="w-full">
               <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
               <input v-model="user.email" type="email" id="email"
@@ -49,7 +45,6 @@
                 required />
             </div>
 
-            <!-- Profession and Bio -->
             <div class="w-full">
               <label for="profession" class="block text-sm font-medium text-gray-900">Profession</label>
               <input v-model="user.profession" type="text" id="profession"
@@ -63,7 +58,6 @@
                 placeholder="Write your bio here..."></textarea>
             </div>
 
-            <!-- Save and Logout Buttons -->
             <div class="w-full flex justify-between">
               <button @click="toLogout"
                 class="py-2.5 px-6 text-white bg-red-500 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300">Logout
@@ -88,7 +82,6 @@ import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useHead } from '@vueuse/head';
 import defaultPicture from '@/assets/image/not_found.webp';
 
-
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
@@ -112,7 +105,6 @@ export default {
 
     const authStore = useAuthStore();
 
-    // Split full name
     const splitName = (fullName) => {
       const nameParts = fullName.split(' ');
       const firstName = nameParts[0];
@@ -120,7 +112,6 @@ export default {
       return { firstName, lastName };
     };
 
-    // Fetch user data
     const me = async () => {
       try {
         state.isLoading = true;
@@ -143,7 +134,6 @@ export default {
       state.isLoading = false;
     };
 
-    // Save profile updates
     const saveProfile = async () => {
       try {
         state.isLoading = true;
@@ -157,7 +147,6 @@ export default {
       state.isLoading = false;
     };
 
-    // Navigation functions
     const toMyEvents = () => router.push('/my_events');
     const toCreateEvent = () => router.push('/pricing');
     const toLogout = () => {
@@ -172,7 +161,6 @@ export default {
 
     onMounted(me);
 
-    // Meta tags setup
     useHead({
       title: 'Account Settings',
       meta: [
@@ -191,7 +179,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* Custom styles, if necessary */
-</style>

@@ -17,7 +17,3 @@ export default {
   name: 'About',
 };
 </script>
-
-<style scoped>
-/* Add any custom styles specific to About.vue here */
-</style>

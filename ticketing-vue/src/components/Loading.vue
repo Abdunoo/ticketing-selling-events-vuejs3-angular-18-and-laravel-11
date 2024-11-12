@@ -1,4 +1,3 @@
-<!-- src/components/LoadingComponent.vue -->
 <template>
   <loading v-if="isLoading" :active="isLoading" :can-cancel="true" :is-full-page="true" class="bg-gray-500 bg-opacity-60" />
 </template>
@@ -13,7 +12,7 @@ export default {
   props: {
     isLoading: {
       type: Boolean,
-      required: true, // Controls the loading state
+      required: true, 
     },
   },
   components: {
@@ -25,7 +24,6 @@ export default {
     })
 
     const onCancel = () => {
-      // Implement your custom logic for canceling the loading state
       console.log('Loading canceled');
     }
 
@@ -37,7 +35,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* No additional styles are needed since vue-loading-overlay comes with its own styling */
-</style>

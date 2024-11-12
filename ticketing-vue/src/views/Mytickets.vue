@@ -22,13 +22,11 @@
             </div>
           </div>
 
-          <!-- Display the filtered tickets -->
           <div v-for="item in myTickets" :key="item.id" class="w-full mb-4">
             <router-link
               class="flex flex-col md:flex-row w-full bg-white shadow-md rounded-lg p-4 md:space-x-4"
               :to="{ name: 'MyticketsDetail', params: { id: item.id } }"
             >
-              <!-- Image Section -->
               <div class="w-full md:w-1/4 h-32 md:h-auto">
                 <img
                   class="w-full h-full object-cover rounded-lg"
@@ -37,9 +35,7 @@
                 />
               </div>
 
-              <!-- Content Section -->
               <div class="w-full md:w-3/4 flex flex-col justify-between">
-                <!-- Upper Content (Event Details) -->
                 <div class="flex flex-col space-y-2">
                   <div class="flex justify-between items-start space-x-2">
                     <h3 class="text-lg font-semibold text-gray-900">{{ item.events.name }}</h3>
@@ -50,7 +46,6 @@
                   <p class="text-gray-500 text-sm">Ticket {{ item.ticket_type }}</p>
                 </div>
 
-                <!-- Bottom Content (Total Price) -->
                 <div class="mt-4 flex items-center justify-between">
                   <p class="text-lg font-semibold text-gray-900">
                     <span :class="paymentStatusClass(item.payment_status)">${{ item.total_price }}</span>
@@ -88,7 +83,6 @@ export default {
       hasMore: true,
     });
 
-    // Fetch tickets from API with search query if provided
     const fetchMyTickets = async (page = 1, query = '') => {
       state.isLoading = true;
       try {
@@ -151,7 +145,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-/* Add any custom styles here */
-</style>

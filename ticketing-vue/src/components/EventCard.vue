@@ -3,15 +3,9 @@
     class="event-card relative flex flex-col items-stretch justify-end rounded-xl overflow-hidden ">
     <img
       :src="event.image_banner"
-      :srcset="`
-        ${event.image_banner}?w=400 400w,
-        ${event.image_banner}?w=800 800w,
-        ${event.image_banner}?w=1200 1200w
-      `"
-      sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
       :alt="event.name"
       class="absolute inset-0 h-full w-full object-cover"
-      loading="eager"
+      :loading="shouldEagerLoad(index) ? 'eager' : 'lazy'"
     />
     <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
     <div class="relative flex w-full items-end justify-between gap-4 p-4 pt-[132px]">
@@ -37,6 +31,22 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+    index: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      isMobile: false,
+    };
+  },
+  mounted() {
+    this.checkScreenSize();
+    window.addEventListener('resize', this.checkScreenSize); 
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize); 
   },
   methods: {
     formatDate(dateTimeString) {
@@ -52,6 +62,15 @@ export default defineComponent({
       };
       return date.toLocaleString('en-US', options);
     },
+    checkScreenSize() {
+      this.isMobile = window.innerWidth <= 600; 
+    },
+    shouldEagerLoad(index) {
+      if (this.isMobile) {
+        return index < 2;
+      }
+      return index < 6;
+    },
   },
 });
 </script>
@@ -62,15 +81,11 @@ export default defineComponent({
   background-repeat: no-repeat;
   background-size: cover;
 }
-</style>
-
-<style scoped>
 .event-card {
   position: relative;
   border-radius: 1rem;
   overflow: hidden;
 }
-
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-box-orient: vertical;

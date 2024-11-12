@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id()->autoIncrement()->primary();
             $table->string('name', 50)->unique();
-            $table->string('slug');
+            $table->string('slug', 50);
             $table->string('description', 500);
             $table->dateTime('start_datetime');
             $table->dateTime('end_datetime');

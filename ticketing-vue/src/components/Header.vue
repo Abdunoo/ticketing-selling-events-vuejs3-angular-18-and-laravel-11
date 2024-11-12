@@ -92,10 +92,8 @@ export default {
 
     const route = useRoute();
 
-    // Reactive value for the current path
     state.currentPath = ref(route.name);
 
-    // Watch for changes in the route and update the current path
     watch(route, (newRoute) => {
       state.currentPath = newRoute.name;
     });
@@ -123,10 +121,7 @@ export default {
   position: sticky;
   top: 0;
   z-index: 10;
-  /* Ensure it's above other content */
   background-color: #fff;
-  /* Ensure the background color is set */
   border-bottom: 1px solid #f0f2f5;
-  /* Ensure the border color is set */
 }
 </style>

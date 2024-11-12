@@ -5,7 +5,6 @@
       <div class="layout-content-container flex flex-col py-5 max-w-full lg:max-w-[960px] flex-1">
         <div class="@container">
           <div class="p-4">
-            <!-- Event Banner Section -->
             <div
               class="flex min-h-[280px] lg:min-h-[480px] flex-col gap-6 bg-cover bg-center bg-no-repeat rounded-lg lg:rounded-xl items-start justify-end px-4 pb-10 lg:px-10"
               :style="{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url(${event.image_banner})` }">
@@ -25,7 +24,6 @@
           </div>
         </div>
 
-        <!-- Event Description Section -->
         <h2 class="text-textPrimary text-lg lg:text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
           Description
         </h2>
@@ -33,7 +31,6 @@
           {{ event.description }}
         </p>
 
-        <!-- Date and Time Section -->
         <h2 class="text-textPrimary text-lg lg:text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
           Date and Time
         </h2>
@@ -41,7 +38,6 @@
           {{ formatDate(event.start_datetime) }}
         </p>
 
-        <!-- Location Section -->
         <h2 class="text-textPrimary text-lg lg:text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">
           Location
         </h2>
@@ -58,7 +54,7 @@ import apiClient from '@/helpers/axios';
 import router from '@/router';
 import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
-import { useHead } from '@vueuse/head'; // Import useHead to manage meta tags
+import { useHead } from '@vueuse/head'; 
 
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
@@ -81,7 +77,7 @@ export default {
           if (response.code == 200) {
             state.event = response.data;
             localStorage.setItem('event', JSON.stringify(state.event));
-            updateMetaTags(state.event); // Update meta tags after fetching event data
+            updateMetaTags(state.event);
           }
         })
         .catch(error => {
@@ -110,17 +106,16 @@ export default {
     };
 
     const updateMetaTags = (event) => {
-      // Use `useHead` to update title and meta tags dynamically
       useHead({
-        title: `${event.name} - Ticketku Web Application`, // Set page title dynamically
+        title: `${event.name} - Ticketku Web Application`, 
         meta: [
-          { name: 'description', content: event.description }, // Set meta description dynamically
-          { property: 'og:title', content: event.name }, // Open Graph title
-          { property: 'og:description', content: event.description }, // Open Graph description
-          { property: 'og:image', content: event.image_banner }, // Open Graph image
-          { name: 'twitter:title', content: event.name }, // Twitter card title
-          { name: 'twitter:description', content: event.description }, // Twitter card description
-          { name: 'twitter:image', content: event.image_banner }, // Twitter card image
+          { name: 'description', content: event.description },
+          { property: 'og:title', content: event.name }, 
+          { property: 'og:description', content: event.description }, 
+          { property: 'og:image', content: event.image_banner }, 
+          { name: 'twitter:title', content: event.name }, 
+          { name: 'twitter:description', content: event.description }, 
+          { name: 'twitter:image', content: event.image_banner }, 
         ],
       });
     };
@@ -137,7 +132,3 @@ export default {
   },
 };
 </script>
-
-<style>
-/* Custom styles can be added here if necessary */
-</style>

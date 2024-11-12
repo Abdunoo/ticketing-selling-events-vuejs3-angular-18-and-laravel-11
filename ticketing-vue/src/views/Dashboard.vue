@@ -2,7 +2,6 @@
   <section>
     <section class="bg-white">
       <div class="grid max-w-screen-xl px-4 pt-20 pb-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12 lg:pt-28">
-        <!-- Content Section -->
         <div
           class="mr-auto place-self-center lg:col-span-7 transition-all duration-1000 ease-in-out transform hover:scale-105">
           <h1
@@ -13,7 +12,6 @@
             Don't miss out on the hottest events near you! Book your tickets now with exclusive offers and enjoy an
             unforgettable experience.
           </p>
-          <!-- Buttons -->
           <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4 transition-opacity duration-1000 hover:opacity-90">
             <a href="#browse-events"
               class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-white bg-primary rounded-lg sm:w-auto hover:bg-blue-700 focus:ring-4 focus:ring-blue-300">
@@ -26,10 +24,9 @@
           </div>
         </div>
 
-        <!-- Image Section -->
         <div
           class="hidden lg:mt-0 lg:col-span-5 lg:flex transition-transform duration-1000 ease-in-out transform hover:scale-110">
-          <img v-lazy="img3" alt="ticket promotion image"
+          <img :src="img3" alt="ticket promotion image" loading="eager"
             class="object-cover object-left">
         </div>
       </div>
@@ -39,32 +36,32 @@
         <div class="grid grid-cols-2 gap-8 text-gray-500 sm:gap-12 sm:grid-cols-3 lg:grid-cols-6">
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst1" alt="Music Event"
+            <img :src="lst1" alt="Music Event" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst2" alt="Sports Event"
+            <img :src="lst2" alt="Sports Event" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst3" alt="Theater Event"
+            <img :src="lst3" alt="Theater Event" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst4" alt="Comedy Show"
+            <img :src="lst4" alt="Comedy Show" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst5" alt="Festival"
+            <img :src="lst5" alt="Festival" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
           <a href="#"
             class="flex items-center justify-center transition-transform duration-500 ease-in-out transform hover:scale-110">
-            <img v-lazy="lst6" alt="Partner Logo"
+            <img :src="lst6" alt="Partner Logo" loading="eager"
               class="h-12 w-12 object-cover object-center rounded-full">
           </a>
         </div>
@@ -72,7 +69,6 @@
     </section>
     <section class="bg-gray-50">
       <div class="max-w-screen-xl px-4 py-8 mx-auto space-y-12 lg:space-y-20 lg:py-24 lg:px-6">
-        <!-- Row 1 -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <div
             class="text-gray-500 sm:text-lg translate-y-10 transition duration-1000 delay-300 ease-in-out transform hover:scale-105">
@@ -84,10 +80,8 @@
               with ease. Enjoy fast and secure transactions with personalized
               recommendations based on your preferences.
             </p>
-            <!-- List -->
             <ul role="list" class="pt-8 space-y-5 border-t border-gray-200 my-7">
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -97,7 +91,6 @@
                 <span class="text-base font-medium leading-tight text-gray-900">Instant Digital Tickets</span>
               </li>
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -107,7 +100,6 @@
                 <span class="text-base font-medium leading-tight text-gray-900">Secure Checkout</span>
               </li>
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -127,7 +119,6 @@
             v-lazy="ticketPurchase" alt="Ticket Purchase Feature" />
         </div>
 
-        <!-- Row 2 -->
         <div class="items-center gap-8 lg:grid lg:grid-cols-2 xl:gap-16">
           <img
             class="hidden w-full mb-4 rounded-lg lg:mb-0 lg:flex transition duration-1000 ease-in-out transform translate-y-10 opacity-0 lg:opacity-100 lg:hover:scale-105"
@@ -141,10 +132,8 @@
               Get personalized event suggestions based on your preferences, so
               you'll always know about the events you're most interested in.
             </p>
-            <!-- List -->
             <ul role="list" class="pt-8 space-y-5 border-t border-gray-200 my-7">
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -154,7 +143,6 @@
                 <span class="text-base font-medium leading-tight text-gray-900">Curated Events for You</span>
               </li>
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -164,7 +152,6 @@
                 <span class="text-base font-medium leading-tight text-gray-900">Upcoming Local Events</span>
               </li>
               <li class="flex space-x-3">
-                <!-- Icon -->
                 <svg class="flex-shrink-0 w-5 h-5 text-purple-500" fill="currentColor" viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd"
@@ -291,7 +278,6 @@
           </p>
         </div>
         <div class="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0">
-          <!-- Pricing Card - Basic Plan -->
           <div
             class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8 transition-transform transform hover:scale-105 duration-300">
             <h3 class="mb-4 text-2xl font-semibold">Basic</h3>
@@ -333,7 +319,6 @@
               started</a>
           </div>
 
-          <!-- Pricing Card - Professional Plan -->
           <div
             class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8 transition-transform transform hover:scale-105 duration-300">
             <h3 class="mb-4 text-2xl font-semibold">Professional</h3>
@@ -375,7 +360,6 @@
               started</a>
           </div>
 
-          <!-- Pricing Card - Enterprise Plan -->
           <div
             class="flex flex-col max-w-lg p-6 mx-auto text-center text-gray-900 bg-white border border-gray-100 rounded-lg shadow xl:p-8 transition-transform transform hover:scale-105 duration-300">
             <h3 class="mb-4 text-2xl font-semibold">Enterprise</h3>

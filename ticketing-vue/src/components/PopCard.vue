@@ -2,16 +2,10 @@
     <div class="flex h-auto flex-1 flex-col gap-4 rounded-xl bg-white shadow-[0_0_4px_rgba(0,0,0,0.1)] min-w-80">
         <img
             :src="event.image_banner"
-            :srcset="`
-                ${event.image_banner}?w=400 400w,
-                ${event.image_banner}?w=800 800w,
-                ${event.image_banner}?w=1200 1200w
-            `"
-            sizes="(max-width: 600px) 400px, (max-width: 1200px) 800px, 1200px"
             :alt="event.name"
             class="w-full aspect-video bg-center bg-no-repeat object-cover bg-cover rounded-xl"
-            loading="eager"
-            />
+            :loading="shouldEagerLoad(index) ? 'eager' : 'lazy'"
+        />
         <div class="flex flex-col p-4 pt-0 gap-4 space-y-6">
             <div>
                 <p class="text-textPrimary text-base font-medium leading-normal line-clamp-1">{{ event.name }}</p>
@@ -33,7 +27,24 @@ export default {
         event: {
             type: Object,
             required: true
+        },
+        index : {
+            type: Number,
+            required: true
         }
+    },
+    emits: ['go-to-detail'], 
+    data() {
+        return {
+            isMobile: false,
+        }
+    },
+    mounted() {
+        this.checkScreenSize(); 
+        window.addEventListener("resize", this.checkScreenSize);
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.checkScreenSize); 
     },
     methods: {
         formatDate(dateTimeString) {
@@ -46,12 +57,17 @@ export default {
             return date.toLocaleString('en-US', options);
         },
         goToDetail() {
-            this.$emit('go-to-detail', this.event);
+            this.$emit('go-to-detail', this.event); 
+        },
+        checkScreenSize() {
+            this.isMobile = window.innerWidth <= 600; 
+        },
+        shouldEagerLoad(index) {
+            if (this.isMobile) {
+                return index < 2; 
+            }
+            return index < 3; 
         }
     }
 };
 </script>
-
-<style scoped>
-/* Add any additional styling if necessary */
-</style>

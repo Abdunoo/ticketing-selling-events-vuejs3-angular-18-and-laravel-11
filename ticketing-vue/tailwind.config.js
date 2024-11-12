@@ -3,31 +3,31 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0d7cf2',   // This will create a 'bg-primary' utility
-        secondary: '#f0f2f5', // This will create a 'bg-secondary' utility
-        accent: '#111418',    // This will create a 'bg-accent' utility
-        borderColor: '#dbe0e6',    // This will create a 'border-border' utility
-        textPrimary: '#111418', // This will create a 'text-textPrimary' utility
-        textSecondary: '#60758a', // This will create a 'text-textSecondary' utility
-        icon: '#b2bac4',       // This will create a 'text-icon' utility
+        primary: '#0d7cf2',   
+        secondary: '#f0f2f5', 
+        accent: '#111418',    
+        borderColor: '#dbe0e6',
+        textPrimary: '#111418',
+        textSecondary: '#60758a', 
+        icon: '#b2bac4',       
       },
       borderRadius: {
-        xl: '1rem',  // This is equivalent to the rounded-xl utility
-        lg: '0.75rem', // Add other custom radii as needed
+        xl: '1rem',  
+        lg: '0.75rem',
       },
       fontSize: {
-        sm: ['0.875rem', '1.25rem'], // This is equivalent to the 'text-sm' utility
-        xl: ['1.25rem', '1.75rem'],  // This is equivalent to the 'text-xl' utility
+        sm: ['0.875rem', '1.25rem'],
+        xl: ['1.25rem', '1.75rem'], 
       },
       spacing: {
-        '15px': '15px', // Custom spacing value
+        '15px': '15px', 
       },
       borderWidth: {
-        DEFAULT: '1px', // Default border width
-        '2': '2px',     // Custom border width
+        DEFAULT: '1px', 
+        '2': '2px',     
       },
       fontFamily: {
-        sans: ['Manrope', 'Noto Sans', 'sans-serif'], // Add the Inter font here
+        sans: ['Manrope', 'Noto Sans', 'sans-serif'], 
       }
     },
   },

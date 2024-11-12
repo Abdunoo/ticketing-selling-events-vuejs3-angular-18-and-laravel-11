@@ -1,19 +1,15 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <!-- Header -->
     <Header v-if="showHeader" :role="'user'" class="sticky top-0 z-10" />
 
-    <!-- Main Content -->
     <main class="flex-1 w-full mb-16 md:mb-0">
       <router-view />
     </main>
 
-    <!-- Bottom Menu for Mobile -->
     <nav
       v-if="!showHeader"
       class="md:hidden fixed bottom-0 left-0 right-0 bg-gray-50 text-textSecondary flex justify-around items-center p-2"
     >
-      <!-- Menu Links -->
       <router-link
         v-for="item in menuItems"
         :key="item.name"
@@ -25,7 +21,6 @@
       </router-link>
     </nav>
 
-    <!-- Footer for Desktop -->
     <footer v-if="showHeader" class="w-full bg-gray-200">
       <div class="w-full p-4 grid grid-cols-2 items-center">
         <span class="text-sm w-auto text-gray-500 text-center"
@@ -65,7 +60,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Header from "./src/components/Header.vue";
 
-// Add the icons to the library
 library.add(faTachometerAlt, faCalendarAlt, faTicketAlt, faUser);
 
 export default {
@@ -117,17 +111,14 @@ nav {
 
 main {
   flex-grow: 1;
-  /* Ensures main content grows to take available space */
 }
 
 html,
 body {
   height: 100%;
-  /* Ensure the body and html take up full height */
 }
 
 .min-h-screen {
   min-height: 100vh;
-  /* Ensures the container takes up the full screen height */
 }
 </style>

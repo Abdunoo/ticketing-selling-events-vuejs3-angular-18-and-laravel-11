@@ -121,7 +121,7 @@ router.beforeEach((to, from, next) => {
     let info = localStorage.getItem("isLogin");
     info = JSON.parse(info);
     if (!info) {
-      authStore.setRedirectPath(to.fullPath); // Save the intended path
+      authStore.setRedirectPath(to.fullPath); 
       next({ name: "Login" });
     }
     next();

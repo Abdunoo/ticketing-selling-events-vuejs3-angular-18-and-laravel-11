@@ -67,10 +67,8 @@
           return;
         }
   
-        // Replace this with actual form submission logic
         alert(`Message Sent!\n\nName: ${form.name}\nEmail: ${form.email}\nMessage: ${form.message}`);
   
-        // Reset form after submission
         form.name = '';
         form.email = '';
         form.message = '';
@@ -83,8 +81,4 @@
     }
   };
   </script>
-  
-  <style scoped>
-  /* Add any custom styles specific to Contact.vue here */
-  </style>
   

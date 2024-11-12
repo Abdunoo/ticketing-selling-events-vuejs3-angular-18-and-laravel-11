@@ -6,11 +6,9 @@
                 <h2 class="text-[#111418] text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Your
                     events</h2>
 
-                <!-- Search Input -->
                 <input v-model="searchQuery" @input="debouncedSearch" type="text"
                     class="mb-4 p-2 border border-gray-300 rounded" placeholder="Search events..." />
 
-                <!-- Event List -->
                 <div v-for="event in events" :key="event.id"
                     class="flex items-center gap-4 bg-white px-4 min-h-[72px] py-2 justify-between">
                     <div class="flex items-center gap-4">
@@ -24,13 +22,11 @@
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <!-- Edit Button: Route to event edit page -->
                         <router-link :to="`/edit-event/${event.id}`">
                             <button
                                 class="text-base font-medium leading-normal bg-primary hover:bg-blue-600 text-white p-1 rounded">Edit</button>
                         </router-link>
 
-                        <!-- Delete Button: Trigger delete function -->
                         <button @click="deleteEvent(event.id)"
                             class="text-base font-medium leading-normal bg-red-500 hover:bg-red-600 text-white p-1 rounded">Remove</button>
                     </div>
@@ -41,9 +37,9 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted, onBeforeUnmount, toRefs, defineAsyncComponent } from 'vue';
+import { reactive, onMounted, onBeforeUnmount, toRefs, defineAsyncComponent } from 'vue';
 import apiClient from '@/helpers/axios';
-import { useRouter } from 'vue-router';  // If using Vue Router
+import { useRouter } from 'vue-router';  
 import { useHead } from '@vueuse/head';
 const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
@@ -60,10 +56,9 @@ export default {
             currentPage: 1,
             totalPages: 1,
             hasMoreEvents: true,
-            searchQuery: '', // Search query for filtering
+            searchQuery: '',
         });
 
-        // Fetch events from API
         const fetchEvents = async (page = 1, query = '') => {
             if (state.isLoading || !state.hasMoreEvents) return;
 
@@ -90,7 +85,6 @@ export default {
             }
         };
 
-        // Handle scroll for infinite loading
         const handleScroll = () => {
             const bottomOfWindow = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 200;
             if (bottomOfWindow && state.hasMoreEvents && !state.isLoading) {
@@ -99,7 +93,6 @@ export default {
             }
         };
 
-        // Debounced search input handler
         const debouncedSearch = () => {
             state.currentPage = 1;
             state.hasMoreEvents = true;
@@ -122,14 +115,12 @@ export default {
             return date.toLocaleString('en-US', options);
         };
 
-        // Delete event function
         const deleteEvent = async (eventId) => {
             if (confirm('Are you sure you want to delete this event?')) {
                 state.isLoading = true;
                 try {
                     const response = await apiClient.delete(`/api/events/${eventId}`);
                     if (response.code === 200) {
-                        // Remove the deleted event from the list
                         state.events = state.events.filter(event => event.id !== eventId);
                     }
                 } catch (error) {
@@ -166,7 +157,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-/* Add any custom styles here */
-</style>

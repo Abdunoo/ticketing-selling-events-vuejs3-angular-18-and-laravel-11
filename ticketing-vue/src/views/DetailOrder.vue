@@ -3,7 +3,6 @@
     <div class="layout-container flex h-full grow flex-col p-4 lg:p-0">
       <div class="lg:px-40 flex flex-1 justify-center py-5">
         <div class="layout-content-container flex flex-col w-full lg:w-[512px] max-w-full lg:max-w-[960px] flex-1">
-          <!-- Banner Section -->
           <div>
             <div
               class="w-full bg-center bg-no-repeat bg-cover flex flex-col justify-end overflow-hidden bg-[#f8f8fc] rounded-lg lg:rounded-xl min-h-[150px] lg:min-h-[200px]"
@@ -11,13 +10,11 @@
             </div>
           </div>
 
-          <!-- Order Info -->
           <h2
             class="text-[#0e0e1b] text-base sm:text-lg font-bold leading-tight tracking-[-0.015em] px-4 text-center pb-2 pt-4">
             Order Number: {{ order.order_no }}
           </h2>
 
-          <!-- Ticket Info -->
           <div
             class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
             <div class="flex flex-col justify-center">
@@ -31,7 +28,6 @@
             </div>
           </div>
 
-          <!-- Discount Info (Hidden if no discount applied) -->
           <div v-if="order.discount_amount > 0"
             class="flex flex-col sm:flex-row items-start sm:items-center gap-4 bg-[#f8f8fc] px-4 min-h-[60px] sm:min-h-[72px] py-2 justify-between">
             <div class="flex flex-col justify-center">
@@ -41,7 +37,6 @@
             </div>
           </div>
 
-          <!-- Event Details -->
           <div class="p-4 grid grid-cols-[30%_1fr] gap-x-6 sm:grid-cols-[20%_1fr]">
             <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#d0d0e7] py-5">
               <p class="text-[#4e4e97] text-xs sm:text-sm font-normal leading-normal">Event Name</p>
@@ -58,7 +53,6 @@
             </div>
           </div>
 
-          <!-- Payment Status -->
           <h3 class="text-[#0e0e1b] text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Payment Status
           </h3>
           <div class="flex flex-col gap-3 p-4">
@@ -75,7 +69,6 @@
             </p>
           </div>
 
-          <!-- Invoice Button -->
           <div class="flex px-4 py-3">
             <button v-if="order.payment_status == 'paid'" @click="showModal=true"
               class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 flex-1 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em]">
@@ -96,14 +89,12 @@
 
     <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
       <div class="relative w-full max-w-3xl p-4">
-        <!-- Ticket component as popup -->
         <Ticket
           :event="order.events"
           :ticketCode="order.order_no"
           :ticketType="order.ticket_type"
           :ticketQuantity="order.quantity"
         />
-        <!-- Close button -->
         <button @click="showModal = false"
           class="absolute top-5 right-2 bg-red-600 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">
           Close
@@ -114,12 +105,13 @@
 </template>
 
 <script>
-import { onMounted, reactive, toRefs } from 'vue';
+import { defineAsyncComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRoute } from 'vue-router';
 import apiClient from '@/helpers/axios';
 import { useToast } from 'vue-toastification';
-import Ticket from './Ticket.vue';
 import { useHead } from '@vueuse/head';
+const Ticket = defineAsyncComponent(() => import('@/views/Ticket.vue'));
+
 
 export default {
   name: 'DetailOrder',
@@ -132,7 +124,7 @@ export default {
       showModal: false,
     });
 
-    const route = useRoute();  // Import and use route here
+    const route = useRoute();  
     const toast = useToast();
 
     const fetchDetailOrder = async () => {
@@ -145,8 +137,8 @@ export default {
     };
 
     const getOrderId = () => {
-      state.orderId = route.params.id;  // Get orderId from route params
-      fetchDetailOrder();  // Fetch order details after setting the orderId
+      state.orderId = route.params.id;
+      fetchDetailOrder();  
     };
 
     const toPay = () => {
@@ -206,7 +198,7 @@ export default {
     });
 
     onMounted(() => {
-      getOrderId();  // Ensure orderId is set and fetch the details when component is mounted
+      getOrderId();  
     });
 
     return {

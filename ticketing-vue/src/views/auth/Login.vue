@@ -59,7 +59,6 @@
         </div>
 
         <div class="flex items-center justify-center space-x-4 mt-6">
-          <!-- Google Login Button -->
           <a href="#" @click="loginWithGoogle"
             class="flex items-center justify-center w-full space-x-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
             <svg viewBox="0 0 24 24" aria-hidden="true" class="h-5 w-5">
@@ -79,7 +78,6 @@
             <span class="font-medium">Google</span>
           </a>
 
-          <!-- GitHub Login Button -->
           <a href="" @click="loginWithGithub()"
             class="flex items-center justify-center w-full space-x-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50">
             <svg fill="currentColor" viewBox="0 0 20 20" aria-hidden="true" class="h-5 w-5">

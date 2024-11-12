@@ -87,7 +87,6 @@ export default {
       }
       const response = await apiClient.post('api/register', data);
       if (response.code == 200) {
-        // Redirecting to OTP page with email as query parameter
         router.push({
           path: '/otp',
           query: { email: data.email }

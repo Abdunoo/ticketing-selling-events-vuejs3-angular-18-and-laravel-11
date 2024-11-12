@@ -152,13 +152,13 @@ class EventController extends Controller
     {
         // Validate the request
         $validatedData = $request->validate([
-            'name' => 'required|string',
-            'description' => 'required|string',
-            'category' => 'required|string',
+            'name' => 'required|string|max:50',
+            'description' => 'required|string|max:500',
+            'category' => 'required|string|max:20',
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
-            'location' => 'required|string',
-            'image_banner' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'location' => 'required|string|max:255',
+            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
             'ticket_types.*.price' => 'required|numeric',
@@ -248,11 +248,12 @@ class EventController extends Controller
         $event = Event::findOrFail($id);
 
         $validatedData = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'start_datetime' => 'sometimes|required|date',
-            'end_datetime' => 'sometimes|required|date',
-            'location' => 'sometimes|required|string|max:255',
+            'name' => 'required|string|max:50',
+            'description' => 'required|string|max:500',
+            'category' => 'required|string|max:20',
+            'start_datetime' => 'required|date',
+            'end_datetime' => 'required|date',
+            'location' => 'required|string|max:255',
             'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
