@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 import { VitePWA } from "vite-plugin-pwa";
 import sitemapPlugin from "vite-plugin-sitemap";
-import viteImagemin from "@vheemstra/vite-plugin-imagemin";
+import viteImagemin from "vite-plugin-imagemin";
 
 export default defineConfig({
   plugins: [
@@ -24,7 +24,6 @@ export default defineConfig({
       threshold: 1024,
       algorithm: "gzip",
       ext: ".gz",
-      deleteOriginFile: true,
     }),
     viteImagemin({
       gifsicle: { optimizationLevel: 7, interlaced: false },
