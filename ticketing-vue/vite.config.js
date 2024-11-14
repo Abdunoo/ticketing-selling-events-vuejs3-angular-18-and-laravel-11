@@ -26,11 +26,6 @@ export default defineConfig({
       ext: ".gz",
       deleteOriginFile: true,
     }),
-    viteCompression({
-      algorithm: "brotliCompress",
-      ext: ".br",
-      deleteOriginFile: true,
-    }),
     ViteImageOptimizer({
       test: /\.(jpe?g|png|gif|webp|avif)$/i,
       includePublic: true,
