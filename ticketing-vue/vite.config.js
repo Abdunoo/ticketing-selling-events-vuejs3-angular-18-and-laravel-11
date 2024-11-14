@@ -4,7 +4,7 @@ import vue from "@vitejs/plugin-vue";
 import viteCompression from "vite-plugin-compression";
 import { VitePWA } from "vite-plugin-pwa";
 import sitemapPlugin from "vite-plugin-sitemap";
-import { ViteImageOptimizer } from "vite-plugin-image-optimizer";
+import viteImagemin from "@vheemstra/vite-plugin-imagemin";
 
 export default defineConfig({
   plugins: [
@@ -26,25 +26,20 @@ export default defineConfig({
       ext: ".gz",
       deleteOriginFile: true,
     }),
-    ViteImageOptimizer({
-      test: /\.(jpe?g|png|gif|webp|avif)$/i,
-      includePublic: true,
-      logStats: true,
-      webp: {
-        quality: 50,
-        lossless: false,
-        force: true
+    viteImagemin({
+      gifsicle: { optimizationLevel: 7, interlaced: false },
+      optipng: { optimizationLevel: 7 },
+      mozjpeg: { quality: 70, progressive: true }, // Slightly lower quality for better performance
+      pngquant: { quality: [0.65, 0.8], speed: 4 },
+      webp: { quality: 50, lossless: false, method: 6 },
+      svgo: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+          { name: 'removeEmptyAttrs', active: true },
+          { name: 'cleanupIDs', active: true },
+          { name: 'removeDimensions', active: true }
+        ]
       },
-      svg: {
-        quality: 50,
-        lossless: false,
-        force: true
-      },
-      avif: {
-        quality: 80,
-        lossless: false,
-        force: true
-      }
     }),
     VitePWA({
       registerType: "autoUpdate",
