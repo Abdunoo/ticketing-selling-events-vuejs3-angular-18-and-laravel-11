@@ -18,7 +18,7 @@
   </div>
 
   <!-- Category -->
-  <!-- <div class="mb-3">
+  <div class="mb-3">
     <label for="category" class="font-medium">Category*</label>
     <select
       [(ngModel)]="newEvent.category"
@@ -28,9 +28,9 @@
       name="category"
     >
       <option value="">Select category</option>
-      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+      <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
     </select>
-  </div> -->
+  </div>
 
   <!-- Start Date and End Date -->
   <div class="flex space-x-2 mb-3">

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\ApplicationResponse;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\Response;
 
 class DashboardController extends Controller
 {
+    use ApplicationResponse;
+
     public function getMonthlyCounts()
     {
         $data = [];
@@ -40,7 +44,11 @@ class DashboardController extends Controller
             ];
         }
 
-        return response()->json($data);
+        return $this->json(
+            Response::HTTP_OK,
+            "Callback received.",
+            $data
+        );
     }
 }
 

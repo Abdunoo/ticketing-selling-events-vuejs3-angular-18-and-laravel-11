@@ -27,10 +27,16 @@ export class EventsComponent implements OnInit {
 
   // Define @ViewChild to reference the action buttons template
   actionCellTemplate = viewChild<TemplateRef<any>>('actionCellTemplate');
+  imgTpl = viewChild<TemplateRef<any>>('imgTpl');
 
   columns = this.pts.buildColumns<Events>([
     { field: 'id', width: 75, type: ColumnType.INT },
     { field: 'name', label: 'Name', width: 200 },
+    {
+      type: ColumnType.COMPUTED,
+      formatter: () => '',
+      cellRenderer: DefaultCellRenderer.create(this.imgTpl),
+    },
     {
       field: 'description',
       label: 'Description',
@@ -64,10 +70,9 @@ export class EventsComponent implements OnInit {
       type: ColumnType.DATETIME,
       formatter: (row) => this.convertToIndonesianDate(row),
     },
-
     {
       type: ColumnType.COMPUTED,
-      formatter: (val: any) => '',
+      formatter: (val: Events) => val.image_banner,
       cellRenderer: DefaultCellRenderer.create(this.actionCellTemplate),
       sticky: 'end',
     },

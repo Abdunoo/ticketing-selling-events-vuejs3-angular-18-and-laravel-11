@@ -17,7 +17,11 @@ class UserController extends Controller
     public function index()
     {
         $users = User::all();
-        return response()->json($users);
+        return $this->json(
+            Response::HTTP_OK,
+            'Success',
+            $users
+        );
     }
 
     public function store(Request $request)
@@ -44,7 +48,7 @@ class UserController extends Controller
         ]);
 
         return $this->json(
-            Response::HTTP_NOT_ACCEPTABLE,
+            Response::HTTP_OK,
             'Success',
             $user
         );
@@ -59,7 +63,7 @@ class UserController extends Controller
         }
 
         return $this->json(
-            Response::HTTP_NOT_ACCEPTABLE,
+            Response::HTTP_OK,
             'Success',
             $user
         );
@@ -103,7 +107,7 @@ class UserController extends Controller
         $user->save();
 
         return $this->json(
-            Response::HTTP_NOT_ACCEPTABLE,
+            Response::HTTP_OK,
             'Success',
             $user
         );

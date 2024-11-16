@@ -21,6 +21,8 @@ import { AuthInterceptor } from './auth.interceptor';
 import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 import { EditEventComponent } from './events/form/edit/edit-event.component';
 import { BaseChartDirective, provideCharts } from 'ng2-charts';
+import { CreateOrderComponent } from './orders/create-order/create-order.component';
+import { EditOrderComponent } from './orders/edit-order/edit-order.component';
 
 @NgModule({
   imports: [
@@ -49,6 +51,8 @@ import { BaseChartDirective, provideCharts } from 'ng2-charts';
     LoginComponent,
     LoadingSpinnerComponent,
     EditEventComponent,
+    CreateOrderComponent,
+    EditOrderComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

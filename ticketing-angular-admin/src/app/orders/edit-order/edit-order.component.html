@@ -1,0 +1,38 @@
+<!-- create-order.component.html -->
+<div class="w-full mx-auto p-6 bg-white shadow-md rounded-lg">
+  <h2 class="text-2xl font-bold mb-4">Edit Order {{ order.order_no }}</h2>
+  <form (ngSubmit)="onSubmit()">
+    <div class="mb-4">
+      <label for="user_id" class="block text-sm font-medium text-gray-700">User</label>
+      <select id="user_id" [(ngModel)]="order.user_id" name="user_id" (change)="onUserChange(order.user_id)" class="mt-1 p-2 border border-gray-300 rounded w-full">
+        <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="event_id" class="block text-sm font-medium text-gray-700">Event</label>
+      <select id="event_id" [(ngModel)]="order.event_id" name="event_id" (change)="onEventChange(order.event_id)" class="mt-1 p-2 border border-gray-300 rounded w-full">
+        <option *ngFor="let event of events" [value]="event.id">{{ event.name }}</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="ticket_type" class="block text-sm font-medium text-gray-700">Ticket Type</label>
+      <select id="ticket_type" [(ngModel)]="selectedTicketType" name="ticket_type" class="mt-1 p-2 border border-gray-300 rounded w-full" (ngModelChange)="onTicketTypeChange($event)">
+        <option *ngFor="let type of ticketTypes" [ngValue]="type">{{ type.name }} | {{ type.price }}</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+      <input type="number" id="quantity" [(ngModel)]="order.quantity" name="quantity" class="mt-1 p-2 border border-gray-300 rounded w-full" (change)="onQtyChange(order.quantity)" />
+    </div>
+
+    <div class="mb-4">
+      <label for="total_price" class="block text-sm font-medium text-gray-700">Total Price</label>
+      <input type="text" id="total_price" [(ngModel)]="order.total_price" name="total_price" class="mt-1 p-2 border border-gray-300 rounded w-full" readonly />
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">update</button>
+  </form>
+</div>

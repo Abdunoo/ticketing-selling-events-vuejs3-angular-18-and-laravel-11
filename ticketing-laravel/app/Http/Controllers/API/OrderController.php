@@ -30,11 +30,11 @@ class OrderController extends Controller
 
     public function list(Request $request): JsonResponse
     {
-        $perPage = $request->input('limit', 6);
-        $searchTerm = '%' . $request->input('query', '') . '%';
-        $user = $request->user;
-
         try {
+            $perPage = $request->input('limit', 6);
+            $searchTerm = '%' . $request->input('query', '') . '%';
+            $user = $request->user;
+
             $orders = Order::with('events')
                 ->where('user_id', $user->id)
                 ->whereHas('events', function ($query) use ($searchTerm) {
@@ -44,156 +44,148 @@ class OrderController extends Controller
                 ->orderByDesc('created_at')
                 ->paginate($perPage);
 
-
-            $getImageBanner = $orders->getCollection()->map(function ($order) {
+            $orders->getCollection()->transform(function ($order) {
                 $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
                 return $order;
             });
 
-            $orders->setCollection($getImageBanner);
-
-            return $this->json(
-                Response::HTTP_OK,
-                "Success.",
-                $orders
-            );
+            return $this->json(Response::HTTP_OK, "Success.", $orders);
         } catch (\Throwable $th) {
-            throw $th;
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
         }
     }
 
-    public function index(Request $request)
+    public function index(): JsonResponse
     {
-        $orders = Order::with(['events', 'user'])->get();
+        try {
+            $orders = Order::with(['events', 'user'])->get();
 
-        $getImageBanner = $orders->map(function ($order) {
-            $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
-            return $order;
-        });
+            $orders->transform(function ($order) {
+                $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
+                return $order;
+            });
 
-        return response()->json($orders);
+            return $this->json(Response::HTTP_OK, "Success.", $orders);
+        } catch (\Throwable $th) {
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
+        }
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $order_no = $this->ticketku->getOrderNo();
-        $validatedData = $request->validate([
-            'total_price' => 'required|numeric',
-            'event_id' => 'nullable|exists:events,id',
-            'quantity' => 'required|integer',
-            'price' => 'required|numeric', // price per item
-            'ticket_type' => 'required|string',
-            'user_id' => 'nullable|exists:users,id',
-        ]);
-
-        $data = [
-            'order_no' => $order_no,
-            'total_price' => $request->total_price,
-            'payment_status' => 'pending',
-            'event_id' => $request->event_id,
-            'quantity' => $request->quantity,
-            'price' => $request->price,
-            'user_id' => $request->user->id,
-            'ticket_type' => $request->ticket_type,
-        ];
 
         try {
+            $validatedData = $request->validate([
+                'total_price' => 'required|numeric',
+                'event_id' => 'nullable|exists:events,id',
+                'quantity' => 'required|integer',
+                'price' => 'required|numeric',
+                'ticket_type' => 'required|string',
+                'user_id' => 'nullable|exists:users,id',
+            ]);
+
+            $data = array_merge($validatedData, [
+                'order_no' => $order_no,
+                'payment_status' => 'pending',
+                'user_id' => $request->user->id,
+            ]);
+
+            if ($request->user_id) {
+                $data['user_id'] = $request->user_id;
+            }
+
             DB::beginTransaction();
 
             $order = Order::create($data);
-
             $response = Ticketku::createInvoice($data);
+
             if (isset($response['invoice_url'])) {
                 $order->update(['url_invoice' => $response['invoice_url']]);
             }
 
-            for ($i = 0; $i < $request->quantity; $i++) {
-                $unique_code = 'TCKT-' . strtoupper(Str::random(4)) . '-' . $order->id . '-' . $request->user->id . '-' . $request->event_id . '-' . ($i + 1);
-
+            foreach (range(1, $request->quantity) as $i) {
                 Ticket::create([
                     'order_id' => $order->id,
                     'is_used' => false,
-                    'unique_code' => $unique_code,
+                    'unique_code' => 'TCKT-' . strtoupper(Str::random(4)) . '-' . $order->id . '-' . $data['user_id'] . '-' . $data['event_id'] . '-' . $i,
                 ]);
             }
 
             DB::commit();
-            return $this->json(
-                Response::HTTP_OK,
-                "Success.",
-                $order
-            );
+
+            return $this->json(Response::HTTP_OK, "Success.", $order);
         } catch (\Throwable $th) {
             DB::rollBack();
-            return $this->json(
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                $th->getMessage(),
-            );
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
         }
     }
 
-    public function show($id)
+    public function show($id): JsonResponse
     {
-        $order = Order::with('events')->find($id);
-        $order->events['image_banner'] = prepend_base_url($order->events->image_banner, $order->events->name);
+        try {
+            $order = Order::with('events.ticketTypes')->find($id);
 
-        if (!$order) {
-            return $this->json(
-                Response::HTTP_NOT_FOUND,
-                "Order not found",
-            );
+            if (!$order) {
+                return $this->json(Response::HTTP_NOT_FOUND, "Order not found.");
+            }
+
+            $order->events->image_banner = prepend_base_url($order->events->image_banner, $order->events->name);
+
+            return $this->json(Response::HTTP_OK, "Success.", $order);
+        } catch (\Throwable $th) {
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
         }
-
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $order
-        );
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): JsonResponse
     {
-        $order = Order::find($id);
+        try {
+            $order = Order::find($id);
 
-        if (!$order) {
-            return $this->json(
-                Response::HTTP_NOT_FOUND,
-                "Order not found",
-            );
+            if (!$order) {
+                return $this->json(Response::HTTP_NOT_FOUND, "Order not found.");
+            }
+
+            $validatedData = $request->validate([
+                'total_price' => 'required|numeric',
+                'event_id' => 'nullable|exists:events,id',
+                'quantity' => 'required|integer',
+                'price' => 'required|numeric',
+                'ticket_type' => 'required|string',
+                'user_id' => 'nullable|exists:users,id',
+                'order_no' => 'required|string',
+            ]);
+
+            $response = Ticketku::createInvoice($validatedData);
+
+            $data = $validatedData;
+            if (isset($response['invoice_url'])) {
+                $data['url_invoice'] = $response['invoice_url'];
+            }
+
+            $order->update($data);
+
+            return $this->json(Response::HTTP_OK, "Success.", $order);
+        } catch (\Throwable $th) {
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
         }
-
-        $validatedData = $request->validate([
-            'user_id' => 'nullable|exists:users,id',
-            'discount_id' => 'nullable|exists:discounts,id',
-            'discount_amount' => 'required|numeric',
-            'total_price' => 'required|numeric',
-            'payment_status' => 'required|in:pending,paid,failed',
-        ]);
-
-        $order->update($validatedData);
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $order
-        );
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        $order = Order::find($id);
+        try {
+            $order = Order::find($id);
 
-        if (!$order) {
-            return $this->json(
-                Response::HTTP_NOT_FOUND,
-                "Order not found",
-            );
+            if (!$order) {
+                return $this->json(Response::HTTP_NOT_FOUND, "Order not found.");
+            }
+
+            $order->delete();
+
+            return $this->json(Response::HTTP_OK, "Order deleted successfully.", $order);
+        } catch (\Throwable $th) {
+            return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
         }
-
-        $order->delete();
-        return $this->json(
-            Response::HTTP_OK,
-            "Success.",
-            $order
-        );
     }
 }

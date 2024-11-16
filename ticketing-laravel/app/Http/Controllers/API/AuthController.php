@@ -45,7 +45,11 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return $this->json(
+                Response::HTTP_UNPROCESSABLE_ENTITY,
+                "Success.",
+                $request->user
+            );
         }
 
         // Get the authenticated user
@@ -77,9 +81,9 @@ class AuthController extends Controller
                 'email' => 'required|string|unique:users|max:255',
                 'password' => 'required|string|min:8',
             ]);
-    
+
             $otp = rand(100000, 999999);
-            
+
             // Store user details and OTP in cache for 5 minutes
             $userData = [
                 'name' => $request->name,
@@ -87,12 +91,12 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password),
                 'otp' => $otp
             ];
-    
+
             Cache::put('user_data_' . $request->email, $userData, now()->addMinutes(5));
-    
+
             // Send OTP to user's email
             Mail::to($request->email)->send(new OtpMail($otp));
-    
+
             return $this->json(
                 Response::HTTP_OK,
                 "Registration successful. Please verify your email."
@@ -101,17 +105,17 @@ class AuthController extends Controller
             throw $th;
         }
     }
-    
+
     public function verifyOtp(Request $request)
     {
         $request->validate([
             'otp' => 'required',
             'email' => 'required|email',
         ]);
-    
+
         // Retrieve the stored user data from cache
         $userData = Cache::get('user_data_' . $request->email);
-    
+
         if ($userData && $userData['otp'] == $request->otp) {
             // Create user in the database
             $user = User::create([
@@ -120,22 +124,22 @@ class AuthController extends Controller
                 'password' => $userData['password'],
                 'email_verified_at' => now() // Optional: mark the user as verified
             ]);
-    
+
             // Clear the cached data
             Cache::forget('user_data_' . $request->email);
-    
+
             return $this->json(
                 Response::HTTP_OK,
                 "Email verification successful. Account created."
             );
         }
-    
+
         return $this->json(
             Response::HTTP_BAD_REQUEST,
             "Invalid OTP."
         );
     }
-    
+
     public function login(Request $request)
     {
         // Validate the request inputs
@@ -171,10 +175,10 @@ class AuthController extends Controller
         }
 
         // If authentication fails, return an unauthorized response
-        return response()->json([
-            'status' => Response::HTTP_UNAUTHORIZED,
-            'message' => 'Invalid credentials.'
-        ], Response::HTTP_UNAUTHORIZED);
+        return $this->json(
+            Response::HTTP_UNAUTHORIZED,
+            "Invalid credentials.",
+        );
     }
 
     public function forgotPassword(Request $request)
@@ -272,7 +276,11 @@ class AuthController extends Controller
     {
 
         $users = User::all();
-        return response()->json($users);
+        return $this->json(
+            Response::HTTP_OK,
+            "Success.",
+            $users
+        );
     }
 
     public function store(Request $request)
@@ -293,17 +301,17 @@ class AuthController extends Controller
             ]);
 
             DB::commit();
-            return response()->json([
-                'status' => Response::HTTP_OK,
-                'message' => 'User created successfully.',
-                'data' => $user,
-            ]);
+            return $this->json(
+                Response::HTTP_OK,
+                'User created successfully.',
+                $user,
+            );
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response()->json([
-                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => $th->getMessage(),
-            ]);
+            return $this->json(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $th->getMessage()
+            );
         }
     }
 
@@ -312,17 +320,17 @@ class AuthController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'User not found',
-            ]);
+            return $this->json(
+                Response::HTTP_NOT_FOUND,
+                'User not found'
+            );
         }
 
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'Success.',
-            'data' => $user,
-        ]);
+        return $this->json(
+            Response::HTTP_OK,
+            'Success.',
+            $user,
+        );
     }
 
     public function update(Request $request, $id)
@@ -330,10 +338,10 @@ class AuthController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'User not found',
-            ]);
+            return $this->json(
+                Response::HTTP_NOT_FOUND,
+                'User not found.',
+            );
         }
 
         $validatedData = $request->validate([
@@ -347,11 +355,11 @@ class AuthController extends Controller
         }
 
         $user->update($validatedData);
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'User updated successfully.',
-            'data' => $user,
-        ]);
+        return $this->json(
+            Response::HTTP_OK,
+            'User updated successfully.',
+            $user
+        );
     }
 
     public function destroy($id)
@@ -359,18 +367,17 @@ class AuthController extends Controller
         $user = User::find($id);
 
         if (!$user) {
-            return response()->json([
-                'status' => Response::HTTP_NOT_FOUND,
-                'message' => 'User not found',
-            ]);
+            return $this->json(
+                Response::HTTP_NOT_FOUND,
+                'User not found.',
+            );
         }
 
         $user->delete();
-        return response()->json([
-            'status' => Response::HTTP_OK,
-            'message' => 'User deleted successfully.',
-            'data' => $user,
-        ]);
+        return $this->json(
+            Response::HTTP_OK,
+            'User deleted successfully.',
+        );
     }
 
     public function handleGoogleCallback(Request $request)
@@ -378,7 +385,10 @@ class AuthController extends Controller
         $code = $request->input('code');
 
         if (!$code) {
-            return response()->json(['error' => 'Authorization code is missing'], 400);
+            return $this->json(
+                Response::HTTP_BAD_REQUEST,
+                'Authorization code is missing.',
+            );
         }
 
         try {
@@ -392,7 +402,10 @@ class AuthController extends Controller
             ]);
 
             if ($response->failed()) {
-                return response()->json(['error' => 'Failed to exchange token'], 500);
+                return $this->json(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'Failed to exchange token.',
+                );
             }
 
             $accessToken = $response->json()['access_token'];
@@ -403,7 +416,10 @@ class AuthController extends Controller
             ])->get('https://www.googleapis.com/oauth2/v3/userinfo');
 
             if ($userResponse->failed()) {
-                return response()->json(['error' => 'Failed to fetch user details'], 500);
+                return $this->json(
+                    Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'Failed to fetch user details.',
+                );
             }
 
             $userData = $userResponse->json();
@@ -413,7 +429,7 @@ class AuthController extends Controller
             $user = null;
 
             if ($userExist) {
-                $user = $userExist; 
+                $user = $userExist;
             } else {
                 $user = User::create([
                     'name'=> $userData['name'],
@@ -439,10 +455,10 @@ class AuthController extends Controller
             );
 
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => $e->getMessage(),
-            ]);
+            return $this->json(
+                Response::HTTP_INTERNAL_SERVER_ERROR,
+                $e->getMessage()
+            );
         }
     }
 }

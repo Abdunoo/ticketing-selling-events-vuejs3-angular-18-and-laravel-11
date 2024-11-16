@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AppService, Events, TicketType } from '../../../app.service';
+import { AppService, Category, Events, TicketType } from '../../../app.service';
 
 @Component({
   selector: 'app-edit-event',
@@ -11,9 +11,9 @@ import { AppService, Events, TicketType } from '../../../app.service';
 })
 export class EditEventComponent implements OnInit {
   eventId: number;
-  newEvent : Events;
-  ticketTypes: Array<TicketType> = [{ name: '', price: '', available_quantity: 0 }];
-  categories: Array<any> = [];
+  newEvent: Events = {} as Events; // Initialize as an empty Events object
+  ticketTypes: Array<TicketType> = [{ name: '', price: 0, available_quantity: 0 }];
+  categories: Array<Category> = [];
   imageUrl: string;
   filename: string;
   errorMessage: string;
@@ -36,11 +36,10 @@ export class EditEventComponent implements OnInit {
   loadEventData(id: number): void {
     try {
       this.dataService.getEventById(id).subscribe(
-        (data: any) => {
-          this.newEvent = data.data;
-          console.log(this.newEvent)
-          this.ticketTypes = data.data.ticket_types || [];
-          this.imageUrl = data.data.image_banner || null;
+        (data: Events) => {
+          this.newEvent = data;
+          this.ticketTypes = data.ticket_types || [];
+          this.imageUrl = data.image_banner;
         },
 
       );
@@ -52,8 +51,8 @@ export class EditEventComponent implements OnInit {
 
   getCategories() {
     try {
-      this.dataService.getListCategories().subscribe((data: any) => {
-        this.categories = data.data;
+      this.dataService.getListCategories().subscribe((data: Category[]) => {
+        this.categories = data
       });
     } catch (error) {
       console.log(error);
@@ -61,7 +60,7 @@ export class EditEventComponent implements OnInit {
   }
 
   addTicketType() {
-    this.ticketTypes.push({ name: '', price: '', available_quantity: 0 });
+    this.ticketTypes.push({ name: '', price: 0, available_quantity: 0 });
   }
 
   removeTicketType(index: number) {
@@ -100,6 +99,7 @@ export class EditEventComponent implements OnInit {
     formData.append('end_datetime', this.newEvent.end_datetime);
     formData.append('location', this.newEvent.location);
     formData.append('description', this.newEvent.description);
+    formData.append('category', this.newEvent.category);
     formData.append('ticket_types', JSON.stringify(this.ticketTypes));
 
     const uploadInput = document.querySelector('input[type="file"]') as HTMLInputElement;

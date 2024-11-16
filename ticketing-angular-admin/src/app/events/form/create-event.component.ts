@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AppService, Events } from '../../app.service';
+import { AppService, Category, Events, TicketType, User } from '../../app.service';
 
 @Component({
   selector: 'app-create-event',
@@ -17,9 +17,11 @@ export class CreateEventComponent implements OnInit {
     end_datetime: '',
     location: '',
     description: '',
+    user_id: 0,
   };
-  ticketTypes: Array<any> = [{ name: '', price: '', available_quantity: '' }];
-  categories: Array<any> = [];
+  ticketTypes: Array<TicketType> = [{ name: '', price: 0, available_quantity: 0 }];
+  categories: Array<Category> = [];
+  users: Array<User> = [];
   imageUrl: string | null = null;
   filename: string = '';
   errorMessage: string = '';
@@ -32,12 +34,19 @@ export class CreateEventComponent implements OnInit {
 
   ngOnInit(): void {
     this.getCategories();
+    this.fetchUsers();
+  }
+
+  fetchUsers() {
+    this.dataService.getListUsers().subscribe((data: User[]) => {
+      this.users = data;
+    });
   }
 
   getCategories() {
     try {
-      this.dataService.getListCategories().subscribe((data: any) => {
-        this.categories = data.data;
+      this.dataService.getListCategories().subscribe((data: Category[]) => {
+        this.categories = data
       });
     } catch (error) {
       console.log(error);
@@ -45,7 +54,7 @@ export class CreateEventComponent implements OnInit {
   }
 
   addTicketType() {
-    this.ticketTypes.push({ name: '', price: '', available_quantity: '' });
+    this.ticketTypes.push({ name: '', price: 0, available_quantity: 0 });
   }
 
   removeTicketType(index: number) {

@@ -7,6 +7,8 @@ import { UsersComponent } from './users/users.component';
 import { CreateEventComponent } from './events/form/create-event.component';
 import { LoginComponent } from './login/login.component';
 import { EditEventComponent } from './events/form/edit/edit-event.component';
+import { CreateOrderComponent } from './orders/create-order/create-order.component';
+import { EditOrderComponent } from './orders/edit-order/edit-order.component';
 
 export const routes: Routes = [
   // page
@@ -19,7 +21,9 @@ export const routes: Routes = [
 
   // form
   { path: 'create_event', component: CreateEventComponent, data: { title: 'Create_Event' } },
-  { path: 'edit_event/:id', component: EditEventComponent },
+  { path: 'edit_event/:id', component: EditEventComponent, data: { title: 'Edit_Event' } },
+  { path: 'create_order', component: CreateOrderComponent, data: { title: 'Create_Order' } },
+  { path: 'edit_order/:id', component: EditOrderComponent, data: { title: 'Edit_Order' } },
 
   // auth
   { path: 'login', component: LoginComponent },

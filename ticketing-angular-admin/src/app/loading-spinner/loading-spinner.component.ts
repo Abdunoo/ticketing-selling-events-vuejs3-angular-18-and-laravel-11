@@ -7,10 +7,10 @@ import { LoadingService } from '../loading.service';
   styleUrls: ['./loading-spinner.component.scss'],
 })
 export class LoadingSpinnerComponent implements OnInit {
-  loading$: any; // Observable for loading state
+  loading$: any;
   constructor(private loadingService: LoadingService) {}
 
   ngOnInit(): void {
-    this.loading$ = this.loadingService.loading$; // Observable for loading state
+    this.loading$ = this.loadingService.loading$;
   }
 }

@@ -3,6 +3,23 @@
   <!-- Event Details Section -->
   <h2 class="text-2xl font-bold mb-4">Create an Event</h2>
 
+  <!-- organizer -->
+  <div class="mb-3">
+    <label for="organizer" class="font-medium">Organizer*</label>
+    <select
+      [(ngModel)]="newEvent.user_id"
+      id="organizer"
+      required
+      aria-placeholder="organizer name"
+      class="form-input w-full border rounded-md h-10 px-2"
+      name="organizer"
+    >
+      <option value="">Select Organizer</option>
+      <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+    </select>
+  </div>
+
+
   <!-- Event Name -->
   <div class="mb-3">
     <label for="name" class="font-medium">Event name*</label>
@@ -17,7 +34,6 @@
     />
   </div>
 
-  <!-- Category -->
   <div class="mb-3">
     <label for="category" class="font-medium">Category*</label>
     <select

@@ -57,12 +57,13 @@ Route::middleware(['auth.custom'])->group(function () {
     // Route::get('admin/events/{id}', [EventController::class, 'show']);
     // Route::delete('admin/events{id}', [EventController::class, 'destroy']);
 
-    Route::apiResource('admin/events', EventController::class);
     Route::apiResource('admin/orders', OrderController::class);
     Route::apiResource('admin/users', AuthController::class);
     Route::apiResource('admin/categories', CategoryController::class);
     Route::get('admin/dashboard/getMonthlyCounts', [DashboardController::class, 'getMonthlyCounts']);
 });
+Route::apiResource('admin/events', EventController::class);
+
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

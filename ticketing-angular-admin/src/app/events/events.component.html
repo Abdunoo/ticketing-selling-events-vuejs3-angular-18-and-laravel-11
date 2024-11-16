@@ -20,3 +20,7 @@
     <button class="button bg-red-500 text-white px-2 py-1" (click)="confirmDelete(row)">Remove</button>
   </div>
 </ng-template>
+
+<ng-template #imgTpl let-row="row" let-value="value">
+  <img [src]="row.image_banner" width="100" />
+</ng-template>

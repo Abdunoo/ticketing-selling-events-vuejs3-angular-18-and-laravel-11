@@ -82,7 +82,10 @@ class Ticketku
         //    - If `status` is 'EXPIRED', send a reminder email to the customer
 
         // 5. Return a 200 OK response to acknowledge the callback
-        return response()->json(['message' => 'Callback received'], 200);
+        return $this->json(
+            Response::HTTP_OK,
+            "Callback received.",
+        );
     }
 
     public function getOrderNo()

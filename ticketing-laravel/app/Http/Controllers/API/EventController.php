@@ -139,13 +139,18 @@ class EventController extends Controller
 
     public function index(Request $request): JsonResponse
     {
-        $events = Event::lazyByIdDesc();
-        $events->map(function ($event) {
+        $events = Event::orderByDesc('id')->get();
+
+        $events = $events->map(function ($event) {
             $event->image_banner = prepend_base_url($event->image_banner, $event->name);
             return $event;
         });
 
-        return response()->json($events);
+        return $this->json(
+            Response::HTTP_OK,
+            "Success.",
+            $events
+        );
     }
 
     public function store(Request $request): JsonResponse
@@ -186,7 +191,7 @@ class EventController extends Controller
         Storage::put($webpImagePath, $webpImage);
         // Update validated data with the WebP image path
         $validatedData['image_banner'] = $webpImagePath;
-        $validatedData['organizer_id'] = $request->user->id;
+        $validatedData['organizer_id'] = $request->user_id ?? $request->user->id;
         $validatedData['is_active'] = 1;
         $validatedData['slug'] = Str::slug($validatedData['name']);
 
@@ -235,6 +240,7 @@ class EventController extends Controller
     {
         $event = Event::with(['ticketTypes'])->findOrFail($id);
         $event['image_banner'] = prepend_base_url($event->image_banner, $event->name);
+
         return $this->json(
             Response::HTTP_OK,
             "Success.",
@@ -254,7 +260,7 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
             'location' => 'required|string|max:255',
-            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_banner' => 'sometimes|nullable|max:2048',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
             'ticket_types.*.price' => 'required|numeric',
