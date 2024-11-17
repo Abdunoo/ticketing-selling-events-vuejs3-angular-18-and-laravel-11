@@ -14,7 +14,7 @@ export interface Events {
   end_datetime: string;
   location: string;
   image_banner: string;
-  organizer_id?: number;
+  organizer_id: number;
   is_active?: boolean;
   price?: number;
   created_at?: string;

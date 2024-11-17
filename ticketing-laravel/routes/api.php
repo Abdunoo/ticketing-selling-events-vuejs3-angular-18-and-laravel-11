@@ -44,7 +44,6 @@ Route::middleware(['auth.custom'])->group(function () {
     Route::get('my_events', [EventController::class, 'myEvent']);
 
 
-    Route::apiResource('users', UserController::class);
     // Route::apiResource('ticket-types', TicketTypeController::class);
     Route::apiResource('tickets', TicketController::class);
     Route::apiResource('orders', OrderController::class);
@@ -59,10 +58,11 @@ Route::middleware(['auth.custom'])->group(function () {
 
     Route::apiResource('admin/orders', OrderController::class);
     Route::apiResource('admin/users', AuthController::class);
+    // Route::apiResource('users', UserController::class);
     Route::apiResource('admin/categories', CategoryController::class);
+    Route::apiResource('admin/events', EventController::class);
     Route::get('admin/dashboard/getMonthlyCounts', [DashboardController::class, 'getMonthlyCounts']);
 });
-Route::apiResource('admin/events', EventController::class);
 
 
 // Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');

@@ -23,6 +23,8 @@ import { EditEventComponent } from './events/form/edit/edit-event.component';
 import { BaseChartDirective, provideCharts } from 'ng2-charts';
 import { CreateOrderComponent } from './orders/create-order/create-order.component';
 import { EditOrderComponent } from './orders/edit-order/edit-order.component';
+import { CreateUserComponent } from './users/create-user/create-user.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
 
 @NgModule({
   imports: [
@@ -53,6 +55,8 @@ import { EditOrderComponent } from './orders/edit-order/edit-order.component';
     EditEventComponent,
     CreateOrderComponent,
     EditOrderComponent,
+    CreateUserComponent,
+    EditUserComponent,
   ],
   bootstrap: [AppComponent],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],

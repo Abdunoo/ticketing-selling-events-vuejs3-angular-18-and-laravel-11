@@ -191,7 +191,7 @@ class EventController extends Controller
         Storage::put($webpImagePath, $webpImage);
         // Update validated data with the WebP image path
         $validatedData['image_banner'] = $webpImagePath;
-        $validatedData['organizer_id'] = $request->user_id ?? $request->user->id;
+        $validatedData['organizer_id'] = $request->organizer_id ?? $request->user->id;
         $validatedData['is_active'] = 1;
         $validatedData['slug'] = Str::slug($validatedData['name']);
 
@@ -260,7 +260,6 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
             'location' => 'required|string|max:255',
-            'image_banner' => 'sometimes|nullable|max:2048',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
             'ticket_types.*.price' => 'required|numeric',
@@ -284,8 +283,9 @@ class EventController extends Controller
             $webpImagePath = $directoryPath . '/' . $webpFileName;
             Storage::put($webpImagePath, $webpImage);
             $validatedData['image_banner'] = $webpImagePath;
-            $validatedData['slug'] = Str::slug($validatedData['name']);
         }
+            $validatedData['slug'] = Str::slug($validatedData['name']);
+            $validatedData['organizer_id'] = $request->organizer_id ?? $request->user->id;
 
         // Update event data
         $event->update($validatedData);

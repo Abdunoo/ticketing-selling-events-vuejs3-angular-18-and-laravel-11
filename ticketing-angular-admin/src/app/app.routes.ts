@@ -9,6 +9,8 @@ import { LoginComponent } from './login/login.component';
 import { EditEventComponent } from './events/form/edit/edit-event.component';
 import { CreateOrderComponent } from './orders/create-order/create-order.component';
 import { EditOrderComponent } from './orders/edit-order/edit-order.component';
+import { EditUserComponent } from './users/edit-user/edit-user.component';
+import { CreateUserComponent } from './users/create-user/create-user.component';
 
 export const routes: Routes = [
   // page
@@ -24,6 +26,8 @@ export const routes: Routes = [
   { path: 'edit_event/:id', component: EditEventComponent, data: { title: 'Edit_Event' } },
   { path: 'create_order', component: CreateOrderComponent, data: { title: 'Create_Order' } },
   { path: 'edit_order/:id', component: EditOrderComponent, data: { title: 'Edit_Order' } },
+  { path: 'create_user', component: CreateUserComponent, data: { title: 'Create_User' } },
+  { path: 'edit_user/:id', component: EditUserComponent, data: { title: 'Edit_User' } },
 
   // auth
   { path: 'login', component: LoginComponent },

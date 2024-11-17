@@ -31,26 +31,20 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    // Jika method request adalah PUT, ubah ke POST dan tambahkan _method ke payload
     if (req.method === 'PUT') {
-      // Ambil FormData asli dari req.body
       const originalPayload = req.body as FormData;
 
-      // Buat objek kosong untuk menyimpan data FormData
       const payloadObj: { [key: string]: any } = {};
 
-      // Iterasi pada entri FormData dan simpan dalam objek
       originalPayload.forEach((value, key) => {
         payloadObj[key] = value;
       });
 
-      // Tambahkan _method ke objek
       const newPayload: { [key: string]: any } = {  // Tambahkan tipe data di sini
         ...payloadObj,
         _method: 'PUT'
       };
 
-      // Buat FormData baru dari objek
       const formData = new FormData();
       for (const key in newPayload) {
         formData.append(key, newPayload[key]);
@@ -58,7 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
       authReq = authReq.clone({
         method: 'POST',
-        body: formData // Gunakan FormData baru
+        body: formData
       });
     }
 

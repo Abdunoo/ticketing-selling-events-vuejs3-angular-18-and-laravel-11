@@ -7,7 +7,7 @@
   <div class="mb-3">
     <label for="organizer" class="font-medium">Organizer*</label>
     <select
-      [(ngModel)]="newEvent.user_id"
+      [(ngModel)]="newEvent.organizer_id"
       id="organizer"
       required
       aria-placeholder="organizer name"
@@ -44,7 +44,7 @@
       name="category"
     >
       <option value="">Select category</option>
-      <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+      <option *ngFor="let category of categories" [value]="category.name">{{ category.name }}</option>
     </select>
   </div>
 

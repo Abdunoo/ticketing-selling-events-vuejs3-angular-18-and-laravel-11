@@ -1,7 +1,8 @@
 // src/app/users/users.component.ts
-import { Component, inject } from '@angular/core';
+import { Component, inject, TemplateRef, viewChild } from '@angular/core';
 import { AppService, User } from '../app.service';
-import { ColumnType, PanemuTableController, PanemuTableDataSource, PanemuTableService } from 'ngx-panemu-table';
+import { ColumnType, DefaultCellRenderer, PanemuTableController, PanemuTableDataSource, PanemuTableService } from 'ngx-panemu-table';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-users',
@@ -11,6 +12,7 @@ import { ColumnType, PanemuTableController, PanemuTableDataSource, PanemuTableSe
 export class UsersComponent {
   title = 'Users';
   pts = inject(PanemuTableService);
+  actionCellTemplate = viewChild<TemplateRef<any>>('actionCellTemplate');
   columns = this.pts.buildColumns<User>([
     { field: 'id',type: ColumnType.INT },
     { field: 'name',type: ColumnType.STRING },
@@ -20,6 +22,12 @@ export class UsersComponent {
       type: ColumnType.DATETIME,
       formatter: (row)=>this.convertToIndonesianDate(row)
     },
+    {
+      type: ColumnType.COMPUTED,
+      formatter: () => '',
+      cellRenderer: DefaultCellRenderer.create(this.actionCellTemplate),
+      sticky: 'end',
+    },
     // { field: 'avatar',type: ColumnType.STRING },
   ]);
 
@@ -28,7 +36,7 @@ export class UsersComponent {
     // rowOptions: { rowStyle: () => 'height: auto; max-height: 64px;' }, // Allow dynamic row height
   });
 
-  constructor(private dataService: AppService) {}
+  constructor(private dataService: AppService, private router: Router) { }
 
   ngOnInit() {
     // Retrieve events from server via the DataService
@@ -61,5 +69,21 @@ export class UsersComponent {
     const formattedDate = `${dayName}, ${day} ${monthName} ${year} ${formattedHours}.${formattedMinutes} WIB`;
 
     return formattedDate;
+  }
+
+
+  editUser(row: User) {
+    this.router.navigate(['/edit_user', row.id]);
+  }
+
+  confirmDelete(row: User) {
+    if (confirm(`Are you sure you want to delete user "${row.name}"?`)) {
+      this.dataService.deleteUser(row.id).subscribe(() => {
+        const allData = this.datasource.getAllData();
+        const updatedData = allData.filter((user) => user.id !== row.id);
+        this.datasource.setData(updatedData);
+        this.controller.reloadData();
+      });
+    }
   }
 }

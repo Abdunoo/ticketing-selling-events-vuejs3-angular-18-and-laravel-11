@@ -1,8 +1,7 @@
-// create-event.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AppService, Category, Events, TicketType } from '../../../app.service';
+import { AppService, Category, Events, TicketType, User } from '../../../app.service';
 
 @Component({
   selector: 'app-edit-event',
@@ -11,9 +10,10 @@ import { AppService, Category, Events, TicketType } from '../../../app.service';
 })
 export class EditEventComponent implements OnInit {
   eventId: number;
-  newEvent: Events = {} as Events; // Initialize as an empty Events object
+  newEvent: Events = {} as Events;
   ticketTypes: Array<TicketType> = [{ name: '', price: 0, available_quantity: 0 }];
   categories: Array<Category> = [];
+  users: Array<User> = [];
   imageUrl: string;
   filename: string;
   errorMessage: string;
@@ -30,6 +30,7 @@ export class EditEventComponent implements OnInit {
     if (this.eventId) {
       this.loadEventData(this.eventId);
     }
+    this.fetchUsers();
     this.getCategories();
   }
 
@@ -47,6 +48,12 @@ export class EditEventComponent implements OnInit {
       console.error('Error loading event:', error);
     }
 
+  }
+
+  fetchUsers() {
+    this.dataService.getListUsers().subscribe((data: User[]) => {
+      this.users = data;
+    });
   }
 
   getCategories() {
@@ -88,25 +95,22 @@ export class EditEventComponent implements OnInit {
         this.filename = file.name;
         this.errorMessage = '';
       };
-      reader.readAsDataURL(file); // Read the file as a data URL
+      reader.readAsDataURL(file);
     }
   }
 
   handleSubmit() {
     const formData = new FormData();
-    formData.append('name', this.newEvent.name);
-    formData.append('start_datetime', this.newEvent.start_datetime);
-    formData.append('end_datetime', this.newEvent.end_datetime);
-    formData.append('location', this.newEvent.location);
-    formData.append('description', this.newEvent.description);
-    formData.append('category', this.newEvent.category);
+    Object.keys(this.newEvent).forEach((key) => {
+      formData.append(key, (this.newEvent as any)[key]);
+    });
     formData.append('ticket_types', JSON.stringify(this.ticketTypes));
-
-    const uploadInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const uploadInput = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
     if (uploadInput.files && uploadInput.files.length > 0) {
-        formData.append('image_banner', uploadInput.files[0]);
-    }else {
-      formData.append('image_banner', this.newEvent.image_banner);
+      console.log('true')
+      formData.append('image_banner', uploadInput.files[0]);
     }
 
     this.dataService.updateEvent(this.eventId, formData).subscribe(

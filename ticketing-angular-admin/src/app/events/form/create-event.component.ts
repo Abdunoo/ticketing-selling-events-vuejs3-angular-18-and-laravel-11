@@ -10,15 +10,7 @@ import { AppService, Category, Events, TicketType, User } from '../../app.servic
   styleUrls: ['./create-event.component.scss'],
 })
 export class CreateEventComponent implements OnInit {
-  newEvent = {
-    name: '',
-    category: '',
-    start_datetime: '',
-    end_datetime: '',
-    location: '',
-    description: '',
-    user_id: 0,
-  };
+  newEvent: Events = {} as Events;
   ticketTypes: Array<TicketType> = [{ name: '', price: 0, available_quantity: 0 }];
   categories: Array<Category> = [];
   users: Array<User> = [];
