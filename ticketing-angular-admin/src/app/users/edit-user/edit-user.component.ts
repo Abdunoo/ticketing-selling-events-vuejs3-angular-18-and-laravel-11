@@ -15,7 +15,8 @@ export class EditUserComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private dataService: AppService
+    private dataService: AppService,
+    private router: Router
   ) {
     this.userForm = this.fb.group({
       name: ['', Validators.required],
@@ -32,10 +33,11 @@ export class EditUserComponent implements OnInit {
 
   onSubmit(): void {
     if (this.userForm.valid) {
-      this.dataService.updateUser(this.userId, this.userForm.value).subscribe({
-        next: () => alert('User updated successfully!'),
-        error: (err) => console.error(err),
-      });
+      this.dataService.updateUser(this.userId, this.userForm.value).subscribe(
+        () => {
+          this.router.navigate(["/users"]);
+        }
+      );
     }
   }
 }

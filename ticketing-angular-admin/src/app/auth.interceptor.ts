@@ -31,7 +31,7 @@ export class AuthInterceptor implements HttpInterceptor {
       });
     }
 
-    if (req.method === 'PUT') {
+    if (req.method === 'PUT' && req.body instanceof FormData) {
       const originalPayload = req.body as FormData;
 
       const payloadObj: { [key: string]: any } = {};
