@@ -103,7 +103,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:json|txt)/,
+            urlPattern: /\.(?:json)/,
             handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'dynamic-content-cache',

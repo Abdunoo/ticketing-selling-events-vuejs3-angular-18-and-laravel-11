@@ -2,10 +2,6 @@
 User-agent: *
 Disallow:
 
-# Block a specific crawler from accessing certain paths
+# Block Googlebot from accessing specific paths
 User-agent: Googlebot
 Disallow: /private/
-
-# Block all robots from accessing any part of the site
-User-agent: *
-Disallow: /
