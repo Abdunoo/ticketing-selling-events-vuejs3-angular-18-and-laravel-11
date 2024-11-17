@@ -42,6 +42,7 @@ export default defineConfig({
     }),
     VitePWA({
       registerType: "autoUpdate",
+      includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: "Ticketku",
         short_name: "Ticketku",
@@ -73,11 +74,43 @@ export default defineConfig({
       workbox: {
         runtimeCaching: [
           {
-            urlPattern: /.*\.(?:js|css|html|json)/,
+            urlPattern: /.*\.(?:js|css|html|json|woff2?|ttf|eot|svg|png|jpe?g|gif|webp)/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'static-assets-cache',
+              expiration: { 
+                maxEntries: 100, // Increased for more flexibility
+                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+            },
+          },
+          {
+            urlPattern: /\/api\//, // Assuming you have API calls
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 24 * 60 * 60 // 24 hours
+              },
+              cacheableResponse: {
+                statuses: [0, 200]
+              },
+            },
+          },
+          {
+            urlPattern: /\.(?:json|txt)/,
             handler: 'StaleWhileRevalidate',
             options: {
-              cacheName: 'static-assets',
-              expiration: { maxEntries: 50, maxAgeSeconds: 86400 },
+              cacheName: 'dynamic-content-cache',
+              expiration: {
+                maxEntries: 50,
+                maxAgeSeconds: 12 * 60 * 60 // 12 hours
+              },
             },
           },
         ],

@@ -15,10 +15,11 @@ import App from '../App.vue';
 import { createHead } from '@vueuse/head';
 import defaultPicture from '@/assets/image/not_found.webp';
 import VueLazyload from 'vue-lazyload';
+import { registerSW } from 'virtual:pwa-register'
 
 library.add(faUserSecret, faMagnifyingGlass, faBagShopping, faUser, faHouse, faBars);
 
-const app = createApp(App); 
+const app = createApp(App);
 const head = createHead();
 
 app.use(createPinia());
@@ -36,9 +37,34 @@ app.use(Toast, {
 app.use(VueLazyload, {
     loading: defaultPicture,
     error: defaultPicture,
-    attempt: 3,           
+    attempt: 3,
 })
 
 app.component('font-awesome-icon', FontAwesomeIcon);
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/ticketing/sw.js')
+            .then((registration) => {
+                console.log('Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
+}
+
+// PWA auto-update
+const updateSW = registerSW({
+    onNeedRefresh() {
+      // Prompt user for update
+      if (confirm('New content available. Reload?')) {
+        updateSW(true)
+      }
+    },
+    onOfflineReady() {
+      console.log('App ready to work offline')
+    }
+  })
 
 app.mount('#app');
