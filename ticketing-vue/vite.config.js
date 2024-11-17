@@ -113,6 +113,13 @@ export default defineConfig({
               },
             },
           },
+          {
+            urlPattern: /\/robots\.txt/,
+            handler: 'NetworkOnly',
+            options: {
+              cacheName: 'robots-txt-cache',
+            },
+          },
         ],
       },
     }),
