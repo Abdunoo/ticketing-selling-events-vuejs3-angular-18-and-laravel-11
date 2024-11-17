@@ -62,34 +62,25 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Only handle requests for your application's base URL
   if (event.request.url.startsWith(self.location.origin + BASE_URL)) {
     event.respondWith(
       caches.match(event.request)
         .then((cachedResponse) => {
-          // If cached response exists, return it
           if (cachedResponse) {
             return cachedResponse;
           }
 
-          // Clone the request
           const fetchRequest = event.request.clone();
 
           return fetch(fetchRequest).then((response) => {
-            // Check if valid response
             if (!response || response.status !== 200 || response.type !== 'basic') {
               return response;
             }
 
-            // Determine caching strategy based on file type
             const url = new URL(event.request.url);
-            const fileExtension = url.pathname.split('.').pop();
-            
-            // Clone the response
             const responseToCache = response.clone();
-
-            // Determine appropriate cache strategy
             let cacheStrategy;
+
             if (/js$/.test(url.pathname)) {
               cacheStrategy = CACHE_STRATEGIES.JS_ASSETS;
             } else if (/css$/.test(url.pathname)) {
@@ -98,7 +89,6 @@ self.addEventListener('fetch', (event) => {
               cacheStrategy = CACHE_STRATEGIES.IMAGE_ASSETS;
             }
 
-            // Cache the response if a strategy exists
             if (cacheStrategy) {
               caches.open(cacheStrategy.cacheName)
                 .then((cache) => {
@@ -110,6 +100,9 @@ self.addEventListener('fetch', (event) => {
             }
 
             return response;
+          }).catch((error) => {
+            console.error('Network request failed:', error);
+            return caches.match('/ticketing/offline.html');
           });
         })
     );
