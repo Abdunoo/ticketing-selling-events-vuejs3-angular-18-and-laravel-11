@@ -2,7 +2,7 @@
   <section class="bg-gray-50">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" class="flex items-center justify-center flex-row mb-6 text-2xl font-semibold text-gray-900">
-        <img v-lazy="logo" alt="ticket applicaiton verivication otp" class="object-cover h-10 w-10 mr-2">
+        <img :src="logo" alt="Logo" id="logo" class="object-cover h-10 w-10 mr-2">
         Ticketku
       </a>
       <div class="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
@@ -45,7 +45,6 @@ export default {
     const otp = ref('');
     const route = useRoute();
     const email = route.query.email;
-    console.log(email);
 
     const verifyOtp = async () => {
       const data = {
@@ -54,7 +53,6 @@ export default {
       };
       try {
         const response = await apiClient.post('api/verify-otp', data);
-        console.log(response);
         if (response.code == 200) {
           console.log('OTP verified successfully');
           router.push({ name: 'Dashboard' });

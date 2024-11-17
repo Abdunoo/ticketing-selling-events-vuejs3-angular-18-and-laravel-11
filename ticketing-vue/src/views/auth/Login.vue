@@ -4,7 +4,7 @@
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm flex flex-col items-center justify-center">
         <router-link to="/" class="flex items-center justify-center bg-gray-400 rounded-md p-1">
-          <img v-lazy="logo" alt="ticket promotion image"
+          <img :src="logo" alt="Logo" id="logo"
             class="object-cover h-10" />
         </router-link>
         <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
@@ -100,7 +100,6 @@
 </template>
 
 <script>
-import { CLIENT_ID } from "@/config";
 import apiClient from "@/helpers/axios";
 import router from "@/router";
 import { useAuthStore } from "@/stores/auth";
@@ -152,7 +151,7 @@ export default {
             authStore.setLoginState(true);
             toast.success("Login Success");
             if (response.data.user.role == "admin") {
-              router.push("/admin/login");
+              router.push("/admin");
               return;
             }
             const redirectPath = authStore.getRedirectPath();
@@ -171,7 +170,7 @@ export default {
       googleSdkLoaded((google) => {
         google.accounts.oauth2
           .initCodeClient({
-            client_id: CLIENT_ID,
+            client_id: import.meta.env.VITE_CLIENT_ID,
             scope: "email profile openid",
             callback: (response) => {
               if (response.code) {
@@ -195,7 +194,7 @@ export default {
           authStore.setLoginState(true);
           toast.success("Login Success");
           if (response.data.user.role == "admin") {
-            router.push("/admin/login");
+            router.push("/admin");
             return;
           }
           const redirectPath = authStore.getRedirectPath();

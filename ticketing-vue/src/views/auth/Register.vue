@@ -1,7 +1,7 @@
 <template>
   <div class="flex min-h-full flex-col justify-center items-center px-6 py-12 lg:px-8">
     <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
-      <img v-lazy="logo" alt="ticket promotion image" class="object-cover h-10">
+      <img :src="logo" alt="Logo" id="logo" class="object-cover h-10">
       Ticketku
     </a>
     <div class="w-full md:mt-0 sm:max-w-md xl:p-0">
@@ -42,7 +42,7 @@
             </div>
             <div class="ml-3 text-sm">
               <label for="terms" class="font-light text-gray-500">I accept the <a
-                  class="font-medium text-primary hover:underline" href="#">Terms and Conditions</a></label>
+                  class="font-medium text-primary hover:underline" href="terms">Terms and Conditions</a></label>
             </div>
           </div>
           <button type="submit"

@@ -13,8 +13,6 @@ import Toast, { POSITION } from 'vue-toastification';
 import 'vue-toastification/dist/index.css';
 import App from '../App.vue';
 import { createHead } from '@vueuse/head';
-import defaultPicture from '@/assets/image/not_found.webp';
-import VueLazyload from 'vue-lazyload';
 import { registerSW } from 'virtual:pwa-register'
 
 library.add(faUserSecret, faMagnifyingGlass, faBagShopping, faUser, faHouse, faBars);
@@ -33,12 +31,6 @@ app.use(Toast, {
     pauseOnFocusLoss: true,
     pauseOnHover: true,
 });
-
-app.use(VueLazyload, {
-    loading: defaultPicture,
-    error: defaultPicture,
-    attempt: 3,
-})
 
 app.component('font-awesome-icon', FontAwesomeIcon);
 

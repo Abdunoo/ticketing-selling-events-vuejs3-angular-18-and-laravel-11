@@ -24,7 +24,7 @@
     <footer v-if="showHeader" class="w-full bg-gray-200">
       <div class="w-full p-4 grid grid-cols-2 items-center">
         <span class="text-sm w-auto text-gray-500 text-center"
-          >© 2023 <a href="https://flowbite.com/" class="hover:underline">Flowbite™</a>.
+          >© 2024 <a href="https://sandbox2.panemu.com/abdundev/" class="hover:underline">Abdundev™</a>.
           All Rights Reserved.
         </span>
         <ul

@@ -6,7 +6,7 @@
         <h1 class="text-center text-2xl sm:text-3xl font-semibold mb-8 text-gray-800">Review and Purchase</h1>
 
         <div class="flex flex-col items-center justify-center mb-8 text-center">
-          <img v-lazy="event.image_banner" :alt="event.name" class="bg-gray-200 w-24 h-24 rounded-full">
+          <img :src="event.image_banner" :alt="event.name" class="bg-gray-200 w-24 h-24 rounded-full">
           <div class="mt-4">
             <h2 class="text-xl sm:text-2xl font-bold text-gray-700">{{ event.name }}</h2>
             <p class="text-gray-600 text-sm sm:text-base">{{ event.location }} | {{ formatDate(event.start_datetime) }}

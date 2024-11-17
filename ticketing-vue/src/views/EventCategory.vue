@@ -2,7 +2,7 @@
   <section>
     <loading :isLoading="isLoading" />
     <div class="px-4 sm:px-10 md:px-20 flex flex-1 justify-center py-5">
-      <div class="layout-content-container flex flex-col max-w-full sm:max-w-[960px] flex-1">
+      <div class="layout-content-container flex flex-col max-w-full md:max-w-[720px] lg:max-w-[960px] xl:max-w-[1200px] 2xl:max-w-[1400px] flex-1">
         <div class="px-4 py-3">
           <label class="flex flex-col min-w-40 h-12 w-full">
             <div class="flex w-full flex-1 items-stretch rounded-xl h-full">

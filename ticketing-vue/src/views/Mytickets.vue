@@ -30,7 +30,7 @@
               <div class="w-full md:w-1/4 h-32 md:h-auto">
                 <img
                   class="w-full h-full object-cover rounded-lg"
-                  v-lazy="item.events.image_banner"
+                  :src="item.events.image_banner"
                   alt="Event Image"
                 />
               </div>

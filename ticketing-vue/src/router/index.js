@@ -1,4 +1,3 @@
-import { APP_URL } from "@/config";
 import { useAuthStore } from "@/stores/auth";
 import { createRouter, createWebHistory } from "vue-router";
 const routes = [
@@ -114,7 +113,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   if (to.path === '/admin' || to.path === '/admin/') {
-    window.location.href = APP_URL + '/admin/index.html';
+    window.location.href = import.meta.env.VITE_APP_URL + '/admin/index.html';
   }
 
   if (to.meta.requiresAuth && !authStore.isLogin) {

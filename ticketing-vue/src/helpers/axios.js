@@ -1,4 +1,3 @@
-import { API_URL } from '@/config';
 import router from '@/router';
 import axios from 'axios';
 
@@ -7,7 +6,7 @@ const getToken = () => {
 };
 
 const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     'Content-Type': 'application/json',
   }
