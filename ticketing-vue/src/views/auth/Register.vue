@@ -1,4 +1,5 @@
 <template>
+  <loading :isLoading="isLoading" />
   <div class="flex min-h-full flex-col justify-center items-center px-6 py-12 lg:px-8">
     <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900">
       <img :src="logo" alt="Logo" id="logo" class="object-cover h-10">
@@ -61,10 +62,15 @@
 <script>
 import apiClient from '@/helpers/axios';
 import router from '@/router';
-import { reactive, toRefs } from 'vue';
+import { defineAsyncComponent, reactive, toRefs } from 'vue';
 import logo from '@/assets/image/logo.webp';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
+  name: 'Register',
+  components: {
+    Loading
+  },
   setup(props) {
     const state = reactive({
       name: '',
@@ -72,6 +78,7 @@ export default {
       password1: '',
       password2: '',
       logo,
+      isLoading: false,
 
     })
 
@@ -80,22 +87,26 @@ export default {
         alert('Passwords do not match');
         return;
       }
+      state.isLoading = true;
       const data = {
         name: state.name,
         email: state.email,
         password: state.password1,
       }
-      const response = await apiClient.post('api/register', data);
-      if (response.code == 200) {
-        router.push({
-          path: '/otp',
-          query: { email: data.email }
-        });
-        console.log('Registration success');
-      } else {
-        console.log('Registration failed');
+      try {
+        const response = await apiClient.post('api/register', data);
+        if (response.code == 200) {
+          router.push({
+            path: '/otp',
+            query: { email: data.email }
+          });
+          console.log('Registration success');
+        }
+      } catch (error) {
+        console.log('Registration failed =>', error);
+      } finally {
+        state.isLoading = false;
       }
-
     }
 
     return {

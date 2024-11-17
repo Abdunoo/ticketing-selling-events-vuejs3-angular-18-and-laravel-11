@@ -40,7 +40,7 @@
               <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
             </div>
             <div class="text-sm">
-              <a href="#" class="font-semibold text-primary hover:text-primary">Forgot password?</a>
+              <a href="forgot-password" class="font-semibold text-primary hover:text-primary">Forgot password?</a>
             </div>
           </div>
 

@@ -39,6 +39,16 @@ const routes = [
     name: "Login",
     component: () => import("@/views/auth/Login.vue"),
   },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("@/views/auth/ForgotPassword.vue"),
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: () => import("@/views/auth/ResetPassword.vue"),
+  },
   // Route Form
   {
     path: "/events_create",

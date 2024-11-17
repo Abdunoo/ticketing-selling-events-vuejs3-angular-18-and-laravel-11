@@ -197,10 +197,12 @@ class AuthController extends Controller
         }
 
         $otp = rand(100000, 999999);
-        // Store OTP in session or cache with expiration
-        session(['otp' => $otp]);
-        session(['email' => $request->email]);
+        $userData = [
+            'email' => $request->email,
+            'otp' => $otp
+        ];
 
+        Cache::put('user_data_' . $request->email, $userData, now()->addMinutes(5));
         Mail::to($request->email)->send(new OtpMail($otp));
 
         return $this->json(
@@ -216,15 +218,16 @@ class AuthController extends Controller
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $storedOtp = session('otp');
-        $email = session('email');
+        $userData = Cache::get('user_data_' . $request->email);
+        $storedOtp = $userData['otp'];
+        $email = $userData['email'];
 
         if ($storedOtp === $request->otp) {
             $user = User::where('email', $email)->first();
             $user->password = Hash::make($request->password);
             $user->save();
 
-            session()->forget(['otp', 'email']);
+            Cache::forget('user_data_' . $request->email);
             return $this->json(
                 Response::HTTP_OK,
                 "Password reset successful."

@@ -1,4 +1,5 @@
 <template>
+  <loading :isLoading="isLoading" />
   <section class="bg-gray-50">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
       <a href="#" class="flex items-center justify-center flex-row mb-6 text-2xl font-semibold text-gray-900">
@@ -36,17 +37,25 @@
 <script>
 import apiClient from '@/helpers/axios';
 import router from '@/router';
-import { ref } from 'vue';
+import { defineAsyncComponent, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import logo from '@/assets/image/logo.webp';
+const Loading = defineAsyncComponent(() => import('@/components/Loading.vue'));
 
 export default {
+  name: 'VerifyAccount',
+  components: {
+    Loading
+  },
   setup(props) {
     const otp = ref('');
     const route = useRoute();
     const email = route.query.email;
+    const isLoading= ref(false);
+
 
     const verifyOtp = async () => {
+      isLoading.value = true;
       const data = {
         otp: otp.value,
         email: email
@@ -55,17 +64,20 @@ export default {
         const response = await apiClient.post('api/verify-otp', data);
         if (response.code == 200) {
           console.log('OTP verified successfully');
-          router.push({ name: 'Dashboard' });
+          router.push({ name: 'Login' });
         } else {
           alert('Invalid OTP, please try again');
         }
       } catch (error) {
         console.error('Error verifying OTP:', error);
         alert('An error occurred. Please try again.');
+      } finally {
+        isLoading.value = false;
       }
     };
 
     const resendOtp = async () => {
+      isLoading.value = true;
       try {
         const response = await apiClient.post('api/resend-otp');
         if (response.status === 200) {
@@ -77,6 +89,8 @@ export default {
       } catch (error) {
         console.error('Error resending OTP:', error);
         alert('An error occurred. Please try again.');
+      } finally {
+        isLoading.value = false;
       }
     };
 
@@ -85,6 +99,7 @@ export default {
       verifyOtp,
       resendOtp,
       logo,
+      isLoading,
     };
   }
 };
