@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-dompdf": "^3.0",
         "google/apiclient": "^2.15.0",
         "guzzlehttp/guzzle": "^7.9",
         "intervention/image": "^3.8",
@@ -16,7 +15,6 @@
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
-        "simplesoftwareio/simple-qrcode": "^4.2",
         "xendit/xendit-php": "^6.0"
     },
     "require-dev": {

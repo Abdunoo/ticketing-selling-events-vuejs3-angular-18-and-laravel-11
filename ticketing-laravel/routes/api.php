@@ -3,16 +3,10 @@
 use App\Helpers\Ticketku;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\CategoryController;
-use App\Http\Controllers\API\DiscountController;
 use App\Http\Controllers\API\EventController;
 use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\OrderDetailController;
 use App\Http\Controllers\API\TicketController;
-use App\Http\Controllers\API\TicketTypeController;
-use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Middleware\auth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -26,7 +20,6 @@ Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('reset-password', [AuthController::class, 'resetPassword']);
 
 Route::post('google-callback', [AuthController::class, 'handleGoogleCallback']);
-Route::get('tickets/download/{orderId}', [TicketController::class, 'downloadTickets']);
 Route::post('handle_invoice_callback', [Ticketku::class, 'handleInvoiceCallback']);
 
 Route::get('events/list', [EventController::class, 'list']);
