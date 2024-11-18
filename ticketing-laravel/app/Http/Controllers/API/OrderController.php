@@ -73,9 +73,8 @@ class OrderController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        $order_no = $this->ticketku->getOrderNo();
-
         try {
+            // Validate request data
             $validatedData = $request->validate([
                 'total_price' => 'required|numeric',
                 'event_id' => 'nullable|exists:events,id',
@@ -85,36 +84,38 @@ class OrderController extends Controller
                 'user_id' => 'nullable|exists:users,id',
             ]);
 
+            // Prepare order data
             $data = array_merge($validatedData, [
-                'order_no' => $order_no,
+                'order_no' => $this->ticketku->getOrderNo(),
                 'payment_status' => 'pending',
-                'user_id' => $request->user->id,
+                'user_id' => $request->user_id ?? $request->user->id,
             ]);
-
-            if ($request->user_id) {
-                $data['user_id'] = $request->user_id;
-            }
 
             DB::beginTransaction();
 
+            // Create the order
             $order = Order::create($data);
-            $response = Ticketku::createInvoice($data);
 
-            if (isset($response['invoice_url'])) {
+            // Generate invoice and update order if successful
+            $response = Ticketku::createInvoice($data);
+            if (!empty($response['invoice_url'])) {
                 $order->update(['url_invoice' => $response['invoice_url']]);
             }
 
-            foreach (range(1, $request->quantity) as $i) {
-                Ticket::create([
+            // Generate tickets for the order
+            $tickets = collect(range(1, $request->quantity))->map(function ($i) use ($order, $data) {
+                return [
                     'order_id' => $order->id,
                     'is_used' => false,
-                    'unique_code' => 'TCKT-' . strtoupper(Str::random(4)) . '-' . $order->id . '-' . $data['user_id'] . '-' . $data['event_id'] . '-' . $i,
-                ]);
-            }
+                    'unique_code' => 'TCKT-' . strtoupper(Str::random(4)) . '-' . $order->id . '-' . $data['user_id'] . '-' . ($data['event_id'] ?? 'N/A') . '-' . $i,
+                ];
+            });
+
+            Ticket::insert($tickets->toArray());
 
             DB::commit();
 
-            return $this->json(Response::HTTP_OK, "Success.", $order);
+            return $this->json(Response::HTTP_OK, 'Success.', $order);
         } catch (\Throwable $th) {
             DB::rollBack();
             return $this->json(Response::HTTP_INTERNAL_SERVER_ERROR, $th->getMessage());
