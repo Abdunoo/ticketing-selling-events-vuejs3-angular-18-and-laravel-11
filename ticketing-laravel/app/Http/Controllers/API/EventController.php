@@ -87,14 +87,14 @@ class EventController extends Controller
     protected function fetchPopularEvents()
     {
         return Event::select(
-                'events.id',
-                'events.name',
-                'events.slug',
-                'events.start_datetime',
-                'events.location',
-                'events.image_banner',
-                DB::raw('COUNT(tickets.id) as total_tickets_sold')
-            )
+            'events.id',
+            'events.name',
+            'events.slug',
+            'events.start_datetime',
+            'events.location',
+            'events.image_banner',
+            DB::raw('COUNT(tickets.id) as total_tickets_sold')
+        )
             ->join('orders', 'events.id', '=', 'orders.event_id')
             ->join('tickets', 'orders.id', '=', 'tickets.order_id')
             ->where('events.start_datetime', '>', now())  // Fetch upcoming events only
@@ -163,7 +163,7 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
             'location' => 'required|string|max:255',
-            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
             'ticket_types.*.price' => 'required|numeric',
@@ -213,7 +213,7 @@ class EventController extends Controller
         );
     }
 
-        /**
+    /**
      * get event by slug
      */
     public function bySlug($slug): JsonResponse
@@ -260,6 +260,7 @@ class EventController extends Controller
             'start_datetime' => 'required|date',
             'end_datetime' => 'required|date',
             'location' => 'required|string|max:255',
+            'image_banner' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
             'ticket_types' => 'required',
             'ticket_types.*.name' => 'required|string',
             'ticket_types.*.price' => 'required|numeric',
@@ -278,14 +279,17 @@ class EventController extends Controller
                 Storage::makeDirectory($directoryPath);
             }
 
+            // Store original image
             $imagePath = $image->storeAs($directoryPath, $fileName);
+
+            // Convert image to WebP format and store
             $webpImage = Image::read($image->getRealPath())->encode(new WebpEncoder(quality: 80));
             $webpImagePath = $directoryPath . '/' . $webpFileName;
             Storage::put($webpImagePath, $webpImage);
             $validatedData['image_banner'] = $webpImagePath;
         }
-            $validatedData['slug'] = Str::slug($validatedData['name']);
-            $validatedData['organizer_id'] = $request->organizer_id ?? $request->user->id;
+        $validatedData['slug'] = Str::slug($validatedData['name']);
+        $validatedData['organizer_id'] = $request->organizer_id ?? $request->user->id;
 
         // Update event data
         $event->update($validatedData);
