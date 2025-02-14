@@ -81,7 +81,7 @@ export class EditEventComponent implements OnInit {
     const file = input.files ? input.files[0] : null;
 
     if (file) {
-      const maxSize = 2 * 1024 * 1024; // 2MB size limit
+      const maxSize = 5 * 1024 * 1024; // 2MB size limit
       if (file.size > maxSize) {
         this.errorMessage = 'File size exceeds 2MB';
         this.filename = '';
