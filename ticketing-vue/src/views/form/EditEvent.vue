@@ -161,7 +161,7 @@ export default {
         const handleFileChange = (event) => {
             const file = event.target.files[0];
             if (file) {
-                const maxSize = 2 * 1024 * 1024; // 2MB
+                const maxSize = 5 * 1024 * 1024; // 2MB
                 if (file.size > maxSize) {
                     errorMessage.value = 'File size exceeds 2MB';
                     return;
