@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->unsignedBigInteger('event_id');
             $table->string('name');
-            $table->decimal('price', 10, 2);
+            $table->integer('price');
             $table->integer('available_quantity');
             $table->foreign('event_id')->references('id')->on('events')->onDelete('cascade');
             $table->timestamps();

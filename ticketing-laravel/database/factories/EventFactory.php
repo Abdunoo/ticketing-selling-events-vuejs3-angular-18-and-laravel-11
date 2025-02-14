@@ -39,8 +39,18 @@ class EventFactory extends Factory
             'slug' => Str::slug($this->faker->unique()->sentence(3)),
             'description' => $this->faker->paragraph(),
             'category' => $this->faker->randomElement($categories), // Random category selection
-            'start_datetime' => $this->faker->dateTimeBetween('+1 days', '+2 months'),
-            'end_datetime' => $this->faker->dateTimeBetween('+2 months', '+3 months'),
+            'start_datetime' => $this->faker->dateTimeBetween('+1 days', '+2 months')->setTime(
+                (int) $this->faker->numberBetween(0, 23),
+                (int) $this->faker->numberBetween(0, 59),
+                0,
+                0 // Set milliseconds to 00
+            ),
+            'end_datetime' => $this->faker->dateTimeBetween('+2 months', '+3 months')->setTime(
+                (int) $this->faker->numberBetween(0, 23),
+                (int) $this->faker->numberBetween(0, 59),
+                0,
+                0 // Set milliseconds to 00
+            ),
             'location' => $this->faker->address(),
             'image_banner' => $this->faker->imageUrl(640, 480, 'event', true),
             'organizer_id' => 1, // Assuming an existing organizer

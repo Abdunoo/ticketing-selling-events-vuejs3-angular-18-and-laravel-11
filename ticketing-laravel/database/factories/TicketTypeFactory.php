@@ -21,7 +21,7 @@ class TicketTypeFactory extends Factory
     {
         return [
             'name' => $this->faker->randomElement(['Regular', 'VIP']),
-            'price' => $this->faker->randomFloat(2, 5000, 100000),
+            'price' => $this->faker->numberBetween(5000, 100000),
             'available_quantity' => $this->faker->numberBetween(10, 100),
             'created_at' => now(),
             'updated_at' => now(),
@@ -37,7 +37,7 @@ class TicketTypeFactory extends Factory
     {
         return $this->state([
             'name' => 'VIP',
-            'price' => $this->faker->randomFloat(2, 100000, 200000),  // Higher price for VIP
+            'price' => $this->faker->numberBetween(100000, 200000),
         ]);
     }
 
@@ -50,7 +50,7 @@ class TicketTypeFactory extends Factory
     {
         return $this->state([
             'name' => 'Regular',
-            'price' => $this->faker->randomFloat(2, 5000, 50000),  // Lower price for Regular
+            'price' => $this->faker->numberBetween(5000, 50000),
         ]);
     }
 }

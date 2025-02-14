@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->decimal('discount_amount', 10, 2)->default(0)->nullable();
-            $table->decimal('total_price', 10, 2);
+            $table->integer('discount_amount')->nullable();
+            $table->integer('total_price')->nullable();
             $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
             $table->unsignedBigInteger('event_id');
             $table->string('ticket_type')->nullable();
             $table->integer('quantity');
-            $table->decimal('price', 10, 2);
+            $table->integer('price')->nullable();
             $table->string('order_no');
             $table->string('url_invoice')->nullable();
             $table->string('pay_date')->nullable();
